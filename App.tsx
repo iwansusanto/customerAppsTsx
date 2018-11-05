@@ -9,6 +9,7 @@ import Welcome from "./src/screens/auth/Welcome"
 import Register from "./src/screens/auth/Register"
 import Login from "./src/screens/auth/Login"
 import OTPVerification from "./src/screens/auth/OTPVerification"
+import ChangePassword from "./src/screens/auth/ChangePassword"
 
 // Contains constant values used for the app
 import metrics from "./src/config/metrics"
@@ -26,7 +27,8 @@ const Navigator = createStackNavigator(
     Login: { screen: Login },
     OTP: { screen: OTPVerification },
     Welcome: { screen: Welcome },
-    Register: { screen: Register }
+    Register: { screen: Register },
+    ChangePassword: { screen: ChangePassword }
   },
   {
     // Configuration for header to use Primary Color defined in metrics
