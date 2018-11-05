@@ -18,14 +18,17 @@ interface CustomTextInputProps extends TextInputProps {
   icon: ImageSourcePropType
 }
 
-export default (props: CustomTextInputProps) => (
-  <View style={styles.container}>
-    <View style={styles.imageContainer}>
-      <Image source={props.icon} style={styles.icon} resizeMode={"contain"} />
+export default (props: CustomTextInputProps) => {
+  const { style, ...otherProps } = props
+  return (
+    <View style={[styles.container, style]}>
+      <View style={styles.imageContainer}>
+        <Image source={props.icon} style={styles.icon} resizeMode={"contain"} />
+      </View>
+      <TextInput {...otherProps} style={styles.textInput} />
     </View>
-    <TextInput {...props} style={styles.textInput} />
-  </View>
-)
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
