@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "flex-start",
-    marginLeft: 30
+    marginLeft: 30,
+    marginRight: 10
   },
 
   image: {
