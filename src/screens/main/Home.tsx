@@ -6,7 +6,9 @@ import {
   Image,
   StatusBar,
   Button,
-  GeolocationReturnType
+  GeolocationReturnType,
+  ScrollView,
+  FlatList
 } from "react-native"
 import { NavigationScreenProp, NavigationTabScreenOptions } from "react-navigation"
 import MapView, { Region } from "react-native-maps"
@@ -17,6 +19,7 @@ import SearchBar from "../../components/SearchBar"
 
 // Configs
 import metrics from "../../config/metrics"
+import CategoryItem from "../../components/CategoryItem"
 
 // Assets
 const ICON_POINT = require("../../../assets/point.png")
@@ -97,7 +100,10 @@ export default class Home extends React.Component<Props, State> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ alignItems: "center" }}
+      >
         <HeaderOverlay />
         <StatusBar barStyle={"light-content"} />
         <View style={styles.customerDetail}>
@@ -126,11 +132,12 @@ export default class Home extends React.Component<Props, State> {
         </View>
         <Text style={styles.searchCaption}>Search by vendors, foods, or items</Text>
         <SearchBar />
+        <FlatList data={["1", "2"]} renderItem={() => <CategoryItem />} horizontal />
         <Button
           title={"Login"}
           onPress={() => this.props.navigation.navigate("Welcome")}
         />
-      </View>
+      </ScrollView>
     )
   }
 }
@@ -138,7 +145,6 @@ export default class Home extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     backgroundColor: "#F5FCFF"
   },
 
