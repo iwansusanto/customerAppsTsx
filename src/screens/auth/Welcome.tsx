@@ -3,17 +3,30 @@ import { View, StyleSheet, Image } from "react-native"
 import Text from "../../components/CustomText"
 
 import metrics from "../../config/metrics"
-import { NavigationStackScreenOptions } from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import CustomButton from "../../components/CustomButton"
 
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_FB = require("../../../assets/ic_facebook.png")
 const OVERLAY = require("../../../assets/overlay-login.png")
 
-export default class Welcome extends React.Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+}
+
+export default class Welcome extends React.Component<Props, any> {
   static navigationOptions: NavigationStackScreenOptions = {
     header: null,
     title: "Welcome"
+  }
+
+  constructor(props: Props) {
+    super(props)
+    this.handleLoginButtonPressed = this.handleLoginButtonPressed.bind(this)
+  }
+
+  handleLoginButtonPressed(): void {
+    this.props.navigation.navigate("Login")
   }
 
   render() {
@@ -24,7 +37,11 @@ export default class Welcome extends React.Component {
         <Text style={styles.title}>WELCOME TO MSHWAR APP</Text>
         <Text style={styles.caption}>WE TAKE YOUR ORDER RESPONSIBLY</Text>
         <View style={styles.defaultAuthButtonContainer}>
-          <CustomButton label={"LOGIN"} style={styles.defaultAuthButton} />
+          <CustomButton
+            label={"LOGIN"}
+            style={styles.defaultAuthButton}
+            onPress={this.handleLoginButtonPressed}
+          />
           <CustomButton label={"REGISTER"} style={styles.defaultAuthButton} />
         </View>
         <CustomButton
