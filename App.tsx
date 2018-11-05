@@ -3,6 +3,7 @@ import React from "react"
 import AppW from "./src/screens/App"
 import { createStackNavigator } from "react-navigation"
 import metrics from "./src/config/metrics"
+import Login from "./src/screens/auth/Login"
 
 export default class App extends React.Component<any, any> {
   render() {
@@ -12,7 +13,8 @@ export default class App extends React.Component<any, any> {
 
 const Navigator = createStackNavigator(
   {
-    App: { screen: AppW }
+    App: { screen: AppW },
+    Login: { screen: Login }
   },
   {
     navigationOptions: {

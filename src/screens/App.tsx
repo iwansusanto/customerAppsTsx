@@ -8,16 +8,19 @@
 
 import React from "react"
 import { Component } from "react"
-import { StyleSheet, Text, View, Image, StatusBar } from "react-native"
-import { NavigationStackScreenOptions } from "react-navigation"
+import { StyleSheet, Text, View, Image, StatusBar, Button } from "react-native"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../components/HeaderOverlay"
 import metrics from "../config/metrics"
 
 const LOGO = require("../../assets/logo-higres.png")
 const ICON_POINT = require("../../assets/point.png")
 
-type Props = {}
-export default class App extends Component<Props> {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+}
+
+export default class App extends Component<Props, any> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Mshwarapp",
     headerTitle: <Image source={LOGO} />
@@ -38,6 +41,7 @@ export default class App extends Component<Props> {
             </View>
           </View>
         </View>
+        <Button title={"Login"} onPress={() => this.props.navigation.navigate("Login")} />
       </View>
     )
   }
