@@ -1,34 +1,46 @@
 import React from "react"
-import { TouchableOpacity, StyleSheet, TouchableOpacityProps } from "react-native"
+import {
+  TouchableOpacity,
+  StyleSheet,
+  TouchableOpacityProps,
+  ImageSourcePropType,
+  StyleProp,
+  TextStyle,
+  Image
+} from "react-native"
 import Text from "./CustomText"
-import metrics from "../config/metrics"
 
 interface CustomButtonProps extends TouchableOpacityProps {
   label: string
-  backgroundColor?: string
+  icon?: ImageSourcePropType
+  labelStyle?: StyleProp<TextStyle>
 }
 
-export default (props: CustomButtonProps) => (
-  <TouchableOpacity
-    style={[styles.container, { backgroundColor: props.backgroundColor }]}
-    {...props}
-  >
-    <Text style={styles.label}>{props.label}</Text>
-  </TouchableOpacity>
-)
+export default (props: CustomButtonProps) => {
+  const { style, ...otherProps } = props
+  return (
+    <TouchableOpacity style={[styles.container, style]} {...otherProps}>
+      {props.icon ? <Image source={props.icon} style={styles.icon} /> : null}
+      <Text style={[styles.label, props.labelStyle]}>{props.label}</Text>
+    </TouchableOpacity>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
-    width: metrics.DEVICE_WIDTH,
-    height: 50,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    position: "absolute",
-    bottom: 0
+    height: 45,
+    flexDirection: "row"
   },
 
   label: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: "bold"
+  },
+
+  icon: {
+    marginRight: 15
   }
 })

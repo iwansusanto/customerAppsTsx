@@ -4,7 +4,7 @@ import { NavigationStackScreenOptions, NavigationScreenProp } from "react-naviga
 import metrics from "../../config/metrics"
 import Text from "../../components/CustomText"
 import CustomTextInput from "../../components/CustomTextInput"
-import CustomButton from "../../components/CustomButton"
+import FixedButton from "../../components/FixedButton"
 
 const ICON_HELP = require("../../../assets/ic-help.png")
 const ICON_BACK = require("../../../assets/ic_back.png")
@@ -58,7 +58,7 @@ export default class Login extends React.Component<Props, any> {
           <CustomTextInput icon={ICON_KEY} placeholder={"Password"} />
           <Text style={styles.forgot}>FORGOT PASSWORD</Text>
         </View>
-        <CustomButton
+        <FixedButton
           label={"LOGIN"}
           backgroundColor={metrics.SECONDARY_COLOR}
           onPress={() => this.props.navigation.navigate("OTP")}

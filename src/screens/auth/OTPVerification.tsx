@@ -11,7 +11,7 @@ import Text from "../../components/CustomText"
 import metrics from "../../config/metrics"
 import { NavigationStackScreenOptions } from "react-navigation"
 import SingleNumberInput from "../../components/SingleNumberInput"
-import CustomButton from "../../components/CustomButton"
+import FixedButton from "../../components/FixedButton"
 
 const OVERLAY = require("../../../assets/overlay-login.png")
 const LOGO = require("../../../assets/logo-higres.png")
@@ -86,7 +86,7 @@ export default class OTPVerification extends React.Component<any, any> {
           </View>
           <Text style={styles.resend}>Resend code in 00:30</Text>
           <Text style={styles.changeNumber}>CHANGE NUMBER</Text>
-          <CustomButton label={"LOGIN"} backgroundColor={metrics.SECONDARY_COLOR} />
+          <FixedButton label={"LOGIN"} backgroundColor={metrics.SECONDARY_COLOR} />
           <View style={styles.tosContainer}>
             <Text style={styles.caption}>By registering I agree to the</Text>
             <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
