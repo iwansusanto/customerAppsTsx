@@ -1,21 +1,29 @@
 import React from "react"
-import { Component } from "react"
 import { StyleSheet, Text, View, Image, StatusBar, Button } from "react-native"
 import { NavigationScreenProp, NavigationTabScreenOptions } from "react-navigation"
+
+// Custom component used in the screen
 import HeaderOverlay from "../../components/HeaderOverlay"
+
+// Configs
 import metrics from "../../config/metrics"
 
+// Assets
 const ICON_POINT = require("../../../assets/point.png")
 const ICON_ACTIVE = require("../../../assets/ic_home_active.png")
 const ICON_INACTIVE = require("../../../assets/ic_home_inactive.png")
 
+// Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
 }
 
-export default class Home extends Component<Props, any> {
+export default class Home extends React.Component<Props, any> {
+  // Tab bar configs
   static navigationOptions: NavigationTabScreenOptions = {
+    // Tab title
     title: "Home",
+    // Tab icon according to the focused state of the tab
     tabBarIcon: ({ focused }) => {
       switch (focused) {
         case true:
