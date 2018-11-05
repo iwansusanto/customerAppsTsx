@@ -1,6 +1,15 @@
-import React from "react"
-import { StyleSheet, Text, View, Image, StatusBar, Button } from "react-native"
+import React, { createRef } from "react"
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  StatusBar,
+  Button,
+  GeolocationReturnType
+} from "react-native"
 import { NavigationScreenProp, NavigationTabScreenOptions } from "react-navigation"
+import MapView, { Region } from "react-native-maps"
 
 // Custom component used in the screen
 import HeaderOverlay from "../../components/HeaderOverlay"
@@ -12,13 +21,18 @@ import metrics from "../../config/metrics"
 const ICON_POINT = require("../../../assets/point.png")
 const ICON_ACTIVE = require("../../../assets/ic_home_active.png")
 const ICON_INACTIVE = require("../../../assets/ic_home_inactive.png")
+const ICON_MARKER = require("../../../assets/ic_marker.png")
 
 // Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
 }
 
-export default class Home extends React.Component<Props, any> {
+interface State {
+  currentLocation: Region
+}
+
+export default class Home extends React.Component<Props, State> {
   // Tab bar configs
   static navigationOptions: NavigationTabScreenOptions = {
     // Tab title
@@ -46,6 +60,40 @@ export default class Home extends React.Component<Props, any> {
     }
   }
 
+  private mapRef = createRef<MapView>()
+
+  state = {
+    currentLocation: {
+      latitude: 37.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421
+    }
+  }
+
+  constructor(props: Props) {
+    super(props)
+    this.onMapReady = this.onMapReady.bind(this)
+  }
+
+  onMapReady(): void {
+    navigator.geolocation.getCurrentPosition((position: GeolocationReturnType) => {
+      // Convert GeolocationReturnType to Region to be usable in Map View
+      let region: Region = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      }
+      const mapView = this.mapRef.current
+      // Move the map to current position
+      if (mapView) {
+        mapView.animateToRegion(region)
+        this.setState({ currentLocation: region })
+      }
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -61,6 +109,21 @@ export default class Home extends React.Component<Props, any> {
             </View>
           </View>
         </View>
+        <View style={styles.mapContainer}>
+          <MapView
+            ref={this.mapRef}
+            showsMyLocationButton={true}
+            showsUserLocation={true}
+            onMapReady={this.onMapReady}
+            region={this.state.currentLocation}
+            style={styles.map}
+          />
+          <View style={styles.mapOverlay}>
+            <Image source={ICON_MARKER} />
+            <Text style={styles.address}>Jl. Kenangan Indah No. 1</Text>
+          </View>
+        </View>
+        <Text style={styles.searchCaption}>Search by vendors, foods, or items</Text>
         <Button
           title={"Login"}
           onPress={() => this.props.navigation.navigate("Welcome")}
@@ -112,5 +175,44 @@ const styles = StyleSheet.create({
 
   point_icon: {
     marginTop: 5
+  },
+
+  mapContainer: {
+    width: metrics.DEVICE_WIDTH * 0.9,
+    height: metrics.DEVICE_HEIGHT * 0.4,
+    marginTop: 20
+  },
+
+  map: {
+    borderRadius: 15,
+    flex: 1
+  },
+
+  mapOverlay: {
+    backgroundColor: metrics.PRIMARY_COLOR,
+    height: 50,
+    width: metrics.DEVICE_WIDTH * 0.9,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    position: "absolute",
+    bottom: 0,
+    alignItems: "center",
+    paddingHorizontal: 20,
+    flexDirection: "row"
+  },
+
+  address: {
+    color: "white",
+    fontSize: 14,
+    marginLeft: 20
+  },
+
+  searchCaption: {
+    fontSize: 18,
+    fontWeight: "100",
+    color: metrics.PRIMARY_COLOR,
+    marginTop: 20,
+    marginLeft: 25,
+    alignSelf: "flex-start"
   }
 })
