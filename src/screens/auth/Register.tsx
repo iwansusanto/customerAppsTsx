@@ -1,5 +1,12 @@
 import React from "react"
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native"
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard
+} from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
 // Custom component used in the screen
@@ -72,27 +79,41 @@ export default class Register extends React.Component<Props, any> {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Image source={OVERLAY} style={styles.overlay} />
-        <Image source={LOGO} style={styles.logo} />
-        <Text style={styles.title}>MAKE A NEW ACCOUNT</Text>
-        <Text style={styles.caption}>FILL YOUR INFO AND GET STARTED</Text>
-        <View style={styles.formContainer}>
-          <CustomTextInput icon={ICON_USER} placeholder={"Name"} />
-          <CustomTextInput icon={ICON_PHONE} placeholder={"Phone Number"} />
-          <CustomTextInput icon={ICON_MAIL} placeholder={"Email"} />
-          <CustomTextInput icon={ICON_KEY} placeholder={"Password"} />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Image source={OVERLAY} style={styles.overlay} />
+          <Image source={LOGO} style={styles.logo} />
+          <Text style={styles.title}>MAKE A NEW ACCOUNT</Text>
+          <Text style={styles.caption}>FILL YOUR INFO AND GET STARTED</Text>
+          <View style={styles.formContainer}>
+            <CustomTextInput icon={ICON_USER} placeholder={"Name"} />
+            <CustomTextInput
+              icon={ICON_PHONE}
+              placeholder={"Phone Number"}
+              keyboardType={"number-pad"}
+            />
+            <CustomTextInput
+              icon={ICON_MAIL}
+              placeholder={"Email"}
+              keyboardType={"email-address"}
+            />
+            <CustomTextInput
+              icon={ICON_KEY}
+              placeholder={"Password"}
+              secureTextEntry={true}
+            />
+          </View>
+          <View style={styles.tosContainer}>
+            <Text style={styles.caption}>By registering I agree to the</Text>
+            <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
+          </View>
+          <FixedButton
+            label={"REGISTER"}
+            backgroundColor={metrics.SECONDARY_COLOR}
+            onPress={this.handleRegisterButtonPressed}
+          />
         </View>
-        <View style={styles.tosContainer}>
-          <Text style={styles.caption}>By registering I agree to the</Text>
-          <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
-        </View>
-        <FixedButton
-          label={"REGISTER"}
-          backgroundColor={metrics.SECONDARY_COLOR}
-          onPress={this.handleRegisterButtonPressed}
-        />
-      </View>
+      </TouchableWithoutFeedback>
     )
   }
 }

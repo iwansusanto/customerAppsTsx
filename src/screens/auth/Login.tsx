@@ -1,5 +1,12 @@
 import React from "react"
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native"
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard
+} from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
 // Custom components used in the screen
@@ -70,28 +77,38 @@ export default class Login extends React.Component<Props, any> {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Image source={LOGO} style={styles.logo} />
-        <Image source={OVERLAY} style={styles.overlay} />
-        <View style={styles.welcomeMessageContainer}>
-          <Text style={[styles.welcomeMessage, { fontSize: 18 }]}>
-            ENTER YOUR ACCOUNT
-          </Text>
-          <Text style={[styles.welcomeMessage, { fontSize: 16 }]}>
-            LET US DO THE REST
-          </Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Image source={LOGO} style={styles.logo} />
+          <Image source={OVERLAY} style={styles.overlay} />
+          <View style={styles.welcomeMessageContainer}>
+            <Text style={[styles.welcomeMessage, { fontSize: 18 }]}>
+              ENTER YOUR ACCOUNT
+            </Text>
+            <Text style={[styles.welcomeMessage, { fontSize: 16 }]}>
+              LET US DO THE REST
+            </Text>
+          </View>
+          <View style={styles.formContainer}>
+            <CustomTextInput
+              icon={ICON_MAIL}
+              placeholder={"Email"}
+              keyboardType={"email-address"}
+            />
+            <CustomTextInput
+              icon={ICON_KEY}
+              placeholder={"Password"}
+              secureTextEntry={true}
+            />
+            <Text style={styles.forgot}>FORGOT PASSWORD</Text>
+          </View>
+          <FixedButton
+            label={"LOGIN"}
+            backgroundColor={metrics.SECONDARY_COLOR}
+            onPress={this.handleLoginButtonPressed}
+          />
         </View>
-        <View style={styles.formContainer}>
-          <CustomTextInput icon={ICON_MAIL} placeholder={"Email"} />
-          <CustomTextInput icon={ICON_KEY} placeholder={"Password"} />
-          <Text style={styles.forgot}>FORGOT PASSWORD</Text>
-        </View>
-        <FixedButton
-          label={"LOGIN"}
-          backgroundColor={metrics.SECONDARY_COLOR}
-          onPress={this.handleLoginButtonPressed}
-        />
-      </View>
+      </TouchableWithoutFeedback>
     )
   }
 }
