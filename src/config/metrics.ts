@@ -1,7 +1,9 @@
-import { Dimensions, StyleSheet, Platform } from "react-native"
+import { Dimensions, Platform } from "react-native"
 
+// Get the screen dimensions
 const { width, height } = Dimensions.get("window")
 
+// Declare all constants used in the app
 export default {
   PRIMARY_COLOR: "#660099",
   SECONDARY_COLOR: "#FFCC00",

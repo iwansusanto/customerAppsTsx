@@ -1,6 +1,9 @@
+// Use custom text component to be able to implement a application-wide font
+
 import React from "react"
 import { Text, TextProps } from "react-native"
 
+// Props typing
 interface CustomTextProps extends TextProps {
   children: string
 }

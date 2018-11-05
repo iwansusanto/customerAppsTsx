@@ -1,11 +1,16 @@
 import React from "react"
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native"
-import Text from "../../components/CustomText"
-import metrics from "../../config/metrics"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+
+// Custom component used in the screen
+import Text from "../../components/CustomText"
 import CustomTextInput from "../../components/CustomTextInput"
 import FixedButton from "../../components/FixedButton"
 
+// Configs
+import metrics from "../../config/metrics"
+
+// Assets
 const OVERLAY = require("../../../assets/overlay-login.png")
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_USER = require("../../../assets/ic_user.png")
@@ -15,25 +20,34 @@ const ICON_KEY = require("../../../assets/ic_key.png")
 const ICON_HELP = require("../../../assets/ic-help.png")
 const ICON_BACK = require("../../../assets/ic_back.png")
 
+// Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
 }
 
 export default class Register extends React.Component<Props, any> {
+  // Config for the header bar
   static navigationOptions = ({
+    // Navigation variable to be able to call navigation-related functions in the header
     navigation
   }: {
+    // Navigation variable type
     navigation: NavigationScreenProp<any, any>
   }): NavigationStackScreenOptions => {
+    // Destructuring functions inside navigation object for easy use
     const { navigate, goBack } = navigation
     return {
       title: "",
       headerTitle: undefined,
+
+      // Component rendered in the right side of the header which is a help button
       headerRight: (
         <TouchableOpacity>
           <Image source={ICON_HELP} style={{ marginRight: 20 }} />
         </TouchableOpacity>
       ),
+
+      // Component rendered in the left side of the header which is a back button
       headerLeft: (
         <TouchableOpacity onPress={() => goBack(null)}>
           <Image source={ICON_BACK} style={{ marginLeft: 20 }} />
@@ -42,12 +56,17 @@ export default class Register extends React.Component<Props, any> {
     }
   }
 
+  // Constructor
   constructor(props: Props) {
     super(props)
+
+    // Function binding to this class
     this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(this)
   }
 
+  // Register button press handler
   handleRegisterButtonPressed(): void {
+    // Navigate to OTP screen
     this.props.navigation.navigate("OTP")
   }
 

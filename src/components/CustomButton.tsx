@@ -1,3 +1,5 @@
+// Custom button component
+
 import React from "react"
 import {
   TouchableOpacity,
@@ -8,8 +10,11 @@ import {
   TextStyle,
   Image
 } from "react-native"
+
+// Custom component used in this component
 import Text from "./CustomText"
 
+// Props typing
 interface CustomButtonProps extends TouchableOpacityProps {
   label: string
   icon?: ImageSourcePropType
@@ -17,6 +22,7 @@ interface CustomButtonProps extends TouchableOpacityProps {
 }
 
 export default (props: CustomButtonProps) => {
+  // Destructure props object to extract style so style prop does not override this component's style
   const { style, ...otherProps } = props
   return (
     <TouchableOpacity style={[styles.container, style]} {...otherProps}>

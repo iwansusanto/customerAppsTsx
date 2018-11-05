@@ -1,4 +1,4 @@
-import React, { createRef } from "react"
+import React from "react"
 import {
   View,
   StyleSheet,
@@ -7,15 +7,21 @@ import {
   Keyboard,
   TextInput
 } from "react-native"
-import Text from "../../components/CustomText"
-import metrics from "../../config/metrics"
 import { NavigationStackScreenOptions } from "react-navigation"
+
+// Custom components used in the screen
+import Text from "../../components/CustomText"
 import SingleNumberInput from "../../components/SingleNumberInput"
 import FixedButton from "../../components/FixedButton"
 
+// Configs
+import metrics from "../../config/metrics"
+
+// Assets
 const OVERLAY = require("../../../assets/overlay-login.png")
 const LOGO = require("../../../assets/logo-higres.png")
 
+// State typing
 interface State {
   digitOne: string
   digitTwo: string
@@ -23,12 +29,16 @@ interface State {
   digitFour: string
 }
 
-export default class OTPVerification extends React.Component<any, any> {
+export default class OTPVerification extends React.Component<any, State> {
+  // Config for the header bar
   static navigationOptions: NavigationStackScreenOptions = {
+    // Null because we don't use a header
     header: null,
+    // Title just to name the screen
     title: "OTP"
   }
 
+  // Initial state
   state = {
     digitOne: "",
     digitTwo: "",
@@ -36,10 +46,15 @@ export default class OTPVerification extends React.Component<any, any> {
     digitFour: ""
   }
 
+  // Reference object for the text inputs
   private formRef: any = {}
 
-  handleFormFocusChange(refName: string, value: string): void {
-    switch (refName) {
+  // @param nextRef: string - Used to determine the next text input to focus
+  // @param value: string - Value of the text input to pass into screen state
+  handleFormFocusChange(nextRef: string, value: string): void {
+    // Set the state of every text inputs according to value entered
+    // From the nextRef param, we can determine the current text input to set its state into
+    switch (nextRef) {
       case "digitTwo":
         this.setState({ digitOne: value })
         break
@@ -51,10 +66,14 @@ export default class OTPVerification extends React.Component<any, any> {
         break
       case "close":
         this.setState({ digitFour: value })
+
+        // Dismiss the keyboard in the last text input for convenience
         Keyboard.dismiss()
         break
     }
-    this.formRef[refName].focus()
+
+    // Focus to the next text input based on nextRef param
+    this.formRef[nextRef].focus()
   }
 
   render() {

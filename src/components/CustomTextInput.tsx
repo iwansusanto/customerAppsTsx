@@ -1,3 +1,5 @@
+// Custom text input which contains an icon, white background color, and border radius
+
 import React from "react"
 import {
   View,
@@ -7,8 +9,11 @@ import {
   TextInputProps,
   ImageSourcePropType
 } from "react-native"
+
+// Configs
 import metrics from "../config/metrics"
 
+// Props typing
 interface CustomTextInputProps extends TextInputProps {
   icon: ImageSourcePropType
 }

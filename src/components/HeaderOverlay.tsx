@@ -1,5 +1,9 @@
+// The rounded color that extends from the header
+
 import React from "react"
 import { View, StyleSheet } from "react-native"
+
+// Configs
 import metrics from "../config/metrics"
 
 export default class HeaderOverlay extends React.Component {

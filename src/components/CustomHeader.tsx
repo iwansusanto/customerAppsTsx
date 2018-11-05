@@ -1,7 +1,12 @@
+// Custom header component to be used as custom header in the app
+
 import React from "react"
 import { View, StyleSheet, Image } from "react-native"
+
+// Configs
 import metrics from "../config/metrics"
 
+// Assets
 const LOGO = require("../../assets/logo-higres.png")
 
 export default class CustomHeader extends React.Component {

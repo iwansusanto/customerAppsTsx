@@ -1,36 +1,51 @@
 import React from "react"
 import { View, StyleSheet, Image } from "react-native"
-import Text from "../../components/CustomText"
-
-import metrics from "../../config/metrics"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+
+// Custom component used in the screen
+import Text from "../../components/CustomText"
 import CustomButton from "../../components/CustomButton"
 
+// Configs
+import metrics from "../../config/metrics"
+
+// Assets
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_FB = require("../../../assets/ic_facebook.png")
 const OVERLAY = require("../../../assets/overlay-login.png")
 
+// Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
 }
 
 export default class Welcome extends React.Component<Props, any> {
+  // Config for the header bar
   static navigationOptions: NavigationStackScreenOptions = {
+    // Null because we don't use a header
     header: null,
+    // Title just to name the screen
     title: "Welcome"
   }
 
+  // Constructor
   constructor(props: Props) {
     super(props)
+
+    // Function binding to this class
     this.handleLoginButtonPressed = this.handleLoginButtonPressed.bind(this)
     this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(this)
   }
 
+  // Login button press handler
   handleLoginButtonPressed(): void {
+    // Navigate to login screen
     this.props.navigation.navigate("Login")
   }
 
+  // Register button press handler
   handleRegisterButtonPressed(): void {
+    // Navigate to register screen
     this.props.navigation.navigate("Register")
   }
 

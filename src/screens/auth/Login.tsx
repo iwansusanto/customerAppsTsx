@@ -1,11 +1,16 @@
 import React from "react"
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
-import metrics from "../../config/metrics"
+
+// Custom components used in the screen
 import Text from "../../components/CustomText"
 import CustomTextInput from "../../components/CustomTextInput"
 import FixedButton from "../../components/FixedButton"
 
+// Configs
+import metrics from "../../config/metrics"
+
+// Assets
 const ICON_HELP = require("../../../assets/ic-help.png")
 const ICON_BACK = require("../../../assets/ic_back.png")
 const ICON_MAIL = require("../../../assets/ic_mail.png")
@@ -13,31 +18,54 @@ const ICON_KEY = require("../../../assets/ic_key.png")
 const LOGO = require("../../../assets/logo-higres.png")
 const OVERLAY = require("../../../assets/overlay-login.png")
 
+// Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
 }
 
 export default class Login extends React.Component<Props, any> {
+  // Config for the header bar
   static navigationOptions = ({
+    // Navigation variable to be able to call navigation-related functions in the header
     navigation
   }: {
+    // Navigation variable type
     navigation: NavigationScreenProp<any, any>
   }): NavigationStackScreenOptions => {
+    // Destructuring functions inside navigation object for easy use
     const { navigate, goBack } = navigation
     return {
       title: "",
       headerTitle: undefined,
+
+      // Component rendered in the right side of the header which is a help button
       headerRight: (
         <TouchableOpacity>
           <Image source={ICON_HELP} style={{ marginRight: 20 }} />
         </TouchableOpacity>
       ),
+
+      // Component rendered in the left side of the header which is a back button
       headerLeft: (
         <TouchableOpacity onPress={() => goBack(null)}>
           <Image source={ICON_BACK} style={{ marginLeft: 20 }} />
         </TouchableOpacity>
       )
     }
+  }
+
+  // Constructor
+  constructor(props: Props) {
+    super(props)
+
+    // Function binding to this class
+    this.handleLoginButtonPressed = this.handleLoginButtonPressed.bind(this)
+  }
+
+  // Login button press handler
+  handleLoginButtonPressed(): void {
+    // Navigate to OTP screen
+    this.props.navigation.navigate("OTP")
   }
 
   render() {
@@ -61,7 +89,7 @@ export default class Login extends React.Component<Props, any> {
         <FixedButton
           label={"LOGIN"}
           backgroundColor={metrics.SECONDARY_COLOR}
-          onPress={() => this.props.navigation.navigate("OTP")}
+          onPress={this.handleLoginButtonPressed}
         />
       </View>
     )
