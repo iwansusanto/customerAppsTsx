@@ -13,7 +13,11 @@ const ICON_KEY = require("../../../assets/ic_key.png")
 const LOGO = require("../../../assets/logo-higres.png")
 const OVERLAY = require("../../../assets/overlay-login.png")
 
-export default class Login extends React.Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+}
+
+export default class Login extends React.Component<Props, any> {
   static navigationOptions = ({
     navigation
   }: {
@@ -54,7 +58,11 @@ export default class Login extends React.Component {
           <CustomTextInput icon={ICON_KEY} placeholder={"Password"} />
           <Text style={styles.forgot}>FORGOT PASSWORD</Text>
         </View>
-        <CustomButton label={"LOGIN"} backgroundColor={"#FFCC00"} />
+        <CustomButton
+          label={"LOGIN"}
+          backgroundColor={metrics.SECONDARY_COLOR}
+          onPress={() => this.props.navigation.navigate("OTP")}
+        />
       </View>
     )
   }
