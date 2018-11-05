@@ -6,6 +6,7 @@ import metrics from "./src/config/metrics"
 import Login from "./src/screens/auth/Login"
 import OTPVerification from "./src/screens/auth/OTPVerification"
 import Welcome from "./src/screens/auth/Welcome"
+import Register from "./src/screens/auth/Register"
 
 export default class App extends React.Component<any, any> {
   render() {
@@ -18,7 +19,8 @@ const Navigator = createStackNavigator(
     App: { screen: AppW },
     Login: { screen: Login },
     OTP: { screen: OTPVerification },
-    Welcome: { screen: Welcome }
+    Welcome: { screen: Welcome },
+    Register: { screen: Register }
   },
   {
     navigationOptions: {

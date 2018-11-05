@@ -23,10 +23,15 @@ export default class Welcome extends React.Component<Props, any> {
   constructor(props: Props) {
     super(props)
     this.handleLoginButtonPressed = this.handleLoginButtonPressed.bind(this)
+    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(this)
   }
 
   handleLoginButtonPressed(): void {
     this.props.navigation.navigate("Login")
+  }
+
+  handleRegisterButtonPressed(): void {
+    this.props.navigation.navigate("Register")
   }
 
   render() {
@@ -42,7 +47,11 @@ export default class Welcome extends React.Component<Props, any> {
             style={styles.defaultAuthButton}
             onPress={this.handleLoginButtonPressed}
           />
-          <CustomButton label={"REGISTER"} style={styles.defaultAuthButton} />
+          <CustomButton
+            label={"REGISTER"}
+            style={styles.defaultAuthButton}
+            onPress={this.handleRegisterButtonPressed}
+          />
         </View>
         <CustomButton
           label={"LOGIN WITH FACEBOOK"}
