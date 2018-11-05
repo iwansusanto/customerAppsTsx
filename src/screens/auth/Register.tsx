@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image } from "react-native"
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native"
 import Text from "../../components/CustomText"
 import metrics from "../../config/metrics"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
@@ -20,9 +20,26 @@ interface Props {
 }
 
 export default class Register extends React.Component<Props, any> {
-  static navigationOptions: NavigationStackScreenOptions = {
-    title: "Register",
-    header: null
+  static navigationOptions = ({
+    navigation
+  }: {
+    navigation: NavigationScreenProp<any, any>
+  }): NavigationStackScreenOptions => {
+    const { navigate, goBack } = navigation
+    return {
+      title: "",
+      headerTitle: undefined,
+      headerRight: (
+        <TouchableOpacity>
+          <Image source={ICON_HELP} style={{ marginRight: 20 }} />
+        </TouchableOpacity>
+      ),
+      headerLeft: (
+        <TouchableOpacity onPress={() => goBack(null)}>
+          <Image source={ICON_BACK} style={{ marginLeft: 20 }} />
+        </TouchableOpacity>
+      )
+    }
   }
 
   constructor(props: Props) {
@@ -75,7 +92,7 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    marginTop: metrics.DEVICE_HEIGHT * 0.15
+    marginTop: metrics.DEVICE_HEIGHT * 0.05
   },
 
   title: {
