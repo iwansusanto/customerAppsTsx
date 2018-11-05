@@ -36,9 +36,9 @@ export default class SingleNumberInput extends React.Component<
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
-    width: 50,
-    borderRadius: 20,
+    height: 66,
+    width: 53,
+    borderRadius: 15,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center"

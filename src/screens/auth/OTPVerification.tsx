@@ -69,7 +69,8 @@ export default class OTPVerification extends React.Component<any, State> {
 
         // Dismiss the keyboard in the last text input for convenience
         Keyboard.dismiss()
-        break
+        // Return because we don't want to call focus method below
+        return
     }
 
     // Focus to the next text input based on nextRef param
