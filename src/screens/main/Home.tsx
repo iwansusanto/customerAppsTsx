@@ -132,7 +132,13 @@ export default class Home extends React.Component<Props, State> {
         </View>
         <Text style={styles.searchCaption}>Search by vendors, foods, or items</Text>
         <SearchBar />
-        <FlatList data={["1", "2"]} renderItem={() => <CategoryItem />} horizontal />
+        <FlatList
+          data={["1", "2"]}
+          renderItem={() => (
+            <CategoryItem onPress={() => this.props.navigation.navigate("Food")} />
+          )}
+          horizontal
+        />
         <Button
           title={"Login"}
           onPress={() => this.props.navigation.navigate("Welcome")}

@@ -14,6 +14,9 @@ import ChangePassword from "./src/screens/auth/ChangePassword"
 // Main tab screens
 import Home from "./src/screens/main/Home"
 
+// Food screens
+import Food from "./src/screens/food/Food"
+
 // Contains constant values used for the app
 import metrics from "./src/config/metrics"
 import { Image } from "react-native"
@@ -56,7 +59,8 @@ const Navigator = createStackNavigator(
     OTP: { screen: OTPVerification },
     Welcome: { screen: Welcome },
     Register: { screen: Register },
-    ChangePassword: { screen: ChangePassword }
+    ChangePassword: { screen: ChangePassword },
+    Food: { screen: Food }
   },
   {
     // Configuration for header to use Primary Color defined in metrics

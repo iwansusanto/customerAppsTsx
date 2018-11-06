@@ -1,16 +1,26 @@
 import React from "react"
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native"
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableOpacityProps
+} from "react-native"
 
+// Custom component used in this component
 import Text from "./CustomText"
 import metrics from "../config/metrics"
 
+// Assets
 const PICTURE = require("../../assets/category_food.png")
 const ICON = require("../../assets/ic_burger.png")
 
-export default class CategoryItem extends React.Component {
+export default class CategoryItem extends React.Component<TouchableOpacityProps, any> {
   render() {
+    // Get props to add into component
+    const props = this.props
     return (
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity style={styles.container} {...props}>
         <Image source={PICTURE} style={styles.image} resizeMode={"contain"} />
         <Image source={ICON} style={styles.icon} />
         <Text style={styles.subtitle}>Food</Text>
