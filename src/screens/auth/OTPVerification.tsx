@@ -46,6 +46,10 @@ export default class OTPVerification extends React.Component<any, State> {
     digitFour: ""
   }
 
+  componentDidMount() {
+    this.formRef["digitOne"].focus()
+  }
+
   // Reference object for the text inputs
   private formRef: any = {}
 
