@@ -3,23 +3,39 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native"
 
 import Text from "./CustomText"
 import metrics from "../config/metrics"
+import { NavigationNavigatorProps, NavigationScreenProp } from "react-navigation"
+import HeaderOverlay from "./HeaderOverlay"
+import SearchBar from "./SearchBar"
 
-export default class TobTab extends React.Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+}
+
+export default class TobTab extends React.Component<Props, any> {
   render() {
+    const { navigation } = this.props
     return (
       <View style={styles.container}>
-        <FlatList
-          data={DUMMY}
-          horizontal
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.labelContainer}>
-              <Text style={styles.label}>{item}</Text>
-              <View style={styles.underline} />
-            </TouchableOpacity>
-          )}
-          style={styles.list}
-          contentContainerStyle={styles.listContent}
-        />
+        <HeaderOverlay />
+        <Text style={styles.subtitle}>Craving certain food, We'll help you find it?</Text>
+        <SearchBar style={styles.search} />
+        <View style={styles.tabContainer}>
+          <FlatList
+            data={navigation.state.routes}
+            horizontal
+            renderItem={({ item }: { item: any }) => (
+              <TouchableOpacity
+                style={styles.labelContainer}
+                onPress={() => this.props.navigation.navigate(item.routeName)}
+              >
+                <Text style={styles.label}>{item.routeName}</Text>
+                <View style={styles.underline} />
+              </TouchableOpacity>
+            )}
+            style={styles.list}
+            contentContainerStyle={styles.listContent}
+          />
+        </View>
       </View>
     )
   }
@@ -27,6 +43,10 @@ export default class TobTab extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: "center"
+  },
+
+  tabContainer: {
     height: 50,
     width: metrics.DEVICE_WIDTH,
     borderBottomWidth: 1,
@@ -60,9 +80,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#9B1EB8",
     position: "absolute",
     bottom: 0,
-    height: 5,
+    height: 4,
     width: 70
+  },
+
+  subtitle: {
+    color: "white",
+    fontWeight: "300",
+    fontSize: 18
+  },
+
+  search: {
+    marginTop: 20
   }
 })
-
-const DUMMY = ["Resto", "Dishes"]
