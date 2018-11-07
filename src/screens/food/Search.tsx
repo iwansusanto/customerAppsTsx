@@ -1,11 +1,7 @@
 import React from "react"
-import { Image, TouchableOpacity, FlatList } from "react-native"
 
 import { createTabNavigator } from "react-navigation"
 import TopTab from "../../components/TopTab"
-
-const LOGO = require("../../../assets/logo-higres.png")
-const ICON_HEART = require("../../../assets/ic_heart.png")
 
 import Resto from "./Resto"
 import Dishes from "./Dishes"
