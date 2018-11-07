@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native"
+import { Image, TouchableOpacity, FlatList } from "react-native"
 
 import { createTabNavigator } from "react-navigation"
 import TopTab from "../../components/TopTab"
