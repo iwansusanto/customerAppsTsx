@@ -15,7 +15,7 @@ const ICON_RATING = require("../../assets/ic_rating.png")
 export default (props: TouchableOpacityProps) => (
   <TouchableOpacity style={styles.container} {...props}>
     <Image source={ICON_RATING} style={styles.icon} />
-    <Text style={styles.caption}>Rating</Text>
+    <Text style={styles.caption}>Most Favorited</Text>
   </TouchableOpacity>
 )
 

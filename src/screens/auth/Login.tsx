@@ -79,7 +79,7 @@ export default class Login extends React.Component<Props, any> {
   // Forget password press handlre
   handleForgetPasswordPressed(): void {
     // Navigate to change password screen
-    this.props.navigation.navigate("ChangePassword")
+    this.props.navigation.navigate("Email")
   }
 
   render() {

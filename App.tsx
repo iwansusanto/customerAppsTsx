@@ -10,6 +10,7 @@ import Register from "./src/screens/auth/Register"
 import Login from "./src/screens/auth/Login"
 import OTPVerification from "./src/screens/auth/OTPVerification"
 import ChangePassword from "./src/screens/auth/ChangePassword"
+import Email from "./src/screens/auth/Email"
 
 // Main tab screens
 import Home from "./src/screens/main/Home"
@@ -61,6 +62,7 @@ const Navigator = createStackNavigator(
     Welcome: { screen: Welcome },
     Register: { screen: Register },
     ChangePassword: { screen: ChangePassword },
+    Email: { screen: Email },
     Food: { screen: Food },
     FoodSearch: { screen: FoodSearch }
   },
