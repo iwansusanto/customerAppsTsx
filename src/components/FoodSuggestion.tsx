@@ -21,13 +21,13 @@ export default (props: TouchableOpacityProps) => (
 const styles = StyleSheet.create({
   container: {
     width: metrics.DEVICE_WIDTH * 0.5,
-    height: metrics.DEVICE_HEIGHT * 0.2,
+    height: metrics.DEVICE_WIDTH * 0.4,
     borderRadius: 15
   },
 
   image: {
     width: metrics.DEVICE_WIDTH * 0.5,
-    height: metrics.DEVICE_HEIGHT * 0.2,
+    height: metrics.DEVICE_WIDTH * 0.4,
     position: "absolute"
   },
 

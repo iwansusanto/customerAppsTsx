@@ -32,7 +32,7 @@ export default class CategoryItem extends React.Component<TouchableOpacityProps,
 const styles = StyleSheet.create({
   container: {
     width: metrics.DEVICE_WIDTH * 0.6,
-    height: metrics.DEVICE_HEIGHT * 0.2,
+    height: metrics.DEVICE_WIDTH * 0.35,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",

@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   current_point: {
     color: "white",
     fontFamily: "Helvetica",
-    fontWeight: "100",
+    fontWeight: "300",
     fontSize: 14
   },
 

@@ -16,6 +16,7 @@ import Home from "./src/screens/main/Home"
 
 // Food screens
 import Food from "./src/screens/food/Food"
+import FoodSearch from "./src/screens/food/Search"
 
 // Contains constant values used for the app
 import metrics from "./src/config/metrics"
@@ -60,7 +61,8 @@ const Navigator = createStackNavigator(
     Welcome: { screen: Welcome },
     Register: { screen: Register },
     ChangePassword: { screen: ChangePassword },
-    Food: { screen: Food }
+    Food: { screen: Food },
+    FoodSearch: { screen: FoodSearch }
   },
   {
     // Configuration for header to use Primary Color defined in metrics

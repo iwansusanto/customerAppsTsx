@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   current_point: {
     color: "white",
     fontFamily: "Helvetica",
-    fontWeight: "100",
+    fontWeight: "300",
     fontSize: 14
   },
 
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
 
   searchCaption: {
     fontSize: 18,
-    fontWeight: "100",
+    fontWeight: "300",
     color: metrics.PRIMARY_COLOR,
     marginTop: 20,
     marginLeft: 25,

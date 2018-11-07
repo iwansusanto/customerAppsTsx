@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   caption: {
     fontSize: 16,
     color: "white",
-    fontWeight: "100",
+    fontWeight: "300",
     marginTop: 5
   },
 

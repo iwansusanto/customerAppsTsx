@@ -2,7 +2,7 @@ import React from "react"
 import { View, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native"
 
 import Text from "../../components/CustomText"
-import { NavigationStackScreenOptions } from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import SearchBar from "../../components/SearchBar"
 import metrics from "../../config/metrics"
@@ -12,7 +12,11 @@ import FoodSuggestion from "../../components/FoodSuggestion"
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_HEART = require("../../../assets/ic_heart.png")
 
-export default class Food extends React.Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+}
+
+export default class Food extends React.Component<Props, any> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Food",
     headerTitle: <Image source={LOGO} />,
@@ -52,7 +56,11 @@ export default class Food extends React.Component {
         <Text style={styles.suggestionCaption}>Suggestion for you</Text>
         <FlatList
           data={["1", "2", "3"]}
-          renderItem={() => <FoodSuggestion />}
+          renderItem={() => (
+            <FoodSuggestion
+              onPress={() => this.props.navigation.navigate("FoodSearch")}
+            />
+          )}
           horizontal
           style={styles.suggestionsList}
         />
@@ -76,7 +84,7 @@ const styles = StyleSheet.create({
   caption: {
     color: "white",
     fontSize: 18,
-    fontWeight: "100"
+    fontWeight: "300"
   },
 
   searchBar: {
