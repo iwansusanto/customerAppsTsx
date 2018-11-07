@@ -21,6 +21,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    top: metrics.DEVICE_WIDTH * 1.35 * -1
+    top: metrics.DEVICE_WIDTH * 1.1 * -1
   }
 })
