@@ -1,4 +1,5 @@
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { createStackNavigator, createBottomTabNavigator } from "react-navigation"
 
 // Temporary name for entry point
@@ -25,6 +26,7 @@ import { Image } from "react-native"
 
 // Assets
 const LOGO = require("./assets/logo-higres.png")
+const ICON_HEART = require("./assets/ic_heart.png")
 
 export default class App extends React.Component<any, any> {
   render() {
@@ -64,7 +66,18 @@ const Navigator = createStackNavigator(
     ChangePassword: { screen: ChangePassword },
     Email: { screen: Email },
     Food: { screen: Food },
-    FoodSearch: { screen: FoodSearch }
+    FoodSearch: {
+      screen: FoodSearch,
+      navigationOptions: {
+        title: "Food",
+        headerTitle: <Image source={LOGO} />,
+        headerRight: (
+          <TouchableOpacity style={{ marginRight: 20 }}>
+            <Image source={ICON_HEART} />
+          </TouchableOpacity>
+        )
+      }
+    }
   },
   {
     // Configuration for header to use Primary Color defined in metrics

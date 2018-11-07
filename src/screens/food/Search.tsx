@@ -19,15 +19,6 @@ export default createTabNavigator(
     tabBarComponent: ({ navigation }) => <TopTab navigation={navigation} />,
     tabBarPosition: "top",
     swipeEnabled: true,
-    animationEnabled: true,
-    navigationOptions: {
-      title: "Food",
-      headerTitle: <Image source={LOGO} />,
-      headerRight: (
-        <TouchableOpacity style={{ marginRight: 20 }}>
-          <Image source={ICON_HEART} />
-        </TouchableOpacity>
-      )
-    }
+    animationEnabled: true
   }
 )
