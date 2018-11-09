@@ -15,6 +15,9 @@ import Email from "./src/screens/auth/Email"
 
 // Main tab screens
 import Home from "./src/screens/main/Home"
+import Orders from "./src/screens/main/Orders"
+import Inbox from "./src/screens/main/Inbox"
+import Account from "./src/screens/main/Account"
 
 // Food screens
 import Food from "./src/screens/food/Food"
@@ -37,7 +40,10 @@ export default class App extends React.Component<any, any> {
 
 const Main = createBottomTabNavigator(
   {
-    Home: { screen: Home }
+    Home: { screen: Home },
+    Orders: { screen: Orders },
+    Inbox: { screen: Inbox },
+    Account: { screen: Account }
   },
   {
     tabBarOptions: {
