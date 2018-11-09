@@ -19,6 +19,7 @@ import Home from "./src/screens/main/Home"
 // Food screens
 import Food from "./src/screens/food/Food"
 import FoodSearch from "./src/screens/food/Search"
+import RestoDetail from "./src/screens/food/RestoDetail"
 
 // Contains constant values used for the app
 import metrics from "./src/config/metrics"
@@ -71,6 +72,17 @@ const Navigator = createStackNavigator(
       navigationOptions: {
         title: "Food",
         headerTitle: <Image source={LOGO} />,
+        headerRight: (
+          <TouchableOpacity style={{ marginRight: 20 }}>
+            <Image source={ICON_HEART} />
+          </TouchableOpacity>
+        )
+      }
+    },
+    RestoDetail: {
+      screen: RestoDetail,
+      navigationOptions: {
+        title: "McDonalds",
         headerRight: (
           <TouchableOpacity style={{ marginRight: 20 }}>
             <Image source={ICON_HEART} />

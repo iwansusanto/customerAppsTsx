@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native"
 
 import Text from "./CustomText"
 import metrics from "../config/metrics"
-import { NavigationNavigatorProps, NavigationScreenProp } from "react-navigation"
+import { NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "./HeaderOverlay"
 import SearchBar from "./SearchBar"
 

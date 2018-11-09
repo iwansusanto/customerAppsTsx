@@ -1,15 +1,14 @@
 import React from "react"
 
 import { createTabNavigator } from "react-navigation"
-import TopTab from "../../components/FoodSearchTopTab"
+import TopTab from "../../components/RestoTopTab"
 
-import Resto from "./Resto"
-import Dishes from "./Dishes"
+import RestoFood from "./RestoFood"
 
 export default createTabNavigator(
   {
-    Resto: { screen: Resto },
-    Dishes: { screen: Dishes }
+    Rice: { screen: RestoFood },
+    Dumplings: { screen: RestoFood }
   },
   {
     tabBarComponent: ({ navigation }) => <TopTab navigation={navigation} />,

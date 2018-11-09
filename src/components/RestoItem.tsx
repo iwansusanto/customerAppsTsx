@@ -13,8 +13,8 @@ import metrics from "../config/metrics"
 const PICTURE = require("../../assets/dummy_resto.png")
 
 export default (props: TouchableOpacityProps) => (
-  <TouchableOpacity style={styles.container}>
-    <Image source={PICTURE} resizeMode={"contain"} style={styles.image} />
+  <TouchableOpacity style={styles.container} {...props}>
+    <Image source={PICTURE} resizeMode={"cover"} style={styles.image} />
     <View style={styles.detailContainer}>
       <Text style={styles.title}>Nasi Padang Rasis</Text>
       <Text style={styles.address}>Tebet east v number 12, South Jakarta</Text>
@@ -49,7 +49,9 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: metrics.DEVICE_WIDTH * 0.9
+    width: metrics.DEVICE_WIDTH * 0.9,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15
   },
 
   title: {
