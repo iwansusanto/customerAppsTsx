@@ -9,7 +9,7 @@ import {
 } from "react-native"
 
 import Text from "../../components/CustomText"
-import { NavigationTabScreenOptions } from "react-navigation"
+import { NavigationTabScreenOptions, NavigationScreenProp } from "react-navigation"
 import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import CustomButton from "../../components/CustomButton"
@@ -21,7 +21,11 @@ const ICON_POINT = require("../../../assets/point.png")
 const ICON_ARROW = require("../../../assets/ic_arrow.png")
 const PICTURE = require("../../../assets/dummy_profile.png")
 
-export default class Account extends React.Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+}
+
+export default class Account extends React.Component<Props, any> {
   static navigationOptions: NavigationTabScreenOptions = {
     title: "Account",
     tabBarIcon: ({ focused }) => {
@@ -64,7 +68,10 @@ export default class Account extends React.Component {
                 <Text style={styles.info}>jack_okira@yahoo.com</Text>
                 <Text style={styles.info}>087871680132</Text>
               </View>
-              <TouchableOpacity style={styles.editButton}>
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={() => this.props.navigation.navigate("EditProfile")}
+              >
                 <Text style={styles.edit}>EDIT</Text>
               </TouchableOpacity>
             </View>

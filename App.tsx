@@ -24,6 +24,9 @@ import Food from "./src/screens/food/Food"
 import FoodSearch from "./src/screens/food/Search"
 import RestoDetail from "./src/screens/food/RestoDetail"
 
+// Account screens
+import EditProfile from "./src/screens/account/EditProfile"
+
 // Contains constant values used for the app
 import metrics from "./src/config/metrics"
 import { Image } from "react-native"
@@ -96,7 +99,8 @@ const Navigator = createStackNavigator(
           </TouchableOpacity>
         )
       }
-    }
+    },
+    EditProfile: { screen: EditProfile }
   },
   {
     // Configuration for header to use Primary Color defined in metrics
