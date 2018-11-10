@@ -26,6 +26,7 @@ const ICON_POINT = require("../../../assets/point.png")
 const ICON_ACTIVE = require("../../../assets/ic_home_active.png")
 const ICON_INACTIVE = require("../../../assets/ic_home_inactive.png")
 const ICON_MARKER = require("../../../assets/ic_marker.png")
+const LOGO = require("../../../assets/logo-higres.png")
 
 // Props typing
 interface Props {
@@ -106,6 +107,7 @@ export default class Home extends React.Component<Props, State> {
       >
         <HeaderOverlay />
         <StatusBar barStyle={"light-content"} />
+        <Image source={LOGO} style={{ marginTop: 50 }} />
         <View style={styles.customerDetail}>
           <Text style={styles.greeting}>Hi Adi!</Text>
           <View>

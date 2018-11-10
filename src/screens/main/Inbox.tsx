@@ -39,6 +39,7 @@ export default class Inbox extends React.Component {
     return (
       <View style={styles.container}>
         <HeaderOverlay />
+        <Text style={styles.title}>Inbox</Text>
         <Text style={styles.subtitle}>Keep notified and get best deals</Text>
         <FlatList
           data={["1", "2", "3"]}
@@ -67,5 +68,13 @@ const styles = StyleSheet.create({
 
   list: {
     paddingTop: 20
+  },
+
+  title: {
+    fontSize: 23,
+    color: "white",
+    marginTop: 50,
+    marginLeft: 20,
+    alignSelf: "flex-start"
   }
 })

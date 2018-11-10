@@ -39,6 +39,7 @@ export default class Orders extends React.Component {
     return (
       <View style={styles.container}>
         <HeaderOverlay />
+        <Text style={styles.title}>Orders</Text>
         <FlatList
           data={["1", "2", "3"]}
           renderItem={() => <OrderItem />}
@@ -58,5 +59,13 @@ const styles = StyleSheet.create({
 
   list: {
     paddingTop: 20
+  },
+
+  title: {
+    fontSize: 23,
+    color: "white",
+    marginTop: 50,
+    alignSelf: "flex-start",
+    marginLeft: 20
   }
 })

@@ -42,7 +42,8 @@ export default class Account extends React.Component {
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.title}>View your information</Text>
+        <Text style={styles.title}>Account</Text>
+        <Text style={styles.subtitle}>View your information</Text>
         <View style={styles.profileContainer}>
           <View style={styles.detailContainer}>
             <Image source={PICTURE} />
@@ -91,6 +92,14 @@ const styles = StyleSheet.create({
   },
 
   title: {
+    fontSize: 23,
+    color: "white",
+    marginTop: 50,
+    marginLeft: 20,
+    alignSelf: "flex-start"
+  },
+
+  subtitle: {
     color: "white",
     fontSize: 18,
     fontWeight: "300",

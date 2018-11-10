@@ -63,7 +63,8 @@ const Navigator = createStackNavigator(
     Home: {
       screen: Main,
       navigationOptions: {
-        headerTitle: <Image source={LOGO} />
+        header: null
+        // headerTitle: <Image source={LOGO} />
       }
     },
     Login: { screen: Login },
