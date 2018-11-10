@@ -1,9 +1,14 @@
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import { createStackNavigator, createBottomTabNavigator } from "react-navigation"
+import {
+  createStackNavigator,
+  createBottomTabNavigator
+} from "react-navigation"
 
 // Temporary name for entry point
 import AppW from "./src/screens/App"
+
+import SplashScreen from "./src/screens/SplashScreen"
 
 // Auth screens
 import Welcome from "./src/screens/auth/Welcome"
@@ -34,10 +39,19 @@ import { Image } from "react-native"
 // Assets
 const LOGO = require("./assets/logo-higres.png")
 const ICON_HEART = require("./assets/ic_heart.png")
+const ICON_ACCOUNT_ACTIVE = require("./assets/ic_account_active.png")
+const ICON_ACCOUNT_INACTIVE = require("./assets/ic_account_inactive.png")
+
+// Provider
+import UserContextProvider from "./src/components/providers/UserContextProvider"
 
 export default class App extends React.Component<any, any> {
   render() {
-    return <Navigator />
+    return (
+      <UserContextProvider>
+        <Navigator />
+      </UserContextProvider>
+    )
   }
 }
 
@@ -46,7 +60,32 @@ const Main = createBottomTabNavigator(
     Home: { screen: Home },
     Orders: { screen: Orders },
     Inbox: { screen: Inbox },
-    Account: { screen: Account }
+    Account: { 
+      screen: Account,
+      navigationOptions: {
+        title: "Account",
+        tabBarIcon: ({ focused }: { focused: boolean }) => {
+          switch (focused) {
+            case true:
+              return (
+                <Image
+                  source={ICON_ACCOUNT_ACTIVE}
+                  style={metrics.TAB_BAR_ICON_STYLE}
+                  resizeMode={"contain"}
+                />
+              )
+            case false:
+              return (
+                <Image
+                  source={ICON_ACCOUNT_INACTIVE}
+                  style={metrics.TAB_BAR_ICON_STYLE}
+                  resizeMode={"contain"}
+                />
+              )
+          }
+        }
+      }
+    }
   },
   {
     tabBarOptions: {
@@ -63,10 +102,16 @@ const Main = createBottomTabNavigator(
 // Create stack navigator with all the screens
 const Navigator = createStackNavigator(
   {
+    SplashScreen: {
+      screen: SplashScreen,
+      navigationOptions: {
+        header: null
+      }
+    },
     Home: {
       screen: Main,
       navigationOptions: {
-        header: null
+        header: null,
         // headerTitle: <Image source={LOGO} />
       }
     },

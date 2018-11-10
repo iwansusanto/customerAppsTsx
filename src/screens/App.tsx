@@ -8,7 +8,7 @@
 
 import React from "react"
 import { Component } from "react"
-import { StyleSheet, Text, View, Image, StatusBar, Button } from "react-native"
+import { StyleSheet, Text, View, Image, StatusBar, Button, ImageStyle } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../components/HeaderOverlay"
 import metrics from "../config/metrics"
@@ -36,7 +36,7 @@ export default class App extends Component<Props, any> {
           <View>
             <Text style={styles.current_point}>your current points</Text>
             <View style={styles.pointContainer}>
-              <Image source={ICON_POINT} style={styles.point_icon} />
+              <Image source={ICON_POINT} style={styles.point_icon as ImageStyle} />
               <Text style={styles.point}>2.000</Text>
             </View>
           </View>
@@ -91,6 +91,6 @@ const styles = StyleSheet.create({
   },
 
   point_icon: {
-    marginTop: 5
+    marginTop: 5,
   }
 })

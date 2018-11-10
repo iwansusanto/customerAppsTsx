@@ -1,7 +1,12 @@
 // Button which is fixed to the bottom of the screen
 
 import React from "react"
-import { TouchableOpacity, StyleSheet, TouchableOpacityProps } from "react-native"
+import {
+  TouchableOpacity,
+  StyleSheet,
+  TouchableOpacityProps,
+  ActivityIndicator
+} from "react-native"
 
 // Custom component used in this component
 import Text from "./CustomText"
@@ -13,6 +18,7 @@ import metrics from "../config/metrics"
 interface FixedButtonProps extends TouchableOpacityProps {
   label: string
   backgroundColor?: string
+  isLoading?: boolean
 }
 
 export default (props: FixedButtonProps) => (
@@ -20,6 +26,7 @@ export default (props: FixedButtonProps) => (
     style={[styles.container, { backgroundColor: props.backgroundColor }]}
     {...props}
   >
+    {props.isLoading && <ActivityIndicator style={styles.loading} />}
     <Text style={styles.label}>{props.label}</Text>
   </TouchableOpacity>
 )
@@ -31,7 +38,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    bottom: 0
+    bottom: 0,
+    flexDirection: "row"
+  },
+
+  loading: {
+    marginRight: 10,
   },
 
   label: {

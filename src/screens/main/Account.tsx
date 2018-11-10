@@ -9,13 +9,15 @@ import {
 } from "react-native"
 
 import Text from "../../components/CustomText"
-import { NavigationTabScreenOptions, NavigationScreenProp } from "react-navigation"
+import {
+  NavigationTabScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import CustomButton from "../../components/CustomButton"
+import withUserContext from "../../components/consumers/withUserContext"
 
-const ICON_ACTIVE = require("../../../assets/ic_account_active.png")
-const ICON_INACTIVE = require("../../../assets/ic_account_inactive.png")
 const ICON_FB = require("../../../assets/ic_facebook.png")
 const ICON_POINT = require("../../../assets/point.png")
 const ICON_ARROW = require("../../../assets/ic_arrow.png")
@@ -23,33 +25,13 @@ const PICTURE = require("../../../assets/dummy_profile.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
+  user: {
+    user?: User
+    changeUser: Function
+  }
 }
 
-export default class Account extends React.Component<Props, any> {
-  static navigationOptions: NavigationTabScreenOptions = {
-    title: "Account",
-    tabBarIcon: ({ focused }) => {
-      switch (focused) {
-        case true:
-          return (
-            <Image
-              source={ICON_ACTIVE}
-              style={metrics.TAB_BAR_ICON_STYLE}
-              resizeMode={"contain"}
-            />
-          )
-        case false:
-          return (
-            <Image
-              source={ICON_INACTIVE}
-              style={metrics.TAB_BAR_ICON_STYLE}
-              resizeMode={"contain"}
-            />
-          )
-      }
-    }
-  }
-
+class Account extends React.Component<Props, any> {
   render() {
     return (
       <ScrollView
@@ -115,7 +97,14 @@ export default class Account extends React.Component<Props, any> {
             </TouchableOpacity>
           </View>
           <View style={styles.logoutButtonContainer}>
-            <Button title={"Logout"} onPress={() => {}} color={metrics.DANGER_COLOR} />
+            <Button
+              title={"Logout"}
+              onPress={() => {
+                this.props.user.changeUser(null)
+                this.props.navigation.replace("Welcome")
+              }}
+              color={metrics.DANGER_COLOR}
+            />
           </View>
         </View>
       </ScrollView>
@@ -264,3 +253,5 @@ const styles = StyleSheet.create({
     fontWeight: "300"
   }
 })
+
+export default withUserContext(Account)
