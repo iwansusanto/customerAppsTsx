@@ -4,25 +4,25 @@ import { StyleSheet, View, Image, AsyncStorage } from "react-native"
 import { NavigationScreenProp } from "react-navigation"
 import metrics from "../config/metrics"
 import withUserContext from "../components/consumers/withUserContext"
+import api from '../api'
 
 const LOGO = require("../../assets/logo-higres.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
   user: {
-    user?: User
     changeUser: Function
   }
 }
 
 class SplashScreen extends Component<Props, any> {
   async componentDidMount() {
-    const userJSONString = await AsyncStorage.getItem("user")
-    if (userJSONString !== null) {
-      const user = JSON.parse(userJSONString)
+    const dataJSONString = await AsyncStorage.getItem("user")
+    if (dataJSONString !== null) {
+      const data = JSON.parse(dataJSONString)
 
-      if (user !== null) {
-        await this.props.user.changeUser(user)
+      if (data !== null) {
+        await this.props.user.changeUser(data)
         console.log(this.props.user)
         this.props.navigation.replace("Home")
       } else {

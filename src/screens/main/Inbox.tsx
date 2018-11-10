@@ -6,11 +6,16 @@ import { NavigationTabScreenOptions } from "react-navigation"
 import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import InboxItem from "../../components/InboxItem"
+import withInboxContext from "../../components/consumers/withInboxContext";
 
 const ICON_ACTIVE = require("../../../assets/ic_mail_active.png")
 const ICON_INACTIVE = require("../../../assets/ic_mail_inactive.png")
 
-export default class Inbox extends React.Component {
+interface Props {
+  inbox: InboxContext
+}
+
+class Inbox extends React.Component<Props> {
   static navigationOptions: NavigationTabScreenOptions = {
     title: "Inbox",
     tabBarIcon: ({ focused }) => {
@@ -35,6 +40,18 @@ export default class Inbox extends React.Component {
     }
   }
 
+  async componentDidMount() {
+    console.log(this.props)
+    try {
+      const result = await this.props.inbox.getInbox()
+      if (result) {
+
+      }
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -42,7 +59,8 @@ export default class Inbox extends React.Component {
         <Text style={styles.title}>Inbox</Text>
         <Text style={styles.subtitle}>Keep notified and get best deals</Text>
         <FlatList
-          data={["1", "2", "3"]}
+          data={this.props.inbox.inboxs}
+          keyExtractor={item => item.id.toString()}
           renderItem={() => <InboxItem />}
           style={styles.list}
         />
@@ -78,3 +96,5 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start"
   }
 })
+
+export default withInboxContext(Inbox)

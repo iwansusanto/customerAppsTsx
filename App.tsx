@@ -44,13 +44,16 @@ const ICON_ACCOUNT_INACTIVE = require("./assets/ic_account_inactive.png")
 
 // Provider
 import UserContextProvider from "./src/components/providers/UserContextProvider"
+import InboxContextProvider from "./src/components/providers/InboxContextProvider"
 
 export default class App extends React.Component<any, any> {
   render() {
     return (
-      <UserContextProvider>
-        <Navigator />
-      </UserContextProvider>
+      <InboxContextProvider>
+        <UserContextProvider>
+          <Navigator />
+        </UserContextProvider>
+      </InboxContextProvider>
     )
   }
 }
@@ -60,7 +63,7 @@ const Main = createBottomTabNavigator(
     Home: { screen: Home },
     Orders: { screen: Orders },
     Inbox: { screen: Inbox },
-    Account: { 
+    Account: {
       screen: Account,
       navigationOptions: {
         title: "Account",
@@ -111,7 +114,7 @@ const Navigator = createStackNavigator(
     Home: {
       screen: Main,
       navigationOptions: {
-        header: null,
+        header: null
         // headerTitle: <Image source={LOGO} />
       }
     },

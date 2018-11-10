@@ -20,6 +20,7 @@ import SearchBar from "../../components/SearchBar"
 // Configs
 import metrics from "../../config/metrics"
 import CategoryItem from "../../components/CategoryItem"
+import withUserContext from "../../components/consumers/withUserContext";
 
 // Assets
 const ICON_POINT = require("../../../assets/point.png")
@@ -31,13 +32,14 @@ const LOGO = require("../../../assets/logo-higres.png")
 // Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
+  user: UserContext
 }
 
 interface State {
   currentLocation: Region
 }
 
-export default class Home extends React.Component<Props, State> {
+class Home extends React.Component<Props, State> {
   // Tab bar configs
   static navigationOptions: NavigationTabScreenOptions = {
     // Tab title
@@ -109,12 +111,12 @@ export default class Home extends React.Component<Props, State> {
         <StatusBar barStyle={"light-content"} />
         <Image source={LOGO} style={{ marginTop: 50 }} />
         <View style={styles.customerDetail}>
-          <Text style={styles.greeting}>Hi Adi!</Text>
+          <Text style={styles.greeting}>Hi {this.props.user.customer.name}!</Text>
           <View>
             <Text style={styles.current_point}>your current points</Text>
             <View style={styles.pointContainer}>
               <Image source={ICON_POINT} style={styles.point_icon} />
-              <Text style={styles.point}>2.000</Text>
+              <Text style={styles.point}>{this.props.user.customer.total_point}</Text>
             </View>
           </View>
         </View>
@@ -232,3 +234,5 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start"
   }
 })
+
+export default withUserContext(Home)

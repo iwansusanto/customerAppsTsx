@@ -3,25 +3,24 @@ import { AsyncStorage } from "react-native"
 
 import UserContext from "../../contexts/UserContext"
 import api from "../../api"
-import { string } from "prop-types"
 
-interface State {
-  user?: User
-}
-
-export default class UserContextProvider extends Component<{}, State> {
+export default class UserContextProvider extends Component<{}, LoginResponse> {
   state = {
-    user: {} as User
+    success: false,
+    token: '',
+    message: '',
+    customer: {} as User
   }
 
-  changeUser = async (user: User) => {
-    await AsyncStorage.setItem("user", JSON.stringify(user))
-    await this.setState({ user })
+  changeUser = async (data: LoginResponse) => {
+    await AsyncStorage.setItem("user", JSON.stringify(data))
+    api.changeToken(data.token)
+    await this.setState(data)
   }
 
   login = async ({ email, password }: { email: string; password: string }) => {
     try {
-      const { data } = await api.post<LoginResponse>("/login", {
+      const { data } = await api.client.post<LoginResponse>("/login", {
         email,
         password
       })
@@ -43,14 +42,14 @@ export default class UserContextProvider extends Component<{}, State> {
     otp: string
   }) => {
     try {
-      const { data } = await api.post<LoginResponse>("/login", {
+      const { data } = await api.client.post<LoginResponse>("/login", {
         email,
         password,
         otp
       })
 
       if (data.success) {
-        this.changeUser(data.customer)
+        this.changeUser(data)
       }
 
       return data.success
@@ -72,7 +71,7 @@ export default class UserContextProvider extends Component<{}, State> {
     phone: string
   }) => {
     try {
-      const { data } = await api.post<RegisterResponse>("/register", {
+      const { data } = await api.client.post<RegisterResponse>("/register", {
         email,
         password,
         name,
