@@ -16,6 +16,7 @@ interface UserContext {
   changeUser: Function
   login: Function
   otp: Function
+  register: Function
 }
 
 interface LoginResponse {
@@ -23,4 +24,9 @@ interface LoginResponse {
   message: string
   token: string
   customer: User
+}
+
+interface RegisterResponse {
+  success: boolean,
+  errors: string
 }

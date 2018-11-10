@@ -3,6 +3,7 @@ import { AsyncStorage } from "react-native"
 
 import UserContext from "../../contexts/UserContext"
 import api from "../../api"
+import { string } from "prop-types"
 
 interface State {
   user?: User
@@ -27,12 +28,20 @@ export default class UserContextProvider extends Component<{}, State> {
 
       return data.success
     } catch (err) {
-      console.error(err.response.data)
+      console.log(err.response.data)
       return false
     }
   }
 
-  otp = async ({ email, password, otp }: { email: string; password: string, otp: string }) => {
+  otp = async ({
+    email,
+    password,
+    otp
+  }: {
+    email: string
+    password: string
+    otp: string
+  }) => {
     try {
       const { data } = await api.post<LoginResponse>("/login", {
         email,
@@ -46,7 +55,33 @@ export default class UserContextProvider extends Component<{}, State> {
 
       return data.success
     } catch (err) {
-      console.error(err.response.data)
+      console.log(err.response.data)
+      return false
+    }
+  }
+
+  register = async ({
+    email,
+    password,
+    name,
+    phone
+  }: {
+    email: string
+    password: string
+    name: string
+    phone: string
+  }) => {
+    try {
+      const { data } = await api.post<RegisterResponse>("/register", {
+        email,
+        password,
+        name,
+        phone
+      })
+
+      return data.success
+    } catch (err) {
+      console.log(err.response.data)
       return false
     }
   }
@@ -58,7 +93,8 @@ export default class UserContextProvider extends Component<{}, State> {
           ...this.state,
           changeUser: this.changeUser,
           login: this.login,
-          otp: this.otp
+          otp: this.otp,
+          register: this.register
         }}
       >
         {this.props.children}

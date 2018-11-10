@@ -7,12 +7,17 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from "react-native"
-import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+import {
+  NavigationStackScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 
 // Custom component used in the screen
 import Text from "../../components/CustomText"
 import CustomTextInput from "../../components/CustomTextInput"
 import FixedButton from "../../components/FixedButton"
+
+import UserContext from "../../contexts/UserContext"
 
 // Configs
 import metrics from "../../config/metrics"
@@ -32,7 +37,15 @@ interface Props {
   navigation: NavigationScreenProp<any, any>
 }
 
-export default class Register extends React.Component<Props, any> {
+interface State {
+  isLoading: boolean
+  email: string
+  password: string
+  name: string
+  phone: string
+}
+
+export default class Register extends React.Component<Props, State> {
   // Config for the header bar
   static navigationOptions = ({
     // Navigation variable to be able to call navigation-related functions in the header
@@ -63,57 +76,104 @@ export default class Register extends React.Component<Props, any> {
     }
   }
 
+  state = {
+    isLoading: false,
+    email: "",
+    password: "",
+    phone: "",
+    name: ""
+  }
+
   // Constructor
   constructor(props: Props) {
     super(props)
 
     // Function binding to this class
-    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(this)
+    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(
+      this
+    )
   }
 
   // Register button press handler
-  handleRegisterButtonPressed(): void {
-    // Navigate to OTP screen
-    this.props.navigation.navigate("OTP")
+  handleRegisterButtonPressed = (register: Function) => async () => {
+    if (this.state.isLoading) return
+
+    this.setState({ isLoading: true })
+    const { email, password, phone, name } = this.state
+
+    const result = await register({
+      email,
+      password,
+      name,
+      phone
+    })
+
+    this.setState({ isLoading: false })
+
+    if (result) {
+      this.props.navigation.navigate("OTP", {
+        email,
+        password
+      })
+    } else {
+      // TODO: show register failed
+    }
   }
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <Image source={OVERLAY} style={styles.overlay} />
-          <Image source={LOGO} style={styles.logo} />
-          <Text style={styles.title}>MAKE A NEW ACCOUNT</Text>
-          <Text style={styles.caption}>FILL YOUR INFO AND GET STARTED</Text>
-          <View style={styles.formContainer}>
-            <CustomTextInput icon={ICON_USER} placeholder={"Name"} />
-            <CustomTextInput
-              icon={ICON_PHONE}
-              placeholder={"Phone Number"}
-              keyboardType={"number-pad"}
-            />
-            <CustomTextInput
-              icon={ICON_MAIL}
-              placeholder={"Email"}
-              keyboardType={"email-address"}
-            />
-            <CustomTextInput
-              icon={ICON_KEY}
-              placeholder={"Password"}
-              secureTextEntry={true}
-            />
-          </View>
-          <View style={styles.tosContainer}>
-            <Text style={styles.caption}>By registering I agree to the</Text>
-            <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
-          </View>
-          <FixedButton
-            label={"REGISTER"}
-            backgroundColor={metrics.SECONDARY_COLOR}
-            onPress={this.handleRegisterButtonPressed}
-          />
-        </View>
-      </TouchableWithoutFeedback>
+      <UserContext.Consumer>
+        {context => (
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+              <Image source={OVERLAY} style={styles.overlay} />
+              <Image source={LOGO} style={styles.logo} />
+              <Text style={styles.title}>MAKE A NEW ACCOUNT</Text>
+              <Text style={styles.caption}>FILL YOUR INFO AND GET STARTED</Text>
+              <View style={styles.formContainer}>
+                <CustomTextInput
+                  icon={ICON_USER}
+                  placeholder={"Name"}
+                  onChangeText={text => this.setState({ name: text })}
+                />
+                <CustomTextInput
+                  icon={ICON_PHONE}
+                  placeholder={"Phone Number"}
+                  keyboardType={"number-pad"}
+                  onChangeText={text => this.setState({ phone: text })}
+                />
+                <CustomTextInput
+                  icon={ICON_MAIL}
+                  placeholder={"Email"}
+                  keyboardType={"email-address"}
+                  autoCapitalize="none"
+                  onChangeText={text => this.setState({ email: text })}
+                />
+                <CustomTextInput
+                  icon={ICON_KEY}
+                  placeholder={"Password"}
+                  secureTextEntry={true}
+                  onChangeText={text => this.setState({ password: text })}
+                />
+              </View>
+              <View style={styles.tosContainer}>
+                <Text style={styles.caption}>
+                  By registering I agree to the
+                </Text>
+                <Text style={styles.tos}>
+                  Terms of Service and Privacy Policy
+                </Text>
+              </View>
+              <FixedButton
+                isLoading={this.state.isLoading}
+                label={"REGISTER"}
+                backgroundColor={metrics.SECONDARY_COLOR}
+                onPress={this.handleRegisterButtonPressed(context.register)}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+      </UserContext.Consumer>
     )
   }
 }
