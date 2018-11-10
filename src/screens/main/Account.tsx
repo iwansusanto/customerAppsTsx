@@ -1,5 +1,12 @@
 import React from "react"
-import { View, StyleSheet, Image, TouchableOpacity, Button } from "react-native"
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Button,
+  ScrollView
+} from "react-native"
 
 import Text from "../../components/CustomText"
 import { NavigationTabScreenOptions } from "react-navigation"
@@ -11,6 +18,7 @@ const ICON_ACTIVE = require("../../../assets/ic_account_active.png")
 const ICON_INACTIVE = require("../../../assets/ic_account_inactive.png")
 const ICON_FB = require("../../../assets/ic_facebook.png")
 const ICON_POINT = require("../../../assets/point.png")
+const ICON_ARROW = require("../../../assets/ic_arrow.png")
 const PICTURE = require("../../../assets/dummy_profile.png")
 
 export default class Account extends React.Component {
@@ -40,55 +48,77 @@ export default class Account extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <HeaderOverlay />
-        <Text style={styles.title}>Account</Text>
-        <Text style={styles.subtitle}>View your information</Text>
-        <View style={styles.profileContainer}>
-          <View style={styles.detailContainer}>
-            <Image source={PICTURE} />
-            <View style={styles.detail}>
-              <Text style={styles.name}>Adi Pramudya</Text>
-              <Text style={styles.info}>jack_okira@yahoo.com</Text>
-              <Text style={styles.info}>087871680132</Text>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ alignItems: "center" }}
+      >
+        <View style={[styles.container, { alignItems: "center" }]}>
+          <HeaderOverlay />
+          <Text style={styles.title}>Account</Text>
+          <Text style={styles.subtitle}>View your information</Text>
+          <View style={styles.profileContainer}>
+            <View style={styles.detailContainer}>
+              <Image source={PICTURE} />
+              <View style={styles.detail}>
+                <Text style={styles.name}>Adi Pramudya</Text>
+                <Text style={styles.info}>jack_okira@yahoo.com</Text>
+                <Text style={styles.info}>087871680132</Text>
+              </View>
+              <TouchableOpacity style={styles.editButton}>
+                <Text style={styles.edit}>EDIT</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.editButton}>
-              <Text style={styles.edit}>EDIT</Text>
+            <View style={styles.facebookContainer}>
+              <Text style={styles.facebookCaption}>
+                Tap to connect with your Facebook account
+              </Text>
+              <CustomButton
+                label={"CONNECT WITH FACEBOOK"}
+                labelStyle={styles.facebookAuthLabel}
+                style={styles.facebookAuthButton}
+                icon={ICON_FB}
+              />
+            </View>
+          </View>
+          <View style={styles.profileContainer}>
+            <View style={styles.pointsContainer}>
+              <Text style={styles.pointsLabel}>Points</Text>
+              <View style={styles.pointValueContainer}>
+                <Image source={ICON_POINT} />
+                <Text style={styles.pointValue}>2.000</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.menuContainer}>
+            <TouchableOpacity style={styles.menuItem}>
+              <Text style={styles.menuLabel}>Change language</Text>
+              <Image source={ICON_ARROW} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem}>
+              <Text style={styles.menuLabel}>Terms of Service</Text>
+              <Image source={ICON_ARROW} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem}>
+              <Text style={styles.menuLabel}>Privacy Policy</Text>
+              <Image source={ICON_ARROW} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem}>
+              <Text style={styles.menuLabel}>Rate App</Text>
+              <Image source={ICON_ARROW} />
             </TouchableOpacity>
           </View>
-          <View style={styles.facebookContainer}>
-            <Text style={styles.facebookCaption}>
-              Tap to connect with your Facebook account
-            </Text>
-            <CustomButton
-              label={"CONNECT WITH FACEBOOK"}
-              labelStyle={styles.facebookAuthLabel}
-              style={styles.facebookAuthButton}
-              icon={ICON_FB}
-            />
+          <View style={styles.logoutButtonContainer}>
+            <Button title={"Logout"} onPress={() => {}} color={metrics.DANGER_COLOR} />
           </View>
         </View>
-        <View style={styles.profileContainer}>
-          <View style={styles.pointsContainer}>
-            <Text style={styles.pointsLabel}>Points</Text>
-            <View style={styles.pointValueContainer}>
-              <Image source={ICON_POINT} />
-              <Text style={styles.pointValue}>2.000</Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.logoutButtonContainer}>
-          <Button title={"Logout"} onPress={() => {}} color={metrics.DANGER_COLOR} />
-        </View>
-      </View>
+      </ScrollView>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center"
+    flex: 1
   },
 
   title: {
@@ -198,5 +228,32 @@ const styles = StyleSheet.create({
 
   logoutButtonContainer: {
     marginTop: 20
+  },
+
+  menuContainer: {
+    backgroundColor: "white",
+    width: metrics.DEVICE_WIDTH * 0.9,
+    borderRadius: 5,
+    shadowColor: metrics.SHADOW_COLOR,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowRadius: 5,
+    shadowOpacity: 1,
+    padding: 20,
+    marginTop: 20
+  },
+
+  menuItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 5,
+    marginVertical: 5
+  },
+
+  menuLabel: {
+    fontSize: 16,
+    fontWeight: "300"
   }
 })
