@@ -25,10 +25,7 @@ const PICTURE = require("../../../assets/dummy_profile.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
-  user: {
-    user?: User
-    changeUser: Function
-  }
+  user: UserContext
 }
 
 class Account extends React.Component<Props, any> {
@@ -46,9 +43,9 @@ class Account extends React.Component<Props, any> {
             <View style={styles.detailContainer}>
               <Image source={PICTURE} />
               <View style={styles.detail}>
-                <Text style={styles.name}>Adi Pramudya</Text>
-                <Text style={styles.info}>jack_okira@yahoo.com</Text>
-                <Text style={styles.info}>087871680132</Text>
+                <Text style={styles.name}>{this.props.user.customer.name}</Text>
+                <Text style={styles.info}>{this.props.user.customer.email}</Text>
+                <Text style={styles.info}>{this.props.user.customer.phone}</Text>
               </View>
               <TouchableOpacity
                 style={styles.editButton}
@@ -74,7 +71,7 @@ class Account extends React.Component<Props, any> {
               <Text style={styles.pointsLabel}>Points</Text>
               <View style={styles.pointValueContainer}>
                 <Image source={ICON_POINT} />
-                <Text style={styles.pointValue}>2.000</Text>
+                <Text style={styles.pointValue}>{this.props.user.customer.total_point}</Text>
               </View>
             </View>
           </View>
