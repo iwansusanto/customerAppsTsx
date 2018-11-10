@@ -10,8 +10,12 @@ import {
   ScrollView,
   FlatList
 } from "react-native"
-import { NavigationScreenProp, NavigationTabScreenOptions } from "react-navigation"
+import {
+  NavigationScreenProp,
+  NavigationTabScreenOptions
+} from "react-navigation"
 import MapView, { Region } from "react-native-maps"
+import Geocoder from "react-native-geocoder"
 
 // Custom component used in the screen
 import HeaderOverlay from "../../components/HeaderOverlay"
@@ -20,7 +24,7 @@ import SearchBar from "../../components/SearchBar"
 // Configs
 import metrics from "../../config/metrics"
 import CategoryItem from "../../components/CategoryItem"
-import withUserContext from "../../components/consumers/withUserContext";
+import withUserContext from "../../components/consumers/withUserContext"
 
 // Assets
 const ICON_POINT = require("../../../assets/point.png")
@@ -37,6 +41,7 @@ interface Props {
 
 interface State {
   currentLocation: Region
+  address: string
 }
 
 class Home extends React.Component<Props, State> {
@@ -75,7 +80,8 @@ class Home extends React.Component<Props, State> {
       longitude: -122.4324,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421
-    }
+    },
+    address: ""
   }
 
   constructor(props: Props) {
@@ -84,21 +90,37 @@ class Home extends React.Component<Props, State> {
   }
 
   onMapReady(): void {
-    navigator.geolocation.getCurrentPosition((position: GeolocationReturnType) => {
-      // Convert GeolocationReturnType to Region to be usable in Map View
-      let region: Region = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
+    navigator.geolocation.getCurrentPosition(
+      async (position: GeolocationReturnType) => {
+        // Convert GeolocationReturnType to Region to be usable in Map View
+        let region: Region = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01
+        }
+
+        try {
+          const address = await Geocoder.geocodePosition({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          })
+
+          console.log(address)
+
+          this.setState({ address: address[0].formattedAddress })
+        } catch (err) {
+          console.log(err)
+        }
+
+        const mapView = this.mapRef.current
+        // Move the map to current position
+        if (mapView) {
+          mapView.animateToRegion(region)
+          this.setState({ currentLocation: region })
+        }
       }
-      const mapView = this.mapRef.current
-      // Move the map to current position
-      if (mapView) {
-        mapView.animateToRegion(region)
-        this.setState({ currentLocation: region })
-      }
-    })
+    )
   }
 
   render() {
@@ -111,12 +133,16 @@ class Home extends React.Component<Props, State> {
         <StatusBar barStyle={"light-content"} />
         <Image source={LOGO} style={{ marginTop: 50 }} />
         <View style={styles.customerDetail}>
-          <Text style={styles.greeting}>Hi {this.props.user.customer.name}!</Text>
+          <Text style={styles.greeting}>
+            Hi {this.props.user.customer.name}!
+          </Text>
           <View>
             <Text style={styles.current_point}>your current points</Text>
             <View style={styles.pointContainer}>
               <Image source={ICON_POINT} style={styles.point_icon} />
-              <Text style={styles.point}>{this.props.user.customer.total_point}</Text>
+              <Text style={styles.point}>
+                {this.props.user.customer.total_point}
+              </Text>
             </View>
           </View>
         </View>
@@ -131,15 +157,19 @@ class Home extends React.Component<Props, State> {
           />
           <View style={styles.mapOverlay}>
             <Image source={ICON_MARKER} />
-            <Text style={styles.address}>Jl. Kenangan Indah No. 1</Text>
+            <Text style={styles.address}>{this.state.address}</Text>
           </View>
         </View>
-        <Text style={styles.searchCaption}>Search by vendors, foods, or items</Text>
+        <Text style={styles.searchCaption}>
+          Search by vendors, foods, or items
+        </Text>
         <SearchBar />
         <FlatList
           data={["1", "2"]}
           renderItem={() => (
-            <CategoryItem onPress={() => this.props.navigation.navigate("Food")} />
+            <CategoryItem
+              onPress={() => this.props.navigation.navigate("Food")}
+            />
           )}
           horizontal
         />
