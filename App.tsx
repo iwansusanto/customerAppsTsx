@@ -1,9 +1,6 @@
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import {
-  createStackNavigator,
-  createBottomTabNavigator
-} from "react-navigation"
+import { createStackNavigator, createBottomTabNavigator } from "react-navigation"
 
 // Temporary name for entry point
 import AppW from "./src/screens/App"
@@ -28,6 +25,7 @@ import Account from "./src/screens/main/Account"
 import Food from "./src/screens/food/Food"
 import FoodSearch from "./src/screens/food/Search"
 import RestoDetail from "./src/screens/food/RestoDetail"
+import FoodDetail from "./src/screens/food/FoodDetail"
 
 // Account screens
 import EditProfile from "./src/screens/account/EditProfile"
@@ -148,7 +146,8 @@ const Navigator = createStackNavigator(
         )
       }
     },
-    EditProfile: { screen: EditProfile }
+    EditProfile: { screen: EditProfile },
+    FoodDetail: { screen: FoodDetail }
   },
   {
     // Configuration for header to use Primary Color defined in metrics

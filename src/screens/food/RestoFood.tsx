@@ -11,7 +11,12 @@ export default class RestoFood extends React.Component<Props, any> {
   render() {
     return (
       <View style={styles.container}>
-        <FlatList data={["1", "2", "3"]} renderItem={() => <FoodItem />} />
+        <FlatList
+          data={["1", "2", "3"]}
+          renderItem={() => (
+            <FoodItem onPress={() => this.props.navigation.navigate("FoodDetail")} />
+          )}
+        />
       </View>
     )
   }

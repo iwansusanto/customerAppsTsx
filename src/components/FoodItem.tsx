@@ -15,7 +15,7 @@ const ICON_HEART = require("../../assets/ic_heart_outline.png")
 const ICON_PLUS = require("../../assets/ic_plus.png")
 
 export default (props: TouchableOpacityProps) => (
-  <TouchableOpacity style={styles.container}>
+  <TouchableOpacity style={styles.container} {...props}>
     <Image source={PICTURE} />
     <View style={styles.detailContainer}>
       <Text style={styles.title}>Fried Rice</Text>
