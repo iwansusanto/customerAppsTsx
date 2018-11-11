@@ -18,6 +18,7 @@ import metrics from "../../config/metrics"
 import FoodCategory from "../../components/FoodCategory"
 import FoodSuggestion from "../../components/FoodSuggestion"
 import withSuggestionContext from "../../components/consumers/withSuggestionContext";
+import withSearchContext from "../../components/consumers/withSearchContext";
 
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_HEART = require("../../../assets/ic_heart.png")
@@ -25,6 +26,7 @@ const ICON_HEART = require("../../../assets/ic_heart.png")
 interface Props {
   navigation: NavigationScreenProp<any, any>
   suggestion: SuggestionContext
+  search: SearchContext
 }
 
 class Food extends React.Component<Props, any> {
@@ -41,6 +43,11 @@ class Food extends React.Component<Props, any> {
   componentWillMount() {
     const parentId = this.props.navigation.getParam("parentId")
     this.props.suggestion.getSuggestions(parentId)
+  }
+
+  search = (id: number) => () => {
+    this.props.search.search("", id)
+    this.props.navigation.navigate("FoodSearch")
   }
 
   render() {
@@ -78,7 +85,7 @@ class Food extends React.Component<Props, any> {
               title={item.name}
               picture={item.image_url}
               venueCount={item.has_children}
-              onPress={() => this.props.navigation.navigate("FoodSearch")}
+              onPress={this.search(item.parent_id)}
             />
           )}
           horizontal
@@ -158,4 +165,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withSuggestionContext(Food)
+export default withSuggestionContext(withSearchContext(Food))

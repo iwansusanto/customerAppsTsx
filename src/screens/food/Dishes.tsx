@@ -1,17 +1,36 @@
 import React from "react"
-import { View, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native"
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  FlatList
+} from "react-native"
 
 import RestoItem from "../../components/RestoItem"
+import withSearchContext from "../../components/consumers/withSearchContext"
 
-export default class Dishes extends React.Component {
+interface Props {
+  search: SearchContext
+}
+
+class Dishes extends React.Component<Props> {
   render() {
     return (
       <View style={styles.container}>
         <FlatList
-          data={["1", "2"]}
-          renderItem={() => <RestoItem />}
-          style={styles.list}
           showsVerticalScrollIndicator={false}
+          data={this.props.search.product_data}
+          keyExtractor={item => item.id.toString()}
+          style={styles.list}
+          renderItem={({ item }) => (
+            <RestoItem
+              title={item.name}
+              address={item.merchant.name}
+              distance={""}
+              picture={item.images[0]}
+            />
+          )}
         />
       </View>
     )
@@ -28,3 +47,5 @@ const styles = StyleSheet.create({
     paddingTop: 20
   }
 })
+
+export default withSearchContext(Dishes)

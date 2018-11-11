@@ -1,6 +1,9 @@
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import { createStackNavigator, createBottomTabNavigator } from "react-navigation"
+import {
+  createStackNavigator,
+  createBottomTabNavigator
+} from "react-navigation"
 
 // Temporary name for entry point
 import AppW from "./src/screens/App"
@@ -45,19 +48,22 @@ import UserContextProvider from "./src/components/providers/UserContextProvider"
 import InboxContextProvider from "./src/components/providers/InboxContextProvider"
 import CategoryContextProvider from "./src/components/providers/CategoryContextProvider"
 import SuggestionContextProvider from "./src/components/providers/SuggestionContextProvider"
+import SearchContextProvider from "./src/components/providers/SearchContextProvider"
 
 export default class App extends React.Component<any, any> {
   render() {
     return (
-      <SuggestionContextProvider>
-        <CategoryContextProvider>
-          <InboxContextProvider>
-            <UserContextProvider>
-              <Navigator />
-            </UserContextProvider>
-          </InboxContextProvider>
-        </CategoryContextProvider>
-      </SuggestionContextProvider>
+      <SearchContextProvider>
+        <SuggestionContextProvider>
+          <CategoryContextProvider>
+            <InboxContextProvider>
+              <UserContextProvider>
+                <Navigator />
+              </UserContextProvider>
+            </InboxContextProvider>
+          </CategoryContextProvider>
+        </SuggestionContextProvider>
+      </SearchContextProvider>
     )
   }
 }

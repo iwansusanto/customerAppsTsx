@@ -12,13 +12,24 @@ import metrics from "../config/metrics"
 
 const PICTURE = require("../../assets/dummy_resto.png")
 
-export default (props: TouchableOpacityProps) => (
+interface Props extends TouchableOpacityProps {
+  title: string
+  address: string
+  distance: string
+  picture: string
+}
+
+export default (props: Props) => (
   <TouchableOpacity style={styles.container} {...props}>
-    <Image source={PICTURE} resizeMode={"cover"} style={styles.image} />
+    <Image
+      source={{ uri: props.picture }}
+      resizeMode="stretch"
+      style={styles.image}
+    />
     <View style={styles.detailContainer}>
-      <Text style={styles.title}>Nasi Padang Rasis</Text>
-      <Text style={styles.address}>Tebet east v number 12, South Jakarta</Text>
-      <Text style={styles.distance}>2 miles away</Text>
+      <Text style={styles.title}>{props.title}</Text>
+      <Text style={styles.address}>{props.address}</Text>
+      <Text style={styles.distance}>{props.distance}</Text>
     </View>
   </TouchableOpacity>
 )
@@ -27,7 +38,6 @@ const styles = StyleSheet.create({
   container: {
     width: metrics.DEVICE_WIDTH * 0.9,
     borderRadius: 15,
-    height: metrics.DEVICE_WIDTH * 0.5,
     shadowColor: metrics.SHADOW_COLOR,
     shadowOffset: {
       width: 0,
@@ -35,7 +45,8 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 1,
-    marginBottom: 90
+    marginBottom: 10,
+    overflow: "hidden"
   },
 
   detailContainer: {
@@ -49,9 +60,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: metrics.DEVICE_WIDTH * 0.9,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15
+    height: metrics.DEVICE_WIDTH * 0.5,
   },
 
   title: {
