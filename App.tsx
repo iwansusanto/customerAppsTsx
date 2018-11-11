@@ -43,15 +43,21 @@ const ICON_ACCOUNT_INACTIVE = require("./assets/ic_account_inactive.png")
 // Provider
 import UserContextProvider from "./src/components/providers/UserContextProvider"
 import InboxContextProvider from "./src/components/providers/InboxContextProvider"
+import CategoryContextProvider from "./src/components/providers/CategoryContextProvider"
+import SuggestionContextProvider from "./src/components/providers/SuggestionContextProvider"
 
 export default class App extends React.Component<any, any> {
   render() {
     return (
-      <InboxContextProvider>
-        <UserContextProvider>
-          <Navigator />
-        </UserContextProvider>
-      </InboxContextProvider>
+      <SuggestionContextProvider>
+        <CategoryContextProvider>
+          <InboxContextProvider>
+            <UserContextProvider>
+              <Navigator />
+            </UserContextProvider>
+          </InboxContextProvider>
+        </CategoryContextProvider>
+      </SuggestionContextProvider>
     )
   }
 }

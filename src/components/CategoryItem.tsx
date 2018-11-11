@@ -12,22 +12,24 @@ import Text from "./CustomText"
 import metrics from "../config/metrics"
 
 // Assets
-const PICTURE = require("../../assets/category_food.png")
 const ICON = require("../../assets/ic_burger.png")
 
-export default class CategoryItem extends React.Component<TouchableOpacityProps, any> {
-  render() {
-    // Get props to add into component
-    const props = this.props
-    return (
-      <TouchableOpacity style={styles.container} {...props}>
-        <Image source={PICTURE} style={styles.image} resizeMode={"contain"} />
-        <Image source={ICON} style={styles.icon} />
-        <Text style={styles.subtitle}>Food</Text>
-      </TouchableOpacity>
-    )
-  }
+interface Props extends TouchableOpacityProps {
+  title: string
+  picture: string
 }
+
+const CategoryItem = (props: Props) => (
+  <TouchableOpacity style={styles.container} {...props}>
+    <Image
+      source={{ uri: props.picture }}
+      style={styles.image}
+      resizeMode="stretch"
+    />
+    <Image source={ICON} style={styles.icon} />
+    <Text style={styles.subtitle}>{props.title}</Text>
+  </TouchableOpacity>
+)
 
 const styles = StyleSheet.create({
   container: {
@@ -37,12 +39,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "flex-start",
-    marginLeft: 30,
-    marginRight: 10
+    marginRight: 10,
+    backgroundColor: "black"
   },
 
   image: {
-    flex: 1
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    borderRadius: 15
   },
 
   icon: {
@@ -60,3 +67,5 @@ const styles = StyleSheet.create({
     left: 5
   }
 })
+
+export default CategoryItem

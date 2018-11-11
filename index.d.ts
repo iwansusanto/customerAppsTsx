@@ -51,3 +51,43 @@ interface InboxResponse {
   message: string
   inbox: Inbox[]
 }
+
+interface Category {
+  id: number
+  name: string
+  _lft: number
+  _rgt: number
+  parent_id: number
+  suggest_id: string
+  city_id: number
+  merchant_id: number
+  created_at: string
+  updated_at: string
+  has_children: number
+  image_url: string
+}
+
+interface CategoryContext {
+  categories: Category[]
+  getCategories: Function
+}
+
+interface Suggestion {
+  id: number
+  name: string
+  _lft: number
+  _rgt: number
+  parent_id: number
+  suggest_id: string
+  city_id: number
+  merchant_id: number
+  created_at: string
+  updated_at: string
+  has_children: number
+  image_url: string
+}
+
+interface SuggestionContext {
+  suggestions: Category[]
+  getSuggestions: Function
+}

@@ -10,11 +10,17 @@ import metrics from "../config/metrics"
 // Assets
 const PICTURE = require("../../assets/suggestion_food.png")
 
-export default (props: TouchableOpacityProps) => (
+interface Props extends TouchableOpacityProps {
+  title: string
+  picture: string
+  venueCount: number
+}
+
+export default (props: Props) => (
   <TouchableOpacity style={styles.container} {...props}>
-    <Image source={PICTURE} resizeMode={"stretch"} style={styles.image} />
-    <Text style={styles.title}>Seafood</Text>
-    <Text style={styles.venues}>33 Venues</Text>
+    <Image source={{uri: props.picture}} resizeMode={"stretch"} style={styles.image} />
+    <Text style={styles.title}>{props.title}</Text>
+    <Text style={styles.venues}>{`${props.venueCount} Venues`}</Text>
   </TouchableOpacity>
 )
 
@@ -28,7 +34,8 @@ const styles = StyleSheet.create({
   image: {
     width: metrics.DEVICE_WIDTH * 0.5,
     height: metrics.DEVICE_WIDTH * 0.4,
-    position: "absolute"
+    position: "absolute",
+    borderRadius: 15
   },
 
   title: {

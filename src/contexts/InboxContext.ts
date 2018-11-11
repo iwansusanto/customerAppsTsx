@@ -1,8 +1,9 @@
-import { createContext } from "react";
+import { createContext } from "react"
 
 let data: InboxContext = {
-  inboxs: []
-} 
+  inboxs: [],
+  getInbox: () => {}
+}
 
 const InboxContext = createContext(data)
-export default InboxContext;
+export default InboxContext

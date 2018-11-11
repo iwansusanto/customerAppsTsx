@@ -24,7 +24,9 @@ import SearchBar from "../../components/SearchBar"
 // Configs
 import metrics from "../../config/metrics"
 import CategoryItem from "../../components/CategoryItem"
+
 import withUserContext from "../../components/consumers/withUserContext"
+import withCategoryContext from "../../components/consumers/withCategoryContext"
 
 // Assets
 const ICON_POINT = require("../../../assets/point.png")
@@ -37,6 +39,7 @@ const LOGO = require("../../../assets/logo-higres.png")
 interface Props {
   navigation: NavigationScreenProp<any, any>
   user: UserContext
+  category: CategoryContext
 }
 
 interface State {
@@ -123,6 +126,10 @@ class Home extends React.Component<Props, State> {
     )
   }
 
+  async componentDidMount() {
+    await this.props.category.getCategories()
+  }
+
   render() {
     return (
       <ScrollView
@@ -165,10 +172,16 @@ class Home extends React.Component<Props, State> {
         </Text>
         <SearchBar />
         <FlatList
-          data={["1", "2"]}
-          renderItem={() => (
+          contentContainerStyle={styles.categories}
+          data={this.props.category.categories}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item}) => (
             <CategoryItem
-              onPress={() => this.props.navigation.navigate("Food")}
+              title={item.name}
+              picture={item.image_url}
+              onPress={() => this.props.navigation.navigate("Food", {
+                parentId: item.id
+              })}
             />
           )}
           horizontal
@@ -181,7 +194,7 @@ class Home extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5FCFF"
+    backgroundColor: "#F5FCFF",
   },
 
   customerDetail: {
@@ -258,7 +271,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 25,
     alignSelf: "flex-start"
+  },
+
+  categories: {
+    marginTop: 5,
+    marginBottom: 20,
+    paddingLeft: 20,
+    paddingRight: 10
   }
 })
 
-export default withUserContext(Home)
+export default withUserContext(withCategoryContext(Home))
