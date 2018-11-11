@@ -1,9 +1,12 @@
 import React from "react"
 
-import { createTabNavigator } from "react-navigation"
+import { createTabNavigator, NavigationScreenProp } from "react-navigation"
 import TopTab from "../../components/RestoTopTab"
 
 import RestoFood from "./RestoFood"
+import { View, StyleSheet } from "react-native"
+
+import metrics from "../../config/metrics"
 
 export default createTabNavigator(
   {

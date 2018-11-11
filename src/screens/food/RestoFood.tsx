@@ -2,6 +2,9 @@ import React from "react"
 import { View, StyleSheet, FlatList } from "react-native"
 import { NavigationScreenProp } from "react-navigation"
 import FoodItem from "../../components/FoodItem"
+import metrics from "../../config/metrics"
+
+import Text from "../../components/CustomText"
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
@@ -9,12 +12,18 @@ interface Props {
 
 export default class RestoFood extends React.Component<Props, any> {
   render() {
+    console.log(this.props)
     return (
       <View style={styles.container}>
         <FlatList
           data={["1", "2", "3"]}
           renderItem={() => (
-            <FoodItem onPress={() => this.props.navigation.navigate("FoodDetail")} />
+            <FoodItem
+              onPress={() => {
+                console.log("lala")
+                this.props.navigation.navigate("FoodDetail")
+              }}
+            />
           )}
         />
       </View>

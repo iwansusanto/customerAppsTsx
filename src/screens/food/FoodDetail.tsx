@@ -7,13 +7,27 @@ import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import AdditionalFoodItem from "../../components/AdditionalFoodItem"
 import FixedButton from "../../components/FixedButton"
-
+import BottomSheet from "../../components/BottomSheet"
 const PICTURE = require("../../../assets/dummy_food_detail.png")
 
 export default class FoodDetail extends React.Component {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Fried Rice"
   }
+
+  renderBottomSheetContent = () => (
+    <View
+      style={{
+        width: metrics.DEVICE_WIDTH,
+        height: 400,
+        backgroundColor: "red",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <Text>BottomSheet</Text>
+    </View>
+  )
 
   render() {
     return (
@@ -37,6 +51,21 @@ export default class FoodDetail extends React.Component {
           </View>
         </ScrollView>
         <FixedButton label={"ADD TO CART"} backgroundColor={metrics.SECONDARY_COLOR} />
+        <BottomSheet
+          content={this.renderBottomSheetContent}
+          bottomUpSlideBtnStyle={{
+            display: "flex",
+            alignSelf: "flex-start",
+            backgroundColor: "black",
+            alignItems: "center",
+            borderTopColor: "grey",
+            borderTopWidth: 5
+          }}
+          headerText={"Cart"}
+          headerTextStyle={{ color: "white", fontSize: 15 }}
+          startHeight={80}
+          topEnd={metrics.DEVICE_HEIGHT * 0.2}
+        />
       </View>
     )
   }
