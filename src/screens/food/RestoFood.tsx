@@ -12,7 +12,6 @@ interface Props {
 
 export default class RestoFood extends React.Component<Props, any> {
   render() {
-    console.log(this.props)
     return (
       <View style={styles.container}>
         <FlatList

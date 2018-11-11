@@ -115,28 +115,29 @@ export default class BottomUpPanel extends Component {
                   { width: width, height: this.props.startHeight }
                 ]}
               >
-                <Text style={this.props.headerTextStyle}>{this.props.headerText}</Text>
+                {this.props.slideUpButton}
+                {/* <Text style={this.props.headerTextStyle}>{this.props.headerText}</Text> */}
               </View>
             </Animated.View>
           </TouchableWithoutFeedback>
 
           {/* Scrollable content */}
-          <ScrollView
-            ref={scrollView => {
-              this._scrollView = scrollView
-            }}
-            // Enable scrolling only when the window is open
-            scrollEnabled={this.state.open}
-            // Hide all scrolling indicators
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            // Trigger onScroll often
-            scrollEventThrottle={16}
-            onScroll={this._handleScroll}
+          <View
+          // ref={scrollView => {
+          //   this._scrollView = scrollView
+          // }}
+          // // Enable scrolling only when the window is open
+          // scrollEnabled={this.state.open}
+          // // Hide all scrolling indicators
+          // showsHorizontalScrollIndicator={false}
+          // showsVerticalScrollIndicator={false}
+          // // Trigger onScroll often
+          // scrollEventThrottle={16}
+          // onScroll={this._handleScroll}
           >
             {/* Render content components */}
             {content()}
-          </ScrollView>
+          </View>
         </Animated.View>
       </Animated.View>
     )
@@ -158,7 +159,7 @@ export default class BottomUpPanel extends Component {
   }
 
   close = () => {
-    this._scrollView.scrollTo({ y: 0 })
+    // this._scrollView.scrollTo({ y: 0 })
     Animated.timing(this._animatedPosition, {
       toValue: this.config.position.start,
       duration: 600

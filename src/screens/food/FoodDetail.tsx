@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image, ScrollView } from "react-native"
+import { View, StyleSheet, Image, ScrollView, FlatList } from "react-native"
 
 import Text from "../../components/CustomText"
 import { NavigationStackScreenOptions } from "react-navigation"
@@ -8,7 +8,10 @@ import metrics from "../../config/metrics"
 import AdditionalFoodItem from "../../components/AdditionalFoodItem"
 import FixedButton from "../../components/FixedButton"
 import BottomSheet from "../../components/BottomSheet"
+import CartItem from "../../components/CartItem"
 const PICTURE = require("../../../assets/dummy_food_detail.png")
+const ICON_CART = require("../../../assets/ic_cart.png")
+const ICON_ARROW = require("../../../assets/ic_arrow.png")
 
 export default class FoodDetail extends React.Component {
   static navigationOptions: NavigationStackScreenOptions = {
@@ -20,14 +23,43 @@ export default class FoodDetail extends React.Component {
       style={{
         width: metrics.DEVICE_WIDTH,
         height: 400,
-        backgroundColor: "red",
-        justifyContent: "center",
-        alignItems: "center"
+        backgroundColor: "white",
+        alignItems: "center",
+        borderRightWidth: 2,
+        borderLeftWidth: 2,
+        borderColor: metrics.PRIMARY_COLOR
       }}
     >
-      <Text>BottomSheet</Text>
+      <FlatList data={["1", "2", "3"]} renderItem={() => <CartItem />} />
     </View>
   )
+
+  renderSlideUpButton() {
+    return (
+      <View style={{ flex: 1, flexDirection: "row" }}>
+        <Image source={ICON_CART} />
+        <View style={{ marginLeft: 20, justifyContent: "center", flex: 1 }}>
+          <Text style={{ fontSize: 16, fontWeight: "bold", color: "#4A90E2" }}>
+            Estimate price
+          </Text>
+          <Text style={{ fontSize: 14, marginTop: 5 }}>3 Items</Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              color: "#4A90E2",
+              marginRight: 20
+            }}
+          >
+            Rp. 20.000
+          </Text>
+          <Image source={ICON_ARROW} />
+        </View>
+      </View>
+    )
+  }
 
   render() {
     return (
@@ -53,18 +85,10 @@ export default class FoodDetail extends React.Component {
         <FixedButton label={"ADD TO CART"} backgroundColor={metrics.SECONDARY_COLOR} />
         <BottomSheet
           content={this.renderBottomSheetContent}
-          bottomUpSlideBtnStyle={{
-            display: "flex",
-            alignSelf: "flex-start",
-            backgroundColor: "black",
-            alignItems: "center",
-            borderTopColor: "grey",
-            borderTopWidth: 5
-          }}
-          headerText={"Cart"}
-          headerTextStyle={{ color: "white", fontSize: 15 }}
+          bottomUpSlideBtn={styles.bottomSheetSlideUpButton}
+          slideUpButton={this.renderSlideUpButton()}
           startHeight={80}
-          topEnd={metrics.DEVICE_HEIGHT * 0.2}
+          topEnd={metrics.DEVICE_HEIGHT * 0.3}
         />
       </View>
     )
@@ -111,5 +135,16 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 20,
     marginBottom: 10
+  },
+
+  bottomSheetSlideUpButton: {
+    backgroundColor: "white",
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    borderTopWidth: 2,
+    borderLeftWidth: 2,
+    borderRightWidth: 2,
+    borderColor: metrics.PRIMARY_COLOR,
+    padding: 20
   }
 })
