@@ -173,10 +173,6 @@ class Home extends React.Component<Props, State> {
           )}
           horizontal
         />
-        <Button
-          title={"Login"}
-          onPress={() => this.props.navigation.navigate("Welcome")}
-        />
       </ScrollView>
     )
   }
