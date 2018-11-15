@@ -67,6 +67,11 @@ interface Category {
   image_url: string
 }
 
+interface CategoryResponse {
+  type: []
+  data: Category[]
+}
+
 interface CategoryContext {
   categories: Category[]
   getCategories: Function

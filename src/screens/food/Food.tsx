@@ -41,8 +41,8 @@ class Food extends React.Component<Props, any> {
   }
 
   componentWillMount() {
-    const parentId = this.props.navigation.getParam("parentId")
-    this.props.suggestion.getSuggestions(parentId)
+    const suggestId = this.props.navigation.getParam("suggestId")
+    this.props.suggestion.getSuggestions(suggestId)
   }
 
   search = (id: number) => () => {
@@ -89,7 +89,7 @@ class Food extends React.Component<Props, any> {
             />
           )}
           horizontal
-          style={styles.suggestionsList}
+          contentContainerStyle={styles.suggestionsList}
         />
       </View>
     )
@@ -152,9 +152,8 @@ const styles = StyleSheet.create({
   suggestionsList: {
     marginTop: 20,
     paddingLeft: 20,
+    paddingRight: 10,
     alignSelf: "flex-start",
-    flex: 1,
-    minWidth: metrics.DEVICE_WIDTH
   },
 
   suggestionCaption: {

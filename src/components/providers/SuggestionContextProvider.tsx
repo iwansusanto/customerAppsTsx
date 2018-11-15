@@ -14,17 +14,17 @@ export default class SuggestionContextProvider extends Component<{}, State> {
     currentId: -1
   }
 
-  getSuggestions = async (parentId: number) => {
-    if (this.state.currentId !== parentId) {
+  getSuggestions = async (suggestId: number) => {
+    if (this.state.currentId !== suggestId) {
       await this.setState({ suggestions: [] })
     }
 
     try {
-      const { data } = await api.client.post<Category[]>("/categories", {
-        parent_id: parentId
+      const { data } = await api.client.post<CategoryResponse>("/categories", {
+        parent_id: suggestId
       })
-      console.log(data)
-      this.setState({ suggestions: data, currentId: parentId })
+      console.log(suggestId, data)
+      this.setState({ suggestions: data.data, currentId: suggestId })
     } catch (err) {
       console.log(err.response.data)
       return false

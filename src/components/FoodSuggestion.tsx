@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
   container: {
     width: metrics.DEVICE_WIDTH * 0.5,
     height: metrics.DEVICE_WIDTH * 0.4,
-    borderRadius: 15
+    borderRadius: 15,
+    marginRight: 10
   },
 
   image: {

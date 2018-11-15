@@ -180,7 +180,7 @@ class Home extends React.Component<Props, State> {
               title={item.name}
               picture={item.image_url}
               onPress={() => this.props.navigation.navigate("Food", {
-                parentId: item.id
+                suggestId: item.suggest_id
               })}
             />
           )}
