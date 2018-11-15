@@ -22,7 +22,7 @@ class Dishes extends React.Component<Props> {
           showsVerticalScrollIndicator={false}
           data={this.props.search.product_data}
           keyExtractor={item => item.id.toString()}
-          style={styles.list}
+          contentContainerStyle={styles.list}
           renderItem={({ item }) => (
             <RestoItem
               title={item.name}
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
   },
 
   list: {
-    paddingTop: 20
+    paddingTop: 20,
+    paddingBottom: 20
   }
 })
 

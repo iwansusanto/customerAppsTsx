@@ -32,7 +32,7 @@ class Resto extends React.Component<Props, any> {
               onPress={() => this.props.navigation.navigate("RestoDetail")}
             />
           )}
-          style={styles.list}
+          contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
         />
       </View>
@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
   },
 
   list: {
-    paddingTop: 20
+    paddingTop: 20,
+    paddingBottom: 20
   }
 })
 

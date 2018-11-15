@@ -191,5 +191,5 @@ interface SearchResponse {
 }
 
 interface SearchContext extends SearchResponse {
-  search: (query: string, categoryId: number) => boolean
+  search: (query: string, categoryId: number) => Promise<boolean>
 }

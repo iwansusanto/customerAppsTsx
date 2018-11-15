@@ -63,7 +63,7 @@ class Food extends React.Component<Props, any> {
           <Text style={styles.subtitle}>Pick by categories</Text>
           <View style={styles.categoryListContainer}>
             <View style={styles.categoryListRow}>
-              <FoodCategory />
+              <FoodCategory onPress={this.search(1)} />
               <FoodCategory />
               <FoodCategory />
               <FoodCategory />
@@ -85,7 +85,8 @@ class Food extends React.Component<Props, any> {
               title={item.name}
               picture={item.image_url}
               venueCount={item.has_children}
-              onPress={this.search(item.parent_id)}
+              onPress={() => {}}
+              // onPress={this.search(item.parent_id)}
             />
           )}
           horizontal
