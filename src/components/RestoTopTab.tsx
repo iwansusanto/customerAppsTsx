@@ -1,5 +1,12 @@
 import React from "react"
-import { View, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native"
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  ImageStyle
+} from "react-native"
 
 import Text from "./CustomText"
 import metrics from "../config/metrics"
@@ -39,7 +46,7 @@ export default class RestoTopTab extends React.Component<Props, any> {
             contentContainerStyle={styles.listContent}
           />
         </View>
-        <Image source={LABEL} style={styles.status} />
+        <Image source={LABEL} style={styles.status as ImageStyle} />
       </View>
     )
   }

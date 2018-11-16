@@ -29,51 +29,6 @@ export default class FoodDetail extends React.Component<Props, any> {
     title: "Fried Rice"
   }
 
-  renderBottomSheetContent = () => (
-    <View
-      style={{
-        width: metrics.DEVICE_WIDTH,
-        height: 400,
-        backgroundColor: "white",
-        alignItems: "center",
-        borderRightWidth: 2,
-        borderLeftWidth: 2,
-        borderColor: metrics.PRIMARY_COLOR
-      }}
-    >
-      <FlatList data={["1", "2", "3"]} renderItem={() => <CartItem />} />
-    </View>
-  )
-
-  renderSlideUpButton() {
-    return (
-      <View style={{ flex: 1, flexDirection: "row" }}>
-        <Image source={ICON_CART} />
-        <View style={{ marginLeft: 20, justifyContent: "center", flex: 1 }}>
-          <Text style={{ fontSize: 16, fontWeight: "bold", color: "#4A90E2" }}>
-            Estimate price
-          </Text>
-          <Text style={{ fontSize: 14, marginTop: 5 }}>3 Items</Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "bold",
-              color: "#4A90E2",
-              marginRight: 20
-            }}
-          >
-            Rp. 20.000
-          </Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate("OrderReview")}>
-            <Image source={ICON_ARROW} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    )
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -95,13 +50,10 @@ export default class FoodDetail extends React.Component<Props, any> {
             </View>
           </View>
         </ScrollView>
-        <FixedButton label={"ADD TO CART"} backgroundColor={metrics.SECONDARY_COLOR} />
-        <BottomSheet
-          content={this.renderBottomSheetContent}
-          bottomUpSlideBtn={styles.bottomSheetSlideUpButton}
-          slideUpButton={this.renderSlideUpButton()}
-          startHeight={80}
-          topEnd={metrics.DEVICE_HEIGHT * 0.3}
+        <FixedButton
+          label={"ADD TO CART"}
+          backgroundColor={metrics.SECONDARY_COLOR}
+          labelStyle={{ color: "white" }}
         />
       </View>
     )
@@ -148,16 +100,5 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 20,
     marginBottom: 10
-  },
-
-  bottomSheetSlideUpButton: {
-    backgroundColor: "white",
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
-    borderTopWidth: 2,
-    borderLeftWidth: 2,
-    borderRightWidth: 2,
-    borderColor: metrics.PRIMARY_COLOR,
-    padding: 20
   }
 })

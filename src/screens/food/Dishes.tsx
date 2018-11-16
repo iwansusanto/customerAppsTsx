@@ -1,14 +1,9 @@
 import React from "react"
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  FlatList
-} from "react-native"
+import { View, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native"
 
 import RestoItem from "../../components/RestoItem"
 import withSearchContext from "../../components/consumers/withSearchContext"
+import DishItem from "../../components/DishItem"
 
 interface Props {
   search: SearchContext
@@ -23,14 +18,7 @@ class Dishes extends React.Component<Props> {
           data={this.props.search.product_data}
           keyExtractor={item => item.id.toString()}
           contentContainerStyle={styles.list}
-          renderItem={({ item }) => (
-            <RestoItem
-              title={item.name}
-              address={""}
-              distance={""}
-              picture={item.images[0]}
-            />
-          )}
+          renderItem={({ item }) => <DishItem name={item.name} image={item.images[0]} />}
         />
       </View>
     )
