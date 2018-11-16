@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 
 import { createTabNavigator, NavigationScreenProp } from "react-navigation"
 import TopTab from "../../components/RestoTopTab"
@@ -7,7 +7,28 @@ import RestoFood from "./RestoFood"
 import { View, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native"
 
 import metrics from "../../config/metrics"
+import SearchContextProvider from "../../components/providers/SearchContextProvider"
+import withSearchContext from "../../components/consumers/withSearchContext"
+import CustomText from "../../components/CustomText"
 
+const routes = {
+  Rice: { screen: RestoFood },
+  Dumplings: { screen: RestoFood }
+}
+
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+  search: SearchContext
+}
+
+interface State {
+  menus: any
+}
+
+const LoadingMenu = () => (
+  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <ActivityIndicator />
+  </View>
 import BottomSheet from "../../components/BottomSheet"
 import Text from "../../components/CustomText"
 import CartItem from "../../components/CartItem"
@@ -28,6 +49,41 @@ const Tabs = createTabNavigator(
     animationEnabled: true
   }
 )
+
+class RestoDetail extends Component<Props, State> {
+  state = {
+    menus: {
+      "Mengambil Menu": LoadingMenu
+    }
+  }
+
+  public async componentWillMount() {
+    await this.props.search.searchRestoDetail(1)
+    const menus: any = {}
+    this.props.search.resto.menu_data.map(
+      (item) => (menus[item.name] = () => <RestoFood navigation={this.props.navigation} data={item.data} />)
+    )
+    console.log(menus)
+    await this.setState({ menus })
+  }
+
+  public render() {
+    const Tabs = createTabNavigator(this.state.menus, {
+      tabBarComponent: ({ navigation }) => <TopTab navigation={navigation} />,
+      tabBarPosition: "top",
+      swipeEnabled: true,
+      animationEnabled: true
+    })
+
+    return (
+      <View style={{ flex: 1 }}>
+        <Tabs />
+      </View>
+    )
+  }
+}
+
+export default withSearchContext(RestoDetail)
 
 interface Props {
   navigation: NavigationScreenProp<any, any>

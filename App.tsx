@@ -1,6 +1,9 @@
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import { createStackNavigator, createBottomTabNavigator } from "react-navigation"
+import {
+  createStackNavigator,
+  createBottomTabNavigator
+} from "react-navigation"
 
 // Temporary name for entry point
 import AppW from "./src/screens/App"
@@ -151,7 +154,7 @@ const Navigator = createStackNavigator(
       }
     },
     RestoDetail: {
-      screen: RestoDetail,
+      screen: () => <RestoDetail />,
       navigationOptions: {
         title: "McDonalds",
         headerRight: (

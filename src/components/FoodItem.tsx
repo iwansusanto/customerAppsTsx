@@ -10,16 +10,21 @@ import {
 import Text from "./CustomText"
 import metrics from "../config/metrics"
 
-const PICTURE = require("../../assets/dummy_food.png")
 const ICON_HEART = require("../../assets/ic_heart_outline.png")
 const ICON_PLUS = require("../../assets/ic_plus.png")
 
-export default (props: TouchableOpacityProps) => (
+interface Props extends TouchableOpacityProps {
+  picture: string
+  name: string
+  price: string
+}
+
+export default (props: Props) => (
   <TouchableOpacity style={styles.container} {...props}>
-    <Image source={PICTURE} />
+    <Image style={styles.picture} source={{ uri: props.picture }} />
     <View style={styles.detailContainer}>
-      <Text style={styles.title}>Fried Rice</Text>
-      <Text style={styles.price}>Rp. 18.000</Text>
+      <Text style={styles.title}>{props.name}</Text>
+      <Text style={styles.price}>{props.price}</Text>
     </View>
     <TouchableOpacity style={styles.favorite}>
       <Image source={ICON_HEART} />
@@ -47,6 +52,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 1
   },
 
+  picture: {
+    flex: 1
+  },
+
   title: {
     fontWeight: "bold",
     fontSize: 18
@@ -57,7 +66,8 @@ const styles = StyleSheet.create({
   },
 
   detailContainer: {
-    marginLeft: 10
+    marginLeft: 10,
+    flex: 3
   },
 
   favorite: {

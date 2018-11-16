@@ -36,6 +36,7 @@ export default (props: Props) => (
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     width: metrics.DEVICE_WIDTH * 0.9,
     borderRadius: 15,
     shadowColor: metrics.SHADOW_COLOR,

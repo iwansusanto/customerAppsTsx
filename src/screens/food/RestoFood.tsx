@@ -8,6 +8,7 @@ import Text from "../../components/CustomText"
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
+  data: Food[]
 }
 
 export default class RestoFood extends React.Component<Props, any> {
@@ -15,9 +16,13 @@ export default class RestoFood extends React.Component<Props, any> {
     return (
       <View style={styles.container}>
         <FlatList
-          data={["1", "2", "3"]}
-          renderItem={() => (
+          data={this.props.data}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }) => (
             <FoodItem
+              name={item.name}
+              picture={item.images[0]}
+              price={item.price}
               onPress={() => {
                 console.log("lala")
                 this.props.navigation.navigate("FoodDetail")

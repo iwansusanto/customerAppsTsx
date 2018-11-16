@@ -191,5 +191,66 @@ interface SearchResponse {
 }
 
 interface SearchContext extends SearchResponse {
+  resto: SearchRestoResponse
   search: (query: string, categoryId: number) => Promise<boolean>
+  searchRestoDetail: (menuId: number) => Promise<boolean>
+}
+
+interface Food {
+  id: number
+  name: string
+  description: string
+  price: string
+  price_old: string
+  category_id: number
+  menu_id: number
+  tax_group_id: number
+  type: string
+  created_at: string
+  updated_at: string
+  images: [string]
+  tax_value: number
+  city_id: number
+  additional: null
+  merchant: Merchant
+  merchant_id: number
+  formatted_price: string
+  formatted_old_price: string
+  product_images: [
+    {
+      id: number
+      image: string
+      product_id: number
+      created_at: string
+      updated_at: string
+    }
+  ]
+  tax_group: null
+  category: {
+    id: number
+    name: string
+    _lft: number
+    _rgt: number
+    parent_id: number
+    suggest_id: string
+    city_id: number
+    merchant_id: number
+    created_at: string
+    updated_at: string
+    has_children: number
+    image_url: string
+    type: []
+  }
+  product_additional: []
+}
+
+interface MenuData {
+  id: number
+  name: string
+  data: Food[]
+}
+
+interface SearchRestoResponse {
+  success: boolean
+  menu_data: MenuData[]
 }

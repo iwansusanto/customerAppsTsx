@@ -12,15 +12,16 @@ export default class HeaderOverlay extends React.Component {
   }
 }
 
+const radius = metrics.DEVICE_HEIGHT
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: metrics.PRIMARY_COLOR,
-    width: metrics.DEVICE_HEIGHT,
-    height: metrics.DEVICE_HEIGHT,
-    borderRadius: metrics.DEVICE_HEIGHT / 2,
-    justifyContent: "center",
-    alignItems: "center",
+    width: radius,
+    height: radius,
+    borderRadius: radius / 2,
     position: "absolute",
+    right: metrics.DEVICE_WIDTH / 2 - radius / 2,
     top: metrics.DEVICE_WIDTH * 1.1 * -1
   }
 })
