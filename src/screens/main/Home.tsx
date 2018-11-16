@@ -8,13 +8,11 @@ import {
   Button,
   GeolocationReturnType,
   ScrollView,
-  FlatList
+  FlatList,
+  ImageStyle
 } from "react-native"
-import {
-  NavigationScreenProp,
-  NavigationTabScreenOptions
-} from "react-navigation"
-import MapView, { Region } from "react-native-maps"
+import { NavigationScreenProp, NavigationTabScreenOptions } from "react-navigation"
+import MapView, { Region, PROVIDER_GOOGLE } from "react-native-maps"
 import Geocoder from "react-native-geocoder"
 
 // Custom component used in the screen
@@ -93,37 +91,35 @@ class Home extends React.Component<Props, State> {
   }
 
   onMapReady(): void {
-    navigator.geolocation.getCurrentPosition(
-      async (position: GeolocationReturnType) => {
-        // Convert GeolocationReturnType to Region to be usable in Map View
-        let region: Region = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01
-        }
-
-        try {
-          const address = await Geocoder.geocodePosition({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          })
-
-          console.log(address)
-
-          this.setState({ address: address[0].formattedAddress })
-        } catch (err) {
-          console.log(err)
-        }
-
-        const mapView = this.mapRef.current
-        // Move the map to current position
-        if (mapView) {
-          mapView.animateToRegion(region)
-          this.setState({ currentLocation: region })
-        }
+    navigator.geolocation.getCurrentPosition(async (position: GeolocationReturnType) => {
+      // Convert GeolocationReturnType to Region to be usable in Map View
+      let region: Region = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01
       }
-    )
+
+      try {
+        const address = await Geocoder.geocodePosition({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        })
+
+        console.log(address)
+
+        this.setState({ address: address[0].formattedAddress })
+      } catch (err) {
+        console.log(err)
+      }
+
+      const mapView = this.mapRef.current
+      // Move the map to current position
+      if (mapView) {
+        mapView.animateToRegion(region)
+        this.setState({ currentLocation: region })
+      }
+    })
   }
 
   async componentDidMount() {
@@ -140,48 +136,44 @@ class Home extends React.Component<Props, State> {
         <StatusBar barStyle={"light-content"} />
         <Image source={LOGO} style={{ marginTop: 50 }} />
         <View style={styles.customerDetail}>
-          <Text style={styles.greeting}>
-            Hi {this.props.user.customer.name}!
-          </Text>
+          <Text style={styles.greeting}>Hi {this.props.user.customer.name}!</Text>
           <View>
             <Text style={styles.current_point}>your current points</Text>
             <View style={styles.pointContainer}>
-              <Image source={ICON_POINT} style={styles.point_icon} />
-              <Text style={styles.point}>
-                {this.props.user.customer.total_point}
-              </Text>
+              <Image source={ICON_POINT} style={styles.point_icon as ImageStyle} />
+              <Text style={styles.point}>{this.props.user.customer.total_point}</Text>
             </View>
           </View>
         </View>
         <View style={styles.mapContainer}>
           <MapView
             ref={this.mapRef}
-            showsMyLocationButton={true}
             showsUserLocation={true}
             onMapReady={this.onMapReady}
             region={this.state.currentLocation}
             style={styles.map}
+            provider={PROVIDER_GOOGLE}
           />
           <View style={styles.mapOverlay}>
             <Image source={ICON_MARKER} />
             <Text style={styles.address}>{this.state.address}</Text>
           </View>
         </View>
-        <Text style={styles.searchCaption}>
-          Search by vendors, foods, or items
-        </Text>
+        <Text style={styles.searchCaption}>Search by vendors, foods, or items</Text>
         <SearchBar />
         <FlatList
           contentContainerStyle={styles.categories}
           data={this.props.category.categories}
           keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <CategoryItem
               title={item.name}
               picture={item.image_url}
-              onPress={() => this.props.navigation.navigate("Food", {
-                suggestId: item.suggest_id
-              })}
+              onPress={() =>
+                this.props.navigation.navigate("Food", {
+                  suggestId: item.suggest_id
+                })
+              }
             />
           )}
           horizontal
@@ -194,7 +186,7 @@ class Home extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5FCFF",
+    backgroundColor: "#F5FCFF"
   },
 
   customerDetail: {

@@ -9,6 +9,7 @@ import {
   FlatList,
   ActionSheetIOS
 } from "react-native"
+import RNGooglePlaces from "react-native-google-places"
 
 import Text from "../../components/CustomText"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
@@ -27,9 +28,17 @@ interface Props {
   navigation: NavigationScreenProp<any, any>
 }
 
-export default class OrderReview extends React.Component<Props, any> {
+interface State {
+  address: string
+}
+
+export default class OrderReview extends React.Component<Props, State> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Your Order"
+  }
+
+  state = {
+    address: ""
   }
 
   monthAsString(monthIndex: number) {
@@ -101,6 +110,16 @@ export default class OrderReview extends React.Component<Props, any> {
     return arr
   }
 
+  async handleAddressChange() {
+    const place = await RNGooglePlaces.openPlacePickerModal()
+    this.setState({ address: place.name })
+  }
+
+  async addAddress() {
+    const place = await RNGooglePlaces.openPlacePickerModal()
+    this.props.navigation.navigate("NewAddress", { address: place.name })
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -125,8 +144,12 @@ export default class OrderReview extends React.Component<Props, any> {
           <View style={styles.contentItemContainer}>
             <Text style={styles.contentTitle}>Destination</Text>
             <View style={styles.destinationInputContainer}>
-              <TextInput placeholder={"Address"} style={{ flex: 1 }} />
-              <TouchableOpacity>
+              <TextInput
+                placeholder={"Address"}
+                style={{ flex: 1 }}
+                value={this.state.address}
+              />
+              <TouchableOpacity onPress={() => this.handleAddressChange()}>
                 <Text style={styles.changeAddressButton}>CHANGE</Text>
               </TouchableOpacity>
             </View>
@@ -134,7 +157,7 @@ export default class OrderReview extends React.Component<Props, any> {
             <Text style={[styles.contentTitle, { marginTop: 25 }]}>Send to Others</Text>
             <AddressItem />
             <AddressItem />
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity style={styles.addButton} onPress={() => this.addAddress()}>
               <Text style={styles.addButtonLabel}>ADD</Text>
             </TouchableOpacity>
             <View style={styles.contentDivider} />
