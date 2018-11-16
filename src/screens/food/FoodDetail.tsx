@@ -1,8 +1,15 @@
 import React from "react"
-import { View, StyleSheet, Image, ScrollView, FlatList } from "react-native"
+import {
+  View,
+  StyleSheet,
+  Image,
+  ScrollView,
+  FlatList,
+  TouchableOpacity
+} from "react-native"
 
 import Text from "../../components/CustomText"
-import { NavigationStackScreenOptions } from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import AdditionalFoodItem from "../../components/AdditionalFoodItem"
@@ -13,7 +20,11 @@ const PICTURE = require("../../../assets/dummy_food_detail.png")
 const ICON_CART = require("../../../assets/ic_cart.png")
 const ICON_ARROW = require("../../../assets/ic_arrow.png")
 
-export default class FoodDetail extends React.Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+}
+
+export default class FoodDetail extends React.Component<Props, any> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Fried Rice"
   }
@@ -55,7 +66,9 @@ export default class FoodDetail extends React.Component {
           >
             Rp. 20.000
           </Text>
-          <Image source={ICON_ARROW} />
+          <TouchableOpacity onPress={() => this.props.navigation.navigate("OrderReview")}>
+            <Image source={ICON_ARROW} />
+          </TouchableOpacity>
         </View>
       </View>
     )

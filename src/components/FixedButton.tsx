@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   TouchableOpacityProps,
-  ActivityIndicator
+  ActivityIndicator,
+  TextStyle
 } from "react-native"
 
 // Custom component used in this component
@@ -19,6 +20,7 @@ interface FixedButtonProps extends TouchableOpacityProps {
   label: string
   backgroundColor?: string
   isLoading?: boolean
+  labelStyle?: TextStyle
 }
 
 export default (props: FixedButtonProps) => (
@@ -27,7 +29,7 @@ export default (props: FixedButtonProps) => (
     {...props}
   >
     {props.isLoading && <ActivityIndicator style={styles.loading} />}
-    <Text style={styles.label}>{props.label}</Text>
+    <Text style={[styles.label, props.labelStyle]}>{props.label}</Text>
   </TouchableOpacity>
 )
 
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
   },
 
   loading: {
-    marginRight: 10,
+    marginRight: 10
   },
 
   label: {

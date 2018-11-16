@@ -4,7 +4,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableOpacityProps,
-  Image
+  Image,
+  ImageStyle
 } from "react-native"
 import metrics from "../config/metrics"
 
@@ -16,7 +17,7 @@ const ICON_MESSAGE = require("../../assets/ic_message.png")
 
 export default (props: TouchableOpacityProps) => (
   <TouchableOpacity style={styles.container} {...props}>
-    <Image source={PICTURE} style={styles.image} />
+    <Image source={PICTURE} style={styles.image as ImageStyle} />
     <View style={styles.detailContainer}>
       <Text style={styles.title}>Ayam Kecap koh Aseng</Text>
       <Text style={styles.status}>ONGOING</Text>
