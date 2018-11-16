@@ -6,7 +6,8 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  ActionSheetIOS
 } from "react-native"
 
 import Text from "../../components/CustomText"
@@ -15,6 +16,7 @@ import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import FixedButton from "../../components/FixedButton"
 import OrderReviewItem from "../../components/OrderReviewItem"
+import AddressItem from "../../components/AddressItem"
 
 const ICON_MARKER = require("../../../assets/ic_marker_order.png")
 const ICON_TIME = require("../../../assets/ic_time.png")
@@ -28,6 +30,75 @@ interface Props {
 export default class OrderReview extends React.Component<Props, any> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Your Order"
+  }
+
+  monthAsString(monthIndex: number) {
+    let d = new Date()
+    let month = new Array()
+    month[0] = "Jan"
+    month[1] = "Feb"
+    month[2] = "Mar"
+    month[3] = "Apr"
+    month[4] = "May"
+    month[5] = "Jun"
+    month[6] = "Jul"
+    month[7] = "Aug"
+    month[8] = "Sep"
+    month[9] = "Oct"
+    month[10] = "Nov"
+    month[11] = "Dec"
+
+    return month[monthIndex]
+  }
+
+  dayAsString(dayIndex: number) {
+    var weekdays = new Array(7)
+    weekdays[0] = "Sun"
+    weekdays[1] = "Mon"
+    weekdays[2] = "Tue"
+    weekdays[3] = "Wed"
+    weekdays[4] = "Thu"
+    weekdays[5] = "Fri"
+    weekdays[6] = "Sat"
+
+    return weekdays[dayIndex]
+  }
+
+  getDates(startDate: Date, daysToAdd: number) {
+    var aryDates = []
+
+    for (var i = 0; i <= daysToAdd; i++) {
+      var currentDate = new Date()
+      currentDate.setDate(startDate.getDate() + i)
+      aryDates.push(
+        this.dayAsString(currentDate.getDay()) +
+          ", " +
+          currentDate.getDate() +
+          " " +
+          this.monthAsString(currentDate.getMonth()) +
+          " " +
+          currentDate.getFullYear()
+      )
+    }
+
+    return aryDates
+  }
+
+  getNextDays() {
+    let startDate = new Date()
+    return this.getDates(startDate, 7)
+  }
+
+  getTime() {
+    let arr = [],
+      i,
+      j
+    for (i = 9; i < 18; i++) {
+      for (j = 0; j < 2; j++) {
+        arr.push(i + ":" + (j === 0 ? "00" : 30 * j))
+      }
+    }
+    return arr
   }
 
   render() {
@@ -61,6 +132,8 @@ export default class OrderReview extends React.Component<Props, any> {
             </View>
             <View style={styles.contentDivider} />
             <Text style={[styles.contentTitle, { marginTop: 25 }]}>Send to Others</Text>
+            <AddressItem />
+            <AddressItem />
             <TouchableOpacity style={styles.addButton}>
               <Text style={styles.addButtonLabel}>ADD</Text>
             </TouchableOpacity>
@@ -72,6 +145,62 @@ export default class OrderReview extends React.Component<Props, any> {
             <Text style={styles.contentCaption}>Immediately send to your address</Text>
             <View style={styles.contentDivider} />
             <Text style={[styles.contentTitle, { marginTop: 25 }]}>Schedule Order</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+              <TouchableOpacity
+                style={{
+                  borderColor: metrics.PRIMARY_COLOR,
+                  borderWidth: 0.3,
+                  borderRadius: 5,
+                  shadowColor: metrics.SHADOW_COLOR,
+                  shadowOffset: {
+                    width: 0,
+                    height: 2
+                  },
+                  shadowRadius: 5,
+                  shadowOpacity: 1,
+                  padding: 5,
+                  margin: 5
+                }}
+                onPress={() =>
+                  ActionSheetIOS.showActionSheetWithOptions(
+                    {
+                      options: ["Cancel", ...this.getNextDays()],
+                      cancelButtonIndex: 0
+                    },
+                    buttonIndex => console.log(buttonIndex)
+                  )
+                }
+              >
+                <Text>Tomorrow, Aug 13</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  borderColor: metrics.PRIMARY_COLOR,
+                  borderWidth: 0.3,
+                  borderRadius: 5,
+                  shadowColor: metrics.SHADOW_COLOR,
+                  shadowOffset: {
+                    width: 0,
+                    height: 2
+                  },
+                  shadowRadius: 5,
+                  shadowOpacity: 1,
+                  padding: 5,
+                  margin: 5
+                }}
+                onPress={() =>
+                  ActionSheetIOS.showActionSheetWithOptions(
+                    {
+                      options: ["Cancel", ...this.getTime()],
+                      cancelButtonIndex: 0
+                    },
+                    buttonIndex => console.log(buttonIndex)
+                  )
+                }
+              >
+                <Text>09:00</Text>
+              </TouchableOpacity>
+            </View>
             <Text style={styles.contentCaption}>
               Your order will be scheduled to spesific time
             </Text>
