@@ -11,7 +11,7 @@ import MapView from "react-native-maps"
 
 import Text from "../../components/CustomText"
 import BottomSheet from "../../components/BottomSheet"
-import { NavigationStackScreenOptions } from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import CartItemTrack from "../../components/CartItemTrack"
@@ -24,7 +24,11 @@ const ICON_WALLET = require("../../../assets/ic_wallet.png")
 
 const PROFILE_PICTURE = require("../../../assets/dummy_profile.png")
 
-export default class OrderTrack extends React.Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+}
+
+export default class OrderTrack extends React.Component<Props, any> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Your Order"
   }
@@ -119,6 +123,7 @@ export default class OrderTrack extends React.Component {
           borderRadius: 0
         }}
         labelStyle={{ color: "white" }}
+        onPress={() => this.props.navigation.navigate("SearchDriver")}
       />
     </ScrollView>
   )
