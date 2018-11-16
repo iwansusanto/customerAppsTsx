@@ -26,7 +26,7 @@ class Dishes extends React.Component<Props> {
           renderItem={({ item }) => (
             <RestoItem
               title={item.name}
-              address={item.merchant.name}
+              address={""}
               distance={""}
               picture={item.images[0]}
             />
