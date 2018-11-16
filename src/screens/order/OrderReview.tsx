@@ -10,7 +10,7 @@ import {
 } from "react-native"
 
 import Text from "../../components/CustomText"
-import { NavigationStackScreenOptions } from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import FixedButton from "../../components/FixedButton"
@@ -21,7 +21,11 @@ const ICON_TIME = require("../../../assets/ic_time.png")
 const ICON_WALLET = require("../../../assets/ic_wallet.png")
 const RADIO_ACTIVE = require("../../../assets/ic_radio_active.png")
 
-export default class OrderReview extends React.Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+}
+
+export default class OrderReview extends React.Component<Props, any> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Your Order"
   }
@@ -109,6 +113,7 @@ export default class OrderReview extends React.Component {
           label={"PROCEED"}
           backgroundColor={metrics.PRIMARY_COLOR}
           labelStyle={{ color: "white" }}
+          onPress={() => this.props.navigation.navigate("OrderTrack")}
         />
       </View>
     )

@@ -1,11 +1,5 @@
 import React from "react"
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  FlatList
-} from "react-native"
+import { View, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native"
 
 import RestoItem from "../../components/RestoItem"
 import { NavigationScreenProp } from "react-navigation"
