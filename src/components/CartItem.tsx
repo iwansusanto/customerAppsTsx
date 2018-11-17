@@ -1,36 +1,59 @@
 import React from "react"
-import { View, TouchableOpacity, Image, StyleSheet, ImageStyle } from "react-native"
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  ImageStyle
+} from "react-native"
 import metrics from "../config/metrics"
 
 import Text from "./CustomText"
 
 const ICON_CANCEL = require("../../assets/ic_cancel.png")
 
-export default class CartItem extends React.Component {
+interface Props {
+  id: number
+  name: string
+  price: string
+  quantity: number
+  additional: CartAdditional[]
+  deleteCartItem: () => void
+  updateCartItem: (id: number, quantity: number) => () => void
+}
+
+export default class CartItem extends React.Component<Props> {
   render() {
     return (
       <View>
         <View style={styles.container}>
-          <Image source={ICON_CANCEL} style={styles.cancelIcon as ImageStyle} />
+          <TouchableOpacity onPress={this.props.deleteCartItem}>
+            <Image
+              source={ICON_CANCEL}
+              style={styles.cancelIcon as ImageStyle}
+            />
+          </TouchableOpacity>
           <View style={styles.detailContainer}>
             <View style={styles.mainDetail}>
-              <Text style={styles.mainFood}>Fried Rice</Text>
-              <Text style={styles.mainPrice}>Rp. 20.000</Text>
+              <Text style={styles.mainFood}>{this.props.name}</Text>
+              <Text style={styles.mainPrice}>{this.props.price}</Text>
             </View>
-            <View style={styles.detail}>
-              <Text style={styles.additionalFood}>Fried Rice</Text>
-              <Text style={styles.additionalFood}>Rp. 20.000</Text>
-            </View>
-            <View style={styles.detail}>
-              <Text style={styles.additionalFood}>Fried Rice</Text>
-              <Text style={styles.additionalFood}>Rp. 20.000</Text>
-            </View>
+            {this.props.additional.map(item => (
+              <View style={styles.detail}>
+                <Text style={styles.additionalFood}>{item.name}</Text>
+                <Text style={styles.additionalFood}>{item.price}</Text>
+              </View>
+            ))}
           </View>
         </View>
         <View style={styles.counterContainer}>
-          <Text style={styles.counterButton}>-</Text>
-          <Text style={styles.counter}>3</Text>
-          <Text style={styles.counterButton}>+</Text>
+          <TouchableOpacity onPress={this.props.updateCartItem(Math.max(this.props.quantity - 1, 1), this.props.id)}>
+            <Text style={styles.counterButton}>-</Text>
+          </TouchableOpacity>
+          <Text style={styles.counter}>{this.props.quantity.toString()}</Text>
+          <TouchableOpacity onPress={this.props.updateCartItem(this.props.quantity + 1, this.props.id)}>
+            <Text style={styles.counterButton}>+</Text>
+          </TouchableOpacity>
         </View>
       </View>
     )

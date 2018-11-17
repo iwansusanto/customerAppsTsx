@@ -6,7 +6,9 @@ let data: SearchContext = {
   merchant_found: 0,
   product_data: [],
   merchant_data: [],
-  search: (query: string, categoryId: number) => Promise.resolve(false)
+  resto: {} as SearchRestoResponse,
+  search: (query: string, categoryId: number) => Promise.resolve(false),
+  searchRestoDetail: (menuId: number) => Promise.resolve(false)
 }
 
 const SearchContext = createContext(data)

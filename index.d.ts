@@ -211,7 +211,14 @@ interface Food {
   images: [string]
   tax_value: number
   city_id: number
-  additional: null
+  additional: [
+    {
+      id: number
+      label: string
+      name: string
+      data: string
+    }
+  ]
   merchant: Merchant
   merchant_id: number
   formatted_price: string
@@ -253,4 +260,41 @@ interface MenuData {
 interface SearchRestoResponse {
   success: boolean
   menu_data: MenuData[]
+}
+
+interface CartAdditional {
+  name: string
+  price: string
+}
+
+interface CartItem {
+  additional: CartAdditional[]
+  id: number
+  name: string
+  price: string
+  quantity: number
+  notes: string
+}
+
+interface CartResponse {
+  id: number
+  customer_id: number
+  merchant_id: number
+  product_data: CartItem[]
+  updated_at: string
+  created_at: string
+  total: string
+}
+
+interface CartContext {
+  cart: CartResponse
+  getCart: Function
+  addToCart: (quantity: number, id: number, additional: number[] | null, notes: string) => Promise<boolean>
+  deleteCart: (id: number) => Promise<boolean>
+  updateCart: (quantity: number, id: number) => Promise<boolean>
+}
+
+interface AddToCartResponse {
+  success: boolean
+  message: string
 }

@@ -1,19 +1,35 @@
 import React from "react"
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native"
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TouchableOpacityProps
+} from "react-native"
 
 import Text from "./CustomText"
 import metrics from "../config/metrics"
 
 const RADIO_UNCHECKED = require("../../assets/ic_radio_uncheck.png")
+const RADIO_CHECKED = require("../../assets/ic_radio_active.png")
 
-export default () => (
-  <View style={styles.container}>
-    <TouchableOpacity>
-      <Image source={RADIO_UNCHECKED} resizeMode={"contain"} />
-    </TouchableOpacity>
-    <Text style={styles.name}>Iced Tea</Text>
-    <Text style={styles.price}>Rp. 20.000</Text>
-  </View>
+interface Props extends TouchableOpacityProps {
+  name: string
+  price: string
+  active: boolean
+}
+
+export default (props: Props) => (
+  <TouchableOpacity {...props}>
+    <View style={styles.container}>
+      <Image
+        source={props.active ? RADIO_CHECKED : RADIO_UNCHECKED}
+        resizeMode={"contain"}
+      />
+      <Text style={styles.name}>{props.name}</Text>
+      <Text style={styles.price}>{props.price}</Text>
+    </View>
+  </TouchableOpacity>
 )
 
 const styles = StyleSheet.create({

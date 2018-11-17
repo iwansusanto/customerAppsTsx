@@ -2,7 +2,8 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import {
   createStackNavigator,
-  createBottomTabNavigator
+  createBottomTabNavigator,
+  NavigationNavigatorProps
 } from "react-navigation"
 
 // Temporary name for entry point
@@ -55,21 +56,24 @@ import InboxContextProvider from "./src/components/providers/InboxContextProvide
 import CategoryContextProvider from "./src/components/providers/CategoryContextProvider"
 import SuggestionContextProvider from "./src/components/providers/SuggestionContextProvider"
 import SearchContextProvider from "./src/components/providers/SearchContextProvider"
+import CartContextProvider from "./src/components/providers/CartContextProvider"
 
 export default class App extends React.Component<any, any> {
   render() {
     return (
-      <SearchContextProvider>
-        <SuggestionContextProvider>
-          <CategoryContextProvider>
-            <InboxContextProvider>
-              <UserContextProvider>
-                <Navigator />
-              </UserContextProvider>
-            </InboxContextProvider>
-          </CategoryContextProvider>
-        </SuggestionContextProvider>
-      </SearchContextProvider>
+      <CartContextProvider>
+        <SearchContextProvider>
+          <SuggestionContextProvider>
+            <CategoryContextProvider>
+              <InboxContextProvider>
+                <UserContextProvider>
+                  <Navigator />
+                </UserContextProvider>
+              </InboxContextProvider>
+            </CategoryContextProvider>
+          </SuggestionContextProvider>
+        </SearchContextProvider>
+      </CartContextProvider>
     )
   }
 }
@@ -154,7 +158,9 @@ const Navigator = createStackNavigator(
       }
     },
     RestoDetail: {
-      screen: () => <RestoDetail />,
+      screen: ({ navigation }: NavigationNavigatorProps) => (
+        <RestoDetail navigation={navigation} />
+      ),
       navigationOptions: {
         title: "McDonalds",
         headerRight: (

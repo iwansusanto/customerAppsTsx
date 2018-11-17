@@ -16,6 +16,7 @@ export default class RestoFood extends React.Component<Props, any> {
     return (
       <View style={styles.container}>
         <FlatList
+          contentContainerStyle={{ paddingBottom: 100 }}
           data={this.props.data}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
@@ -24,8 +25,13 @@ export default class RestoFood extends React.Component<Props, any> {
               picture={item.images[0]}
               price={item.price}
               onPress={() => {
-                console.log("lala")
-                this.props.navigation.navigate("FoodDetail")
+                console.log(item)
+                this.props.navigation.navigate("FoodDetail", {
+                  id: item.id,
+                  title: item.name,
+                  additional: item.additional,
+                  picture: item.images[0]
+                })
               }}
             />
           )}

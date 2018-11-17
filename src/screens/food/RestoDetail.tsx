@@ -4,21 +4,29 @@ import { createTabNavigator, NavigationScreenProp } from "react-navigation"
 import TopTab from "../../components/RestoTopTab"
 
 import RestoFood from "./RestoFood"
-import { View, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native"
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native"
 
 import metrics from "../../config/metrics"
 import SearchContextProvider from "../../components/providers/SearchContextProvider"
 import withSearchContext from "../../components/consumers/withSearchContext"
 import CustomText from "../../components/CustomText"
-
-const routes = {
-  Rice: { screen: RestoFood },
-  Dumplings: { screen: RestoFood }
-}
+import BottomSheet from "../../components/BottomSheet"
+import Text from "../../components/CustomText"
+import CartItem from "../../components/CartItem"
+import CustomButton from "../../components/CustomButton"
+import withCartContext from "../../components/consumers/withCartContext"
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
   search: SearchContext
+  cart: CartContext
 }
 
 interface State {
@@ -29,10 +37,7 @@ const LoadingMenu = () => (
   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <ActivityIndicator />
   </View>
-import BottomSheet from "../../components/BottomSheet"
-import Text from "../../components/CustomText"
-import CartItem from "../../components/CartItem"
-import CustomButton from "../../components/CustomButton"
+)
 
 const ICON_ARROW = require("../../../assets/ic_arrow.png")
 const ICON_CART = require("../../../assets/ic_cart.png")
@@ -58,13 +63,19 @@ class RestoDetail extends Component<Props, State> {
   }
 
   public async componentWillMount() {
+    console.log(this.props)
     await this.props.search.searchRestoDetail(1)
     const menus: any = {}
     this.props.search.resto.menu_data.map(
-      (item) => (menus[item.name] = () => <RestoFood navigation={this.props.navigation} data={item.data} />)
+      item =>
+        (menus[item.name] = () => (
+          <RestoFood navigation={this.props.navigation} data={item.data} />
+        ))
     )
     console.log(menus)
     await this.setState({ menus })
+
+    this.props.cart.getCart()
   }
 
   public render() {
@@ -75,22 +86,34 @@ class RestoDetail extends Component<Props, State> {
       animationEnabled: true
     })
 
+    console.log(this.props.cart)
     return (
       <View style={{ flex: 1 }}>
-        <Tabs />
+        {this.props.cart.cart.product_data.length > 0 && (
+          <BottomSheet
+            content={this.renderBottomSheetContent}
+            bottomUpSlideBtn={styles.bottomSheetSlideUpButton}
+            slideUpButton={this.renderSlideUpButton()}
+            startHeight={80}
+            topEnd={metrics.DEVICE_HEIGHT * 0.3}
+          />
+        )}
+        <View style={{ flex: 1, zIndex: -1 }}>
+          <Tabs />
+        </View>
       </View>
     )
   }
-}
 
-export default withSearchContext(RestoDetail)
+  deleteCartItem = (id: number) => async () => {
+    await this.props.cart.deleteCart(id)
+    await this.props.cart.getCart()
+  }
 
-interface Props {
-  navigation: NavigationScreenProp<any, any>
-}
-
-export default class RestoDetail extends React.Component<Props, any> {
-  static router = Tabs.router
+  updateCartItem = (id: number, quantity: number) => async () => {
+    await this.props.cart.updateCart(quantity, id)
+    await this.props.cart.getCart()
+  }
 
   renderBottomSheetContent = () => (
     <View
@@ -104,21 +127,38 @@ export default class RestoDetail extends React.Component<Props, any> {
         borderColor: metrics.PRIMARY_COLOR
       }}
     >
-      <FlatList data={["1", "2", "3"]} renderItem={() => <CartItem />} />
+      <FlatList
+        data={this.props.cart.cart.product_data}
+        renderItem={({ item }) => (
+          <CartItem
+            deleteCartItem={this.deleteCartItem(item.id)}
+            updateCartItem={this.updateCartItem}
+            id={item.id}
+            name={item.name}
+            price={item.price}
+            quantity={item.quantity}
+            additional={item.additional}
+          />
+        )}
+      />
     </View>
   )
 
   renderSlideUpButton() {
     return (
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate("OrderReview")}>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("OrderReview")}
+        >
           <Image source={ICON_CART} />
         </TouchableOpacity>
         <View style={{ marginLeft: 20, justifyContent: "center", flex: 1 }}>
           <Text style={{ fontSize: 16, fontWeight: "bold", color: "#4A90E2" }}>
             Estimate price
           </Text>
-          <Text style={{ fontSize: 14, marginTop: 5 }}>3 Items</Text>
+          <Text style={{ fontSize: 14, marginTop: 5 }}>
+            {`${this.props.cart.cart.product_data.length} Items`}
+          </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text
@@ -129,7 +169,7 @@ export default class RestoDetail extends React.Component<Props, any> {
               marginRight: 20
             }}
           >
-            Rp. 20.000
+            {this.props.cart.cart.total}
           </Text>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("OrderReview")}
@@ -137,23 +177,6 @@ export default class RestoDetail extends React.Component<Props, any> {
           >
             <Image source={ICON_ARROW} />
           </TouchableOpacity>
-        </View>
-      </View>
-    )
-  }
-
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <BottomSheet
-          content={this.renderBottomSheetContent}
-          bottomUpSlideBtn={styles.bottomSheetSlideUpButton}
-          slideUpButton={this.renderSlideUpButton()}
-          startHeight={80}
-          topEnd={metrics.DEVICE_HEIGHT * 0.3}
-        />
-        <View style={{ flex: 1, zIndex: -1 }}>
-          <Tabs navigation={this.props.navigation} />
         </View>
       </View>
     )
@@ -172,3 +195,5 @@ const styles = StyleSheet.create({
     padding: 20
   }
 })
+
+export default withCartContext(withSearchContext(RestoDetail))
