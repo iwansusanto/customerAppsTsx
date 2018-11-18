@@ -1,18 +1,49 @@
 import React from "react"
-import { View, StyleSheet, Image, ImageStyle, TouchableOpacity } from "react-native"
+import {
+  View,
+  StyleSheet,
+  Image,
+  ImageStyle,
+  TouchableOpacity
+} from "react-native"
 
 import Text from "../../components/CustomText"
 import metrics from "../../config/metrics"
-import { NavigationStackScreenOptions } from "react-navigation"
+import {
+  NavigationStackScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 import FixedButton from "../../components/FixedButton"
+import withOrderContext from "../../components/consumers/withOrderContext"
 
 const OVERLAY = require("../../../assets/overlay-search-driver.png")
 const ICON_SEARCH = require("../../../assets/ic_search_driver.png")
 const ICON_CANCEL = require("../../../assets/ic_cancel_driver.png")
 
-export default class SearchDriver extends React.Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+  order: OrderContext
+}
+
+class SearchDriver extends React.Component<Props> {
+  interval: number = -1
+
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Searching for Driver"
+  }
+
+  checkOrder = async () => {
+    await this.props.order.getOrderDetail()
+    const order = this.props.order.orderDetail
+
+    if (order.driver_id !== null) {
+      this.props.navigation.navigate("OrderTrack")
+      clearInterval(this.interval)
+    }
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(this.checkOrder, 3000)
   }
 
   render() {
@@ -20,7 +51,9 @@ export default class SearchDriver extends React.Component {
       <View style={styles.container}>
         <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
         <Text style={[styles.caption, { marginTop: 20 }]}>Sit back User</Text>
-        <Text style={styles.caption}> We are searching the nearest driver from you</Text>
+        <Text style={styles.caption}>
+          We are searching the nearest driver from you
+        </Text>
         <Image source={ICON_SEARCH} style={{ marginTop: 50 }} />
         <TouchableOpacity style={styles.cancelButtonContainer}>
           <Image source={ICON_CANCEL} />
@@ -71,3 +104,5 @@ const styles = StyleSheet.create({
     alignItems: "center"
   }
 })
+
+export default withOrderContext(SearchDriver)

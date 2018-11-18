@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    marginTop: metrics.DEVICE_HEIGHT * 0.15
+    marginTop: metrics.DEVICE_HEIGHT * 0.15,
   },
 
   title: {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   overlay: {
     position: "absolute",
     bottom: 0,
-    width: metrics.DEVICE_WIDTH
+    width: metrics.DEVICE_WIDTH,
   },
 
   tosContainer: {

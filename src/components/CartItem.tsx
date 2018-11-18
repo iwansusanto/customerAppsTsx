@@ -39,7 +39,7 @@ export default class CartItem extends React.Component<Props> {
               <Text style={styles.mainPrice}>{this.props.price}</Text>
             </View>
             {this.props.additional.map(item => (
-              <View style={styles.detail}>
+              <View key={item.name.toString()} style={styles.detail}>
                 <Text style={styles.additionalFood}>{item.name}</Text>
                 <Text style={styles.additionalFood}>{item.price}</Text>
               </View>

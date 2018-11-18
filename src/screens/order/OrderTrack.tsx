@@ -1,21 +1,26 @@
-import React from "react"
+import React, { createRef } from "react"
 import {
   View,
   StyleSheet,
   Image,
   FlatList,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  GeolocationReturnType
 } from "react-native"
-import MapView from "react-native-maps"
+import MapView, { Region, Marker } from "react-native-maps"
 
 import Text from "../../components/CustomText"
 import BottomSheet from "../../components/BottomSheet"
-import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+import {
+  NavigationStackScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import CartItemTrack from "../../components/CartItemTrack"
 import CustomButton from "../../components/CustomButton"
+import withOrderContext from "../../components/consumers/withOrderContext"
 
 const ICON_TIME = require("../../../assets/ic_time.png")
 const ICON_PHONE = require("../../../assets/ic_phone_fill.png")
@@ -26,109 +31,139 @@ const PROFILE_PICTURE = require("../../../assets/dummy_profile.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
+  order: OrderContext
 }
 
-export default class OrderTrack extends React.Component<Props, any> {
+class OrderTrack extends React.Component<Props, any> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Your Order"
   }
 
-  renderBottomSheetContent = () => (
-    <ScrollView
-      style={{
-        width: metrics.DEVICE_WIDTH,
-        backgroundColor: "white",
-        borderRightWidth: 2,
-        borderLeftWidth: 2,
-        borderColor: metrics.PRIMARY_COLOR,
-        marginBottom: 130
-      }}
-      contentContainerStyle={{ alignItems: "center" }}
-    >
-      <View
+  private mapRef = createRef<MapView>()
+  private interval = -1
+
+  renderBottomSheetContent = () => {
+    const order = this.props.order.orderDetail
+    return (
+      <ScrollView
         style={{
-          borderTopWidth: 0.3,
-          borderBottomWidth: 0.3,
-          borderColor: "grey",
           width: metrics.DEVICE_WIDTH,
-          padding: 20
+          backgroundColor: "white",
+          borderRightWidth: 2,
+          borderLeftWidth: 2,
+          borderColor: metrics.PRIMARY_COLOR,
+          marginBottom: 130
         }}
+        contentContainerStyle={{ alignItems: "center" }}
       >
-        <Text
+        <View
           style={{
-            alignSelf: "flex-start",
-            color: "#4A90E2",
-            fontWeight: "bold"
+            borderTopWidth: 0.3,
+            borderBottomWidth: 0.3,
+            borderColor: "grey",
+            width: metrics.DEVICE_WIDTH,
+            padding: 20
           }}
         >
-          Delivery Notes
-        </Text>
-        <Text style={{ marginTop: 5 }}>
-          just claps three times once arrived in front of my door. the bell is broken btw.
-        </Text>
-      </View>
-      <FlatList
-        data={["1", "2", "3"]}
-        renderItem={() => <CartItemTrack />}
-        scrollEnabled={false}
-      />
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: metrics.DEVICE_WIDTH,
-          padding: 20,
-          borderBottomWidth: 0.3,
-          borderColor: "grey"
-        }}
-      >
-        <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Payment Method</Text>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={{ marginRight: 20 }}>Cash</Text>
-          <Image source={ICON_WALLET} />
+          <Text
+            style={{
+              alignSelf: "flex-start",
+              color: "#4A90E2",
+              fontWeight: "bold"
+            }}
+          >
+            Delivery Notes
+          </Text>
+          <Text style={{ marginTop: 5 }}>{order.comment}</Text>
         </View>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: metrics.DEVICE_WIDTH,
-          padding: 20,
-          borderBottomWidth: 0.3,
-          borderColor: "grey"
-        }}
-      >
-        <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Total</Text>
-        <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Rp. 20.000</Text>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: metrics.DEVICE_WIDTH,
-          padding: 20,
-          borderBottomWidth: 0.3,
-          borderColor: "grey"
-        }}
-      >
-        <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Transaction Number</Text>
-        <Text>12983719284318112974s</Text>
-      </View>
-      <CustomButton
-        label={"CANCEL ORDER"}
-        style={{
-          backgroundColor: metrics.DANGER_COLOR,
-          width: metrics.DEVICE_WIDTH,
-          marginTop: 20,
-          borderRadius: 0
-        }}
-        labelStyle={{ color: "white" }}
-        onPress={() => this.props.navigation.navigate("SearchDriver")}
-      />
-    </ScrollView>
-  )
+        <FlatList
+          data={order.product_data}
+          renderItem={({ item }) => {
+            const productAdditonal: OrderAdditional =
+              item.product_data === ""
+                ? {
+                    data: "",
+                    notes: ""
+                  }
+                : JSON.parse(item.product_data)
+
+            return (
+              <CartItemTrack
+                name={item.name}
+                price={item.price}
+                quantity={item.quantity}
+                additional={productAdditonal}
+              />
+            )
+          }}
+          scrollEnabled={false}
+        />
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: metrics.DEVICE_WIDTH,
+            padding: 20,
+            borderBottomWidth: 0.3,
+            borderColor: "grey"
+          }}
+        >
+          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>
+            Payment Method
+          </Text>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ marginRight: 20 }}>{order.payment_method}</Text>
+            <Image source={ICON_WALLET} />
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: metrics.DEVICE_WIDTH,
+            padding: 20,
+            borderBottomWidth: 0.3,
+            borderColor: "grey"
+          }}
+        >
+          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Total</Text>
+          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>
+            {order.total}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: metrics.DEVICE_WIDTH,
+            padding: 20,
+            borderBottomWidth: 0.3,
+            borderColor: "grey"
+          }}
+        >
+          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>
+            Transaction Number
+          </Text>
+          <Text>{order.id.toString()}</Text>
+        </View>
+        <CustomButton
+          label={"CANCEL ORDER"}
+          style={{
+            backgroundColor: metrics.DANGER_COLOR,
+            width: metrics.DEVICE_WIDTH,
+            marginTop: 20,
+            borderRadius: 0
+          }}
+          labelStyle={{ color: "white" }}
+          onPress={() => this.props.navigation.navigate("SearchDriver")}
+        />
+      </ScrollView>
+    )
+  }
 
   renderSlideUpButton() {
+    const driver = this.props.order.orderDetail.driver_data as DriverData
+
     return (
       <View style={{ flex: 1 }}>
         <Text style={{ color: "#4A90E2", fontSize: 16, fontWeight: "bold" }}>
@@ -150,26 +185,66 @@ export default class OrderTrack extends React.Component<Props, any> {
             <Image source={ICON_MESSAGE} />
           </TouchableOpacity>
           <View>
-            <Text style={{ marginVertical: 2.5 }}>Mas Caca</Text>
-            <Text style={{ marginVertical: 2.5 }}>Ford Ranger</Text>
-            <Text style={{ marginVertical: 2.5 }}>A 5782 MVP</Text>
+            <Text style={{ marginVertical: 2.5 }}>{driver.name}</Text>
+            <Text style={{ marginVertical: 2.5 }}> </Text>
+            <Text style={{ marginVertical: 2.5 }}> </Text>
           </View>
         </View>
       </View>
     )
   }
 
+  onMapReady = () => {
+    const driver = this.props.order.orderDetail.driver_data as DriverData
+
+    const driverLocation = {
+      latitude: Number(driver.driver_location.lat),
+      longitude: Number(driver.driver_location.lng),
+      latitudeDelta: 0.001,
+      longitudeDelta: 0.001
+    }
+
+    const mapView = this.mapRef.current
+    // Move the map to current position
+    if (mapView) {
+      mapView.animateToRegion(driverLocation)
+    }
+  }
+
+  checkOrder = async () => {
+    await this.props.order.getOrderDetail()
+    const order = this.props.order.orderDetail
+    const driver = this.props.order.orderDetail.driver_data as DriverData
+
+    const driverLocation = {
+      latitude: Number(driver.driver_location.lat),
+      longitude: Number(driver.driver_location.lng),
+      latitudeDelta: 0.001,
+      longitudeDelta: 0.001
+    }
+
+    const mapView = this.mapRef.current
+    if (mapView) {
+      mapView.animateToRegion(driverLocation)
+    }
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(this.checkOrder, 30000)
+  }
+
   render() {
+    const order = this.props.order.orderDetail
+    const driver = this.props.order.orderDetail.driver_data as DriverData
+
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.restoName}>Mc Donalds</Text>
-        <Text style={styles.restoAddress}>Tebet dalam, faraway</Text>
+        <Text style={styles.restoName}>{order.merchant_data.name}</Text>
+        <Text style={styles.restoAddress}>{order.merchant_data.address}</Text>
         <View style={styles.divider} />
         <View style={styles.destinationItemContainer}>
-          <Text style={styles.destinationAddress}>
-            Doha, Main Street, Faraway 01, Your Area
-          </Text>
+          <Text style={styles.destinationAddress}>{order.address}</Text>
         </View>
         <View style={styles.destinationItemContainer}>
           <Image source={ICON_TIME} />
@@ -177,10 +252,22 @@ export default class OrderTrack extends React.Component<Props, any> {
         </View>
         <View>
           <MapView
+            ref={this.mapRef}
             showsMyLocationButton={true}
             showsUserLocation={true}
             style={styles.map}
-          />
+            onMapReady={this.onMapReady}
+          >
+            <Marker
+              title="Driver"
+              coordinate={{
+                latitude: Number(driver.driver_location.lat),
+                longitude: Number(driver.driver_location.lng),
+                latitudeDelta: 0.001,
+                longitudeDelta: 0.001
+              }}
+            />
+          </MapView>
         </View>
         <BottomSheet
           content={this.renderBottomSheetContent}
@@ -247,7 +334,8 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
     width: metrics.DEVICE_WIDTH,
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 150
   },
 
   bottomSheetSlideUpButton: {
@@ -261,3 +349,5 @@ const styles = StyleSheet.create({
     padding: 20
   }
 })
+
+export default withOrderContext(OrderTrack)

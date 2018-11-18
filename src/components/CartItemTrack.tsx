@@ -1,31 +1,43 @@
 import React from "react"
-import { View, TouchableOpacity, Image, StyleSheet, ImageStyle } from "react-native"
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  ImageStyle
+} from "react-native"
 import metrics from "../config/metrics"
 
 import Text from "./CustomText"
 
-export default class CartItem extends React.Component {
+interface Props {
+  name: string
+  price: string
+  quantity: number
+  additional: OrderAdditional
+}
+export default class CartItem extends React.Component<Props> {
   render() {
     return (
       <View>
         <View style={styles.container}>
           <View style={styles.detailContainer}>
             <View style={styles.mainDetail}>
-              <Text style={styles.mainFood}>Fried Rice</Text>
-              <Text style={styles.mainPrice}>Rp. 20.000</Text>
+              <Text style={styles.mainFood}>{this.props.name}</Text>
+              <Text style={styles.mainPrice}>{this.props.price}</Text>
             </View>
             <View style={styles.detail}>
-              <Text style={styles.additionalFood}>Fried Rice</Text>
-              <Text style={styles.additionalFood}>Rp. 20.000</Text>
-            </View>
-            <View style={styles.detail}>
-              <Text style={styles.additionalFood}>Fried Rice</Text>
-              <Text style={styles.additionalFood}>Rp. 20.000</Text>
+              <Text style={styles.additionalFood}>
+                {this.props.additional.data}
+              </Text>
+              <Text style={styles.additionalFood}>
+                {this.props.additional.notes}
+              </Text>
             </View>
           </View>
         </View>
         <View style={styles.counterContainer}>
-          <Text style={styles.counter}>3</Text>
+          <Text style={styles.counter}>{this.props.quantity.toString()}</Text>
         </View>
       </View>
     )

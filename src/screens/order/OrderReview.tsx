@@ -7,38 +7,60 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-  ActionSheetIOS
+  ActionSheetIOS,
+  Alert
 } from "react-native"
 import RNGooglePlaces from "react-native-google-places"
 
 import Text from "../../components/CustomText"
-import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+import {
+  NavigationStackScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import FixedButton from "../../components/FixedButton"
 import OrderReviewItem from "../../components/OrderReviewItem"
 import AddressItem from "../../components/AddressItem"
+import withCartContext from "../../components/consumers/withCartContext"
+import api from "../../api"
+import withOrderContext from "../../components/consumers/withOrderContext"
 
 const ICON_MARKER = require("../../../assets/ic_marker_order.png")
 const ICON_TIME = require("../../../assets/ic_time.png")
 const ICON_WALLET = require("../../../assets/ic_wallet.png")
+const RADIO_INACTIVE = require("../../../assets/ic_radio_uncheck.png")
 const RADIO_ACTIVE = require("../../../assets/ic_radio_active.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
+  cart: CartContext
+  order: OrderContext
 }
 
 interface State {
   address: string
+  destination: boolean
+  schedule: boolean
+  addresses: UserAddress[]
+  selectedAddressIndex: number
+  notes: string
+  shippingPrice: number
 }
 
-export default class OrderReview extends React.Component<Props, State> {
+class OrderReview extends React.Component<Props, State> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Your Order"
   }
 
   state = {
-    address: ""
+    address: "",
+    destination: false,
+    schedule: true,
+    addresses: [] as UserAddress[],
+    selectedAddressIndex: -1,
+    notes: "",
+    shippingPrice: -1
   }
 
   monthAsString(monthIndex: number) {
@@ -120,6 +142,80 @@ export default class OrderReview extends React.Component<Props, State> {
     this.props.navigation.navigate("NewAddress", { address: place.name })
   }
 
+  selectDestination = (destination: boolean) => () => {
+    this.setState({ destination })
+  }
+
+  selectSchedule = (schedule: boolean) => () => {
+    this.setState({ schedule })
+  }
+
+  getAddress = async () => {
+    try {
+      const { data } = await api.client.get<AddressResponse>("/address")
+      console.log(data)
+      this.setState({ addresses: data.address_data })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  setSelectedAddress = (index: number) => async () => {
+    await this.setState({ selectedAddressIndex: index })
+    await this.getShippingPrice()
+  }
+
+  deleteAddress = (id: number) => async () => {
+    await api.client.delete(`/address/${id}`)
+    await this.getAddress()
+  }
+
+  getShippingPrice = async () => {
+    try {
+      const { data } = await api.client.post<ShippingResponse>("/shipping", {
+        address_id: this.state.addresses[this.state.selectedAddressIndex].id,
+        merchant_id: this.props.cart.cart.merchant_id
+      })
+
+      this.setState({ shippingPrice: Number(data.delivery_price) })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  createOrder = async () => {
+    const address = this.state.addresses[this.state.selectedAddressIndex]
+    const cart = this.props.cart.cart
+    const success = await this.props.order.createOrder(
+      address.fullname,
+      address.address,
+      address.phone,
+      address.lat,
+      address.lng,
+      "cash",
+      "1",
+      "1",
+      cart.merchant_id.toString(),
+      this.state.notes,
+      "now",
+      new Date()
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " "),
+      cart.id
+    )
+
+    if (success) {
+      this.props.navigation.navigate("SearchDriver")
+    } else {
+      Alert.alert("Order failed, try again later!")
+    }
+  }
+
+  async componentWillMount() {
+    await this.getAddress()
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -142,112 +238,208 @@ export default class OrderReview extends React.Component<Props, State> {
           contentContainerStyle={{ alignItems: "center" }}
         >
           <View style={styles.contentItemContainer}>
-            <Text style={styles.contentTitle}>Destination</Text>
-            <View style={styles.destinationInputContainer}>
-              <TextInput
-                placeholder={"Address"}
-                style={{ flex: 1 }}
-                value={this.state.address}
-              />
-              <TouchableOpacity onPress={() => this.handleAddressChange()}>
-                <Text style={styles.changeAddressButton}>CHANGE</Text>
+            <View>
+              <TouchableOpacity
+                style={styles.destionationButton}
+                onPress={this.selectDestination(false)}
+              >
+                <Image
+                  source={
+                    this.state.destination === true
+                      ? RADIO_ACTIVE
+                      : RADIO_INACTIVE
+                  }
+                />
               </TouchableOpacity>
+              <Text style={styles.contentTitle}>Destination</Text>
+              <View style={styles.destinationInputContainer}>
+                <TextInput
+                  placeholder={"Address"}
+                  style={{ flex: 1 }}
+                  value={this.state.address}
+                />
+                <TouchableOpacity onPress={() => this.handleAddressChange()}>
+                  <Text style={styles.changeAddressButton}>CHANGE</Text>
+                </TouchableOpacity>
+              </View>
             </View>
             <View style={styles.contentDivider} />
-            <Text style={[styles.contentTitle, { marginTop: 25 }]}>Send to Others</Text>
-            <AddressItem />
-            <AddressItem />
-            <TouchableOpacity style={styles.addButton} onPress={() => this.addAddress()}>
-              <Text style={styles.addButtonLabel}>ADD</Text>
-            </TouchableOpacity>
+            <View style={{ position: "relative" }}>
+              <TouchableOpacity
+                style={styles.destionationButton}
+                onPress={this.selectDestination(false)}
+              >
+                <Image
+                  source={
+                    this.state.destination === false
+                      ? RADIO_ACTIVE
+                      : RADIO_INACTIVE
+                  }
+                />
+              </TouchableOpacity>
+              <Text style={styles.contentTitle}>Send to Others</Text>
+              {this.state.destination === false && (
+                <>
+                  <FlatList
+                    data={this.state.addresses}
+                    extraData={this.state.selectedAddressIndex}
+                    keyExtractor={item => item.id.toString()}
+                    renderItem={({ item, index }) => (
+                      <AddressItem
+                        deleteAddress={this.deleteAddress(item.id)}
+                        setSelected={this.setSelectedAddress(index)}
+                        selected={index === this.state.selectedAddressIndex}
+                        name={item.label}
+                        person={item.fullname}
+                        address={item.address}
+                        phone={item.phone}
+                      />
+                    )}
+                  />
+                  <TouchableOpacity
+                    style={styles.addButton}
+                    onPress={() => this.addAddress()}
+                  >
+                    <Text style={styles.addButtonLabel}>ADD</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </View>
             <View style={styles.contentDivider} />
-            <TextInput placeholder={"ADD NOTES"} style={{ flex: 1, marginTop: 25 }} />
+            <TextInput
+              onChangeText={text => this.setState({ notes: text })}
+              placeholder={"ADD NOTES"}
+              style={{ flex: 1 }}
+            />
           </View>
           <View style={styles.contentItemContainer}>
-            <Text style={styles.contentTitle}>Send Now</Text>
-            <Text style={styles.contentCaption}>Immediately send to your address</Text>
-            <View style={styles.contentDivider} />
-            <Text style={[styles.contentTitle, { marginTop: 25 }]}>Schedule Order</Text>
-            <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+            <View>
+              <Text style={styles.contentTitle}>Send Now</Text>
               <TouchableOpacity
-                style={{
-                  borderColor: metrics.PRIMARY_COLOR,
-                  borderWidth: 0.3,
-                  borderRadius: 5,
-                  shadowColor: metrics.SHADOW_COLOR,
-                  shadowOffset: {
-                    width: 0,
-                    height: 2
-                  },
-                  shadowRadius: 5,
-                  shadowOpacity: 1,
-                  padding: 5,
-                  margin: 5
-                }}
-                onPress={() =>
-                  ActionSheetIOS.showActionSheetWithOptions(
-                    {
-                      options: ["Cancel", ...this.getNextDays()],
-                      cancelButtonIndex: 0
-                    },
-                    buttonIndex => console.log(buttonIndex)
-                  )
-                }
+                style={styles.destionationButton}
+                onPress={this.selectSchedule(true)}
               >
-                <Text>Tomorrow, Aug 13</Text>
+                <Image
+                  source={
+                    this.state.schedule === true ? RADIO_ACTIVE : RADIO_INACTIVE
+                  }
+                />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  borderColor: metrics.PRIMARY_COLOR,
-                  borderWidth: 0.3,
-                  borderRadius: 5,
-                  shadowColor: metrics.SHADOW_COLOR,
-                  shadowOffset: {
-                    width: 0,
-                    height: 2
-                  },
-                  shadowRadius: 5,
-                  shadowOpacity: 1,
-                  padding: 5,
-                  margin: 5
-                }}
-                onPress={() =>
-                  ActionSheetIOS.showActionSheetWithOptions(
-                    {
-                      options: ["Cancel", ...this.getTime()],
-                      cancelButtonIndex: 0
-                    },
-                    buttonIndex => console.log(buttonIndex)
-                  )
-                }
-              >
-                <Text>09:00</Text>
-              </TouchableOpacity>
+              <Text style={styles.contentCaption}>
+                Immediately send to your address
+              </Text>
             </View>
-            <Text style={styles.contentCaption}>
-              Your order will be scheduled to spesific time
-            </Text>
+            <View style={styles.contentDivider} />
+            <View>
+              <TouchableOpacity
+                style={styles.destionationButton}
+                onPress={this.selectSchedule(true)}
+              >
+                <Image
+                  source={
+                    this.state.schedule === false
+                      ? RADIO_ACTIVE
+                      : RADIO_INACTIVE
+                  }
+                />
+              </TouchableOpacity>
+              <Text style={styles.contentTitle}>Schedule Order</Text>
+              <View
+                style={{ flexDirection: "row", justifyContent: "space-around" }}
+              >
+                <TouchableOpacity
+                  style={{
+                    borderColor: metrics.PRIMARY_COLOR,
+                    borderWidth: 0.3,
+                    borderRadius: 5,
+                    shadowColor: metrics.SHADOW_COLOR,
+                    shadowOffset: {
+                      width: 0,
+                      height: 2
+                    },
+                    shadowRadius: 5,
+                    shadowOpacity: 1,
+                    padding: 5,
+                    margin: 5
+                  }}
+                  onPress={() =>
+                    ActionSheetIOS.showActionSheetWithOptions(
+                      {
+                        options: ["Cancel", ...this.getNextDays()],
+                        cancelButtonIndex: 0
+                      },
+                      buttonIndex => console.log(buttonIndex)
+                    )
+                  }
+                >
+                  <Text>Tomorrow, Aug 13</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    borderColor: metrics.PRIMARY_COLOR,
+                    borderWidth: 0.3,
+                    borderRadius: 5,
+                    shadowColor: metrics.SHADOW_COLOR,
+                    shadowOffset: {
+                      width: 0,
+                      height: 2
+                    },
+                    shadowRadius: 5,
+                    shadowOpacity: 1,
+                    padding: 5,
+                    margin: 5
+                  }}
+                  onPress={() =>
+                    ActionSheetIOS.showActionSheetWithOptions(
+                      {
+                        options: ["Cancel", ...this.getTime()],
+                        cancelButtonIndex: 0
+                      },
+                      buttonIndex => console.log(buttonIndex)
+                    )
+                  }
+                >
+                  <Text>09:00</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.contentCaption}>
+                Your order will be scheduled to spesific time
+              </Text>
+            </View>
           </View>
           <FlatList
-            data={["1", "2", "3"]}
-            renderItem={() => <OrderReviewItem />}
+            data={this.props.cart.cart.product_data}
+            renderItem={({ item }) => (
+              <OrderReviewItem
+                name={item.name}
+                price={item.price}
+                additional={item.additional}
+                quantity={item.quantity}
+              />
+            )}
             horizontal
             showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ paddingLeft: 10 }}
           />
           <View style={styles.contentItemContainer}>
             <Text style={styles.contentTitle}>Price</Text>
             <View style={styles.priceItemContainer}>
               <Text>Subtotal</Text>
-              <Text>Rp. 20.000</Text>
+              <Text>{this.props.cart.cart.total}</Text>
             </View>
             <View style={styles.priceItemContainer}>
               <Text>Shipping</Text>
-              <Text>Rp. 20.000</Text>
+              <Text>
+                {this.state.shippingPrice === -1
+                  ? "Silahkan pilih alamat pengiriman"
+                  : `QR${this.state.shippingPrice}`}
+              </Text>
             </View>
             <View style={styles.contentDivider} />
-            <View style={[styles.priceItemContainer, { marginTop: 25 }]}>
+            <View style={styles.priceItemContainer}>
               <Text>Total</Text>
-              <Text>Rp. 20.000</Text>
+              <Text>{`QR${Number(this.props.cart.cart.total.substr(2)) +
+                Math.max(this.state.shippingPrice, 0)}`}</Text>
             </View>
           </View>
           <View style={styles.contentItemContainer}>
@@ -265,7 +457,7 @@ export default class OrderReview extends React.Component<Props, State> {
           label={"PROCEED"}
           backgroundColor={metrics.PRIMARY_COLOR}
           labelStyle={{ color: "white" }}
-          onPress={() => this.props.navigation.navigate("OrderTrack")}
+          onPress={this.createOrder}
         />
       </View>
     )
@@ -309,6 +501,13 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
 
+  destionationButton: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    zIndex: 99
+  },
+
   destinationAddress: {
     color: "white",
     marginLeft: 20,
@@ -346,7 +545,8 @@ const styles = StyleSheet.create({
   contentTitle: {
     color: metrics.PRIMARY_COLOR,
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 16,
+    marginBottom: 5
   },
 
   destinationInputContainer: {
@@ -362,12 +562,12 @@ const styles = StyleSheet.create({
   },
 
   contentDivider: {
-    backgroundColor: "grey",
+    backgroundColor: "#ccc",
     height: 1,
+    flex: 1,
+    marginLeft: -20,
     width: metrics.DEVICE_WIDTH * 0.9,
-    position: "relative",
-    left: -20,
-    top: 10
+    marginVertical: 15
   },
 
   contentCaption: {
@@ -399,3 +599,5 @@ const styles = StyleSheet.create({
     marginTop: 10
   }
 })
+
+export default withOrderContext(withCartContext(OrderReview))

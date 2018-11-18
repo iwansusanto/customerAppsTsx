@@ -289,7 +289,12 @@ interface CartResponse {
 interface CartContext {
   cart: CartResponse
   getCart: Function
-  addToCart: (quantity: number, id: number, additional: number[] | null, notes: string) => Promise<boolean>
+  addToCart: (
+    quantity: number,
+    id: number,
+    additional: number[] | null,
+    notes: string
+  ) => Promise<boolean>
   deleteCart: (id: number) => Promise<boolean>
   updateCart: (quantity: number, id: number) => Promise<boolean>
 }
@@ -297,4 +302,156 @@ interface CartContext {
 interface AddToCartResponse {
   success: boolean
   message: string
+}
+
+interface UserAddress {
+  id: number
+  customer_id: number
+  label: string
+  address: string
+  lat: string
+  lng: string
+  created_at: string
+  updated_at: string
+  phone: string
+  fullname: string
+}
+
+interface AddressResponse {
+  success: boolean
+  message: string
+  address_data: UserAddress[]
+}
+
+interface ShippingResponse {
+  distance: string
+  delivery_price: string
+}
+
+interface OrderedProduct {
+  id: number
+  product_id: number
+  order_id: number
+  price: string
+  quantity: number
+  product_data: string
+  created_at: string
+  updated_at: string
+  name: string
+  description: string
+}
+
+interface DriverData {
+  id: number
+  name: string
+  email: string
+  phone: string
+  status: number
+  remark: string
+  created_at: string
+  updated_at: string
+  driver_image: null
+  driver_data: {
+    id: number
+    driver_id: string
+    address: string
+    resident_id: string
+    resident_image: string
+    license_image: string
+    driver_image: string
+    created_at: null
+    updated_at: null
+  }
+  driver_location: {
+    id: number
+    driver_id: string
+    lat: string
+    lng: string
+    created_at: string
+    updated_at: string
+    active_order: null
+  }
+  driver_balance: number
+}
+
+interface Order {
+  id: number
+  name: string
+  address: string
+  phone: string
+  lat: string
+  lng: string
+  total: string
+  delivery_area_id: number
+  delivery_price: string
+  promo_code: null
+  promo_discount: string
+  promo_code_id: null
+  payment_method: string
+  is_paid: boolean
+  tax: string
+  total_with_tax: string
+  city_id: number
+  merchant_id: number
+  customer_id: number
+  driver_id: number | null
+  order_status_id: number
+  comment: string
+  ordered_at: string
+  created_at: string
+  updated_at: string
+  driver_message: string | null
+  merchant_data: Merchant
+  display_price: string
+  status_text: string
+  driver_data: DriverData | null
+  order_status: {
+    id: number
+    name: string
+    sort: number
+    is_default: boolean
+    available_to_driver: string
+    created_at: string
+    updated_at: string
+    label: string
+  }
+}
+
+interface OrderResponseDetail extends Order {
+  ordered_products: OrderedProduct[]
+}
+
+interface OrderResponse {
+  success: boolean
+  order: OrderResponseDetail
+}
+
+interface OrderDetailResponse extends Order {
+  product_data: OrderedProduct[]
+}
+
+interface OrderAdditional {
+  data: string
+  notes: string
+}
+
+interface OrderContext {
+  order: OrderResponse
+  orderDetail: OrderDetailResponse
+  createOrder: (
+    name: string,
+    address: string,
+    phone: string,
+    lat: string,
+    lng: string,
+    paymentMethod: string,
+    deliveryAreaId: string,
+    cityId: string,
+    merchantId: string,
+    comment: string,
+    type: "now" | "scheduled",
+    orderedAt: string,
+    cartId: number
+  ) => Promise<boolean>
+  getOrderDetail: () => Promise<boolean>
 }

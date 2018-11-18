@@ -1,22 +1,43 @@
 import React from "react"
-import { View, StyleSheet, TouchableOpacity, Image, ImageStyle } from "react-native"
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ImageStyle
+} from "react-native"
 import metrics from "../config/metrics"
 
 import Text from "./CustomText"
+import api from "../api"
 
 const ICON_CHECK = require("../../assets/ic_check.png")
 
-export default () => (
-  <TouchableOpacity style={styles.container}>
-    <Image source={ICON_CHECK} style={styles.check as ImageStyle} />
-    <TouchableOpacity style={styles.delete}>
+interface Props {
+  selected: boolean
+  name: string
+  person: string
+  address: string
+  phone: string
+  setSelected: () => void
+  deleteAddress: () => void
+}
+
+export default (props: Props) => (
+  <View style={{ flex: 1 }}>
+    <TouchableOpacity onPress={props.setSelected} style={styles.container}>
+      {props.selected && (
+        <Image source={ICON_CHECK} style={styles.check as ImageStyle} />
+      )}
+      <Text style={styles.name}>{props.name}</Text>
+      <Text style={styles.person}>{props.person}</Text>
+      <Text style={styles.subtitle}>{props.address}</Text>
+      <Text style={styles.subtitle}>{props.phone}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={props.deleteAddress} style={styles.delete}>
       <Text style={styles.deleteButton}>DELETE</Text>
     </TouchableOpacity>
-    <Text style={styles.name}>Apartement</Text>
-    <Text style={styles.person}>Hamid</Text>
-    <Text style={styles.subtitle}>Bassura City, East Jakarta</Text>
-    <Text style={styles.subtitle}>085472647245</Text>
-  </TouchableOpacity>
+  </View>
 )
 
 const styles = StyleSheet.create({
@@ -42,7 +63,8 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    fontWeight: "300"
+    fontWeight: "300",
+    width: metrics.DEVICE_WIDTH * 0.7 
   },
 
   deleteButton: {
@@ -53,6 +75,6 @@ const styles = StyleSheet.create({
   delete: {
     position: "absolute",
     top: 12,
-    right: 60
+    right: 10
   }
 })

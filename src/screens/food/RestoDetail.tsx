@@ -129,6 +129,7 @@ class RestoDetail extends Component<Props, State> {
     >
       <FlatList
         data={this.props.cart.cart.product_data}
+        keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <CartItem
             deleteCartItem={this.deleteCartItem(item.id)}

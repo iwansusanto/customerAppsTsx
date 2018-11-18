@@ -6,24 +6,32 @@ import metrics from "../config/metrics"
 
 const DUMMY_FOOD = require("../../assets/dummy_food.png")
 
-export default () => (
+interface Props {
+  name: string
+  price: string
+  quantity: number
+  additional: CartAdditional[]
+}
+
+export default (props: Props) => (
   <View style={styles.container}>
     <View style={{ flexDirection: "row" }}>
       <Image source={DUMMY_FOOD} />
       <View style={{ marginLeft: 20, justifyContent: "center" }}>
-        <Text style={styles.foodTitle}>Fried Rice</Text>
-        <Text style={{ marginTop: 5 }}>+ Iced Tea</Text>
-        <Text>+ Chips</Text>
+        <Text style={styles.foodTitle}>{props.name}</Text>
+        {props.additional.map(item => (
+          <Text style={{ marginTop: 5 }}>{item.name}</Text>
+        ))}
       </View>
     </View>
     <View style={styles.priceContainer}>
       <Text style={{ color: "#4A90E2", fontWeight: "bold", fontSize: 13 }}>
-        Rp. 20.000
+        {props.price}
       </Text>
       <View style={{ flexDirection: "row" }}>
-        <Text style={{ fontWeight: "bold", fontSize: 18, marginRight: 10 }}>-</Text>
-        <Text style={{ color: "#4A90E2", fontWeight: "bold", fontSize: 18 }}>1</Text>
-        <Text style={{ fontWeight: "bold", fontSize: 18, marginLeft: 10 }}>+</Text>
+        {/* <Text style={{ fontWeight: "bold", fontSize: 18, marginRight: 10 }}>-</Text> */}
+        <Text style={{ color: "#4A90E2", fontWeight: "bold", fontSize: 18 }}>{props.quantity.toString()}</Text>
+        {/* <Text style={{ fontWeight: "bold", fontSize: 18, marginLeft: 10 }}>+</Text> */}
       </View>
     </View>
   </View>
@@ -53,7 +61,7 @@ const styles = StyleSheet.create({
 
   priceContainer: {
     borderTopWidth: 0.3,
-    borderBottomWidth: 0.3,
+    // borderBottomWidth: 0.3,
     borderColor: "grey",
     padding: 5,
     marginVertical: 10,

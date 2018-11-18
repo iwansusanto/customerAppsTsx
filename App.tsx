@@ -57,23 +57,26 @@ import CategoryContextProvider from "./src/components/providers/CategoryContextP
 import SuggestionContextProvider from "./src/components/providers/SuggestionContextProvider"
 import SearchContextProvider from "./src/components/providers/SearchContextProvider"
 import CartContextProvider from "./src/components/providers/CartContextProvider"
+import OrderContextProvider from "./src/components/providers/OrderContextProvider"
 
 export default class App extends React.Component<any, any> {
   render() {
     return (
-      <CartContextProvider>
-        <SearchContextProvider>
-          <SuggestionContextProvider>
-            <CategoryContextProvider>
-              <InboxContextProvider>
-                <UserContextProvider>
-                  <Navigator />
-                </UserContextProvider>
-              </InboxContextProvider>
-            </CategoryContextProvider>
-          </SuggestionContextProvider>
-        </SearchContextProvider>
-      </CartContextProvider>
+      <OrderContextProvider>
+        <CartContextProvider>
+          <SearchContextProvider>
+            <SuggestionContextProvider>
+              <CategoryContextProvider>
+                <InboxContextProvider>
+                  <UserContextProvider>
+                    <Navigator />
+                  </UserContextProvider>
+                </InboxContextProvider>
+              </CategoryContextProvider>
+            </SuggestionContextProvider>
+          </SearchContextProvider>
+        </CartContextProvider>
+      </OrderContextProvider>
     )
   }
 }
