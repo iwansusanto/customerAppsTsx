@@ -36,8 +36,8 @@ class SearchDriver extends React.Component<Props> {
     await this.props.order.getOrderDetail()
     const order = this.props.order.orderDetail
 
-    if (order.driver_id !== null) {
-      this.props.navigation.navigate("OrderTrack")
+    if (order.driver_id !== 0) {
+      this.props.navigation.replace("OrderTrack")
       clearInterval(this.interval)
     }
   }

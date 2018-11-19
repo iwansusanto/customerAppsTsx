@@ -19,7 +19,7 @@ interface Props extends TouchableOpacityProps {
 
 export default (props: Props) => (
   <TouchableOpacity style={styles.container} {...props}>
-    <Image source={{ uri: props.image }} />
+    <Image style={styles.image} source={{ uri: props.image }} />
     <View style={styles.detailContainer}>
       <Text style={styles.name}>{props.name}</Text>
       <Text style={styles.price}>Rp. 20.000</Text>
@@ -48,6 +48,11 @@ const styles = StyleSheet.create({
 
   detailContainer: {
     marginLeft: 20
+  },
+
+  image: {
+    height: 70,
+    width: 70
   },
 
   name: {

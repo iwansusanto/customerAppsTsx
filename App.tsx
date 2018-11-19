@@ -3,7 +3,8 @@ import { TouchableOpacity } from "react-native"
 import {
   createStackNavigator,
   createBottomTabNavigator,
-  NavigationNavigatorProps
+  NavigationNavigatorProps,
+  NavigationScreenProp
 } from "react-navigation"
 
 // Temporary name for entry point
@@ -166,13 +167,20 @@ const Navigator = createStackNavigator(
       screen: ({ navigation }: NavigationNavigatorProps) => (
         <RestoDetail navigation={navigation} />
       ),
-      navigationOptions: {
-        title: "McDonalds",
-        headerRight: (
-          <TouchableOpacity style={{ marginRight: 20 }}>
-            <Image source={ICON_HEART} />
-          </TouchableOpacity>
-        )
+      navigationOptions: ({
+        navigation
+      }: {
+        navigation: NavigationScreenProp<any, any>
+      }) => {
+        const { state } = navigation
+        return {
+          title: `${state.params.title || ""}`,
+          headerRight: (
+            <TouchableOpacity style={{ marginRight: 20 }}>
+              <Image source={ICON_HEART} />
+            </TouchableOpacity>
+          )
+        }
       }
     },
     EditProfile: { screen: EditProfile },

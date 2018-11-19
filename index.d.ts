@@ -192,7 +192,8 @@ interface SearchResponse {
 
 interface SearchContext extends SearchResponse {
   resto: SearchRestoResponse
-  search: (query: string, categoryId: number) => Promise<boolean>
+  search: (type: number) => Promise<boolean>
+  searchBySuggestion: (parentId: number) => Promise<boolean>
   searchRestoDetail: (menuId: number) => Promise<boolean>
 }
 
@@ -259,6 +260,7 @@ interface MenuData {
 
 interface SearchRestoResponse {
   success: boolean
+  merchant: Merchant
   menu_data: MenuData[]
 }
 

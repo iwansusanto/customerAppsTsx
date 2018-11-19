@@ -23,7 +23,9 @@ class Resto extends React.Component<Props, any> {
               address={item.address}
               distance={""}
               picture={item.image_url}
-              onPress={() => this.props.navigation.navigate("RestoDetail")}
+              onPress={() => this.props.navigation.navigate("RestoDetail", {
+                merchantId: item.id
+              })}
             />
           )}
           contentContainerStyle={styles.list}

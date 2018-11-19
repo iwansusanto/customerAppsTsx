@@ -42,19 +42,6 @@ const LoadingMenu = () => (
 const ICON_ARROW = require("../../../assets/ic_arrow.png")
 const ICON_CART = require("../../../assets/ic_cart.png")
 
-const Tabs = createTabNavigator(
-  {
-    Rice: { screen: RestoFood },
-    Dumplings: { screen: RestoFood }
-  },
-  {
-    tabBarComponent: ({ navigation }) => <TopTab navigation={navigation} />,
-    tabBarPosition: "top",
-    swipeEnabled: true,
-    animationEnabled: true
-  }
-)
-
 class RestoDetail extends Component<Props, State> {
   state = {
     menus: {
@@ -64,7 +51,8 @@ class RestoDetail extends Component<Props, State> {
 
   public async componentWillMount() {
     console.log(this.props)
-    await this.props.search.searchRestoDetail(1)
+    const merchantId = this.props.navigation.getParam("merchantId")
+    await this.props.search.searchRestoDetail(merchantId)
     const menus: any = {}
     this.props.search.resto.menu_data.map(
       item =>
@@ -72,8 +60,17 @@ class RestoDetail extends Component<Props, State> {
           <RestoFood navigation={this.props.navigation} data={item.data} />
         ))
     )
-    console.log(menus)
+
+    if (Object.keys(menus).length === 0) {
+      menus["Menu Unvailable"] = () => (
+        <RestoFood navigation={this.props.navigation} data={[]} />
+      )
+    }
+    console.log(menus, this.props.search.resto.merchant)
     await this.setState({ menus })
+
+    const { setParams } = this.props.navigation
+    setParams({ title: this.props.search.resto.merchant.name })
 
     this.props.cart.getCart()
   }
@@ -103,6 +100,11 @@ class RestoDetail extends Component<Props, State> {
         </View>
       </View>
     )
+  }
+
+  changeTitle = (title: string) => {
+    const { setParams } = this.props.navigation
+    setParams({ title })
   }
 
   deleteCartItem = (id: number) => async () => {
@@ -148,7 +150,9 @@ class RestoDetail extends Component<Props, State> {
   renderSlideUpButton() {
     return (
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate("OrderReview")}>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("OrderReview")}
+        >
           <Image source={ICON_CART} />
         </TouchableOpacity>
         <View style={{ marginLeft: 20, justifyContent: "center", flex: 1 }}>

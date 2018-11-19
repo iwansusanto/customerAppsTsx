@@ -37,7 +37,12 @@ class Food extends React.Component<Props, any> {
   }
 
   search = (id: number) => () => {
-    this.props.search.search("", id)
+    this.props.search.search(id)
+    this.props.navigation.navigate("FoodSearch")
+  }
+
+  searchBySuggestion = (parentId: number) => () => {
+    this.props.search.searchBySuggestion(parentId)
     this.props.navigation.navigate("FoodSearch")
   }
 
@@ -55,9 +60,9 @@ class Food extends React.Component<Props, any> {
           <View style={styles.categoryListContainer}>
             <View style={styles.categoryListRow}>
               <FoodCategory onPress={this.search(1)} />
-              <FoodCategory />
-              <FoodCategory />
-              <FoodCategory />
+              <FoodCategory onPress={this.search(2)} />
+              <FoodCategory onPress={this.search(3)} />
+              <FoodCategory onPress={this.search(4)} />
             </View>
           </View>
         </View>
@@ -70,8 +75,7 @@ class Food extends React.Component<Props, any> {
               title={item.name}
               picture={item.image_url}
               venueCount={item.has_children}
-              onPress={() => {}}
-              // onPress={this.search(item.parent_id)}
+              onPress={this.searchBySuggestion(item.id)}
             />
           )}
           horizontal

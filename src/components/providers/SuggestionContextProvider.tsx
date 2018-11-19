@@ -20,7 +20,7 @@ export default class SuggestionContextProvider extends Component<{}, State> {
     }
 
     try {
-      const { data } = await api.client.post<CategoryResponse>("/categories", {
+      const { data } = await api.client.post<CategoryResponse>("/v2/suggestion", {
         parent_id: suggestId
       })
       console.log(suggestId, data)
