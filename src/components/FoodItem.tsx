@@ -30,9 +30,9 @@ export default (props: Props) => (
     <TouchableOpacity style={styles.favorite}>
       <Image source={ICON_HEART} />
     </TouchableOpacity>
-    <TouchableOpacity style={styles.add}>
+    {/* <TouchableOpacity style={styles.add}>
       <Image source={ICON_PLUS} />
-    </TouchableOpacity>
+    </TouchableOpacity> */}
   </TouchableOpacity>
 )
 
