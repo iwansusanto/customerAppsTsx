@@ -1,24 +1,15 @@
 import React from "react"
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  FlatList
-} from "react-native"
+import { View, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native"
 
 import Text from "../../components/CustomText"
-import {
-  NavigationStackScreenOptions,
-  NavigationScreenProp
-} from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import SearchBar from "../../components/SearchBar"
 import metrics from "../../config/metrics"
 import FoodCategory from "../../components/FoodCategory"
 import FoodSuggestion from "../../components/FoodSuggestion"
-import withSuggestionContext from "../../components/consumers/withSuggestionContext";
-import withSearchContext from "../../components/consumers/withSearchContext";
+import withSuggestionContext from "../../components/consumers/withSuggestionContext"
+import withSearchContext from "../../components/consumers/withSearchContext"
 
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_HEART = require("../../../assets/ic_heart.png")
@@ -68,19 +59,13 @@ class Food extends React.Component<Props, any> {
               <FoodCategory />
               <FoodCategory />
             </View>
-            <View style={styles.categoryListRow}>
-              <FoodCategory />
-              <FoodCategory />
-              <FoodCategory />
-              <FoodCategory />
-            </View>
           </View>
         </View>
         <Text style={styles.suggestionCaption}>Suggestion for you</Text>
         <FlatList
           data={this.props.suggestion.suggestions}
           keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <FoodSuggestion
               title={item.name}
               picture={item.image_url}
@@ -154,7 +139,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingLeft: 20,
     paddingRight: 10,
-    alignSelf: "flex-start",
+    alignSelf: "flex-start"
   },
 
   suggestionCaption: {

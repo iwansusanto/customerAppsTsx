@@ -58,7 +58,7 @@ const Tabs = createTabNavigator(
 class RestoDetail extends Component<Props, State> {
   state = {
     menus: {
-      "Mengambil Menu": LoadingMenu
+      "Fetching Menu": LoadingMenu
     }
   }
 
@@ -148,9 +148,7 @@ class RestoDetail extends Component<Props, State> {
   renderSlideUpButton() {
     return (
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("OrderReview")}
-        >
+        <TouchableOpacity onPress={() => this.props.navigation.navigate("OrderReview")}>
           <Image source={ICON_CART} />
         </TouchableOpacity>
         <View style={{ marginLeft: 20, justifyContent: "center", flex: 1 }}>

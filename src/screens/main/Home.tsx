@@ -128,10 +128,7 @@ class Home extends React.Component<Props, State> {
 
   render() {
     return (
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={{ alignItems: "center" }}
-      >
+      <View style={styles.container}>
         <HeaderOverlay />
         <StatusBar barStyle={"light-content"} />
         <Image source={LOGO} style={{ marginTop: 50 }} />
@@ -146,14 +143,16 @@ class Home extends React.Component<Props, State> {
           </View>
         </View>
         <View style={styles.mapContainer}>
-          <MapView
-            ref={this.mapRef}
-            showsUserLocation={true}
-            onMapReady={this.onMapReady}
-            region={this.state.currentLocation}
-            style={styles.map}
-            provider={PROVIDER_GOOGLE}
-          />
+          <View style={styles.map}>
+            <MapView
+              ref={this.mapRef}
+              showsUserLocation={true}
+              onMapReady={this.onMapReady}
+              region={this.state.currentLocation}
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+            />
+          </View>
           <View style={styles.mapOverlay}>
             <Image source={ICON_MARKER} />
             <Text style={styles.address}>{this.state.address}</Text>
@@ -178,7 +177,7 @@ class Home extends React.Component<Props, State> {
           )}
           horizontal
         />
-      </ScrollView>
+      </View>
     )
   }
 }
@@ -186,7 +185,8 @@ class Home extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5FCFF"
+    backgroundColor: "#F5FCFF",
+    alignItems: "center"
   },
 
   customerDetail: {
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
 
   mapContainer: {
     width: metrics.DEVICE_WIDTH * 0.9,
-    height: metrics.DEVICE_HEIGHT * 0.4,
+    height: metrics.DEVICE_HEIGHT * 0.35,
     marginTop: 20
   },
 

@@ -4,7 +4,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  TouchableOpacityProps
+  TouchableOpacityProps,
+  ImageStyle
 } from "react-native"
 
 import Text from "./CustomText"
@@ -21,7 +22,7 @@ interface Props extends TouchableOpacityProps {
 
 export default (props: Props) => (
   <TouchableOpacity style={styles.container} {...props}>
-    <Image style={styles.picture} source={{ uri: props.picture }} />
+    <Image style={styles.picture as ImageStyle} source={{ uri: props.picture }} />
     <View style={styles.detailContainer}>
       <Text style={styles.title}>{props.name}</Text>
       <Text style={styles.price}>{props.price}</Text>
@@ -49,7 +50,8 @@ const styles = StyleSheet.create({
       height: 2
     },
     shadowRadius: 5,
-    shadowOpacity: 1
+    shadowOpacity: 1,
+    minHeight: 120
   },
 
   picture: {

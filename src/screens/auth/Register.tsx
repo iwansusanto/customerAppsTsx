@@ -5,12 +5,11 @@ import {
   Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  ImageStyle,
+  Alert
 } from "react-native"
-import {
-  NavigationStackScreenOptions,
-  NavigationScreenProp
-} from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
 // Custom component used in the screen
 import Text from "../../components/CustomText"
@@ -89,9 +88,7 @@ export default class Register extends React.Component<Props, State> {
     super(props)
 
     // Function binding to this class
-    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(
-      this
-    )
+    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(this)
   }
 
   // Register button press handler
@@ -117,6 +114,7 @@ export default class Register extends React.Component<Props, State> {
       })
     } else {
       // TODO: show register failed
+      Alert.alert("Failed", "Your registration has failed, please try again")
     }
   }
 
@@ -126,8 +124,8 @@ export default class Register extends React.Component<Props, State> {
         {context => (
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
-              <Image source={OVERLAY} style={styles.overlay} />
-              <Image source={LOGO} style={styles.logo} />
+              <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
+              <Image source={LOGO} style={styles.logo as ImageStyle} />
               <Text style={styles.title}>MAKE A NEW ACCOUNT</Text>
               <Text style={styles.caption}>FILL YOUR INFO AND GET STARTED</Text>
               <View style={styles.formContainer}>
@@ -136,12 +134,33 @@ export default class Register extends React.Component<Props, State> {
                   placeholder={"Name"}
                   onChangeText={text => this.setState({ name: text })}
                 />
-                <CustomTextInput
-                  icon={ICON_PHONE}
-                  placeholder={"Phone Number"}
-                  keyboardType={"number-pad"}
-                  onChangeText={text => this.setState({ phone: text })}
-                />
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    style={{
+                      width: metrics.DEVICE_WIDTH * 0.17,
+                      height: 45,
+                      backgroundColor: "white",
+                      borderRadius: 5,
+                      marginVertical: 5,
+                      marginRight: metrics.DEVICE_WIDTH * 0.03,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                    onPress={() => this.props.navigation.navigate("CountrySelect")}
+                  >
+                    <Image
+                      source={{ uri: "https://www.countryflags.io/be/flat/64.png" }}
+                      style={{ width: 40, height: 40 }}
+                    />
+                  </TouchableOpacity>
+                  <CustomTextInput
+                    style={{ width: metrics.DEVICE_WIDTH * 0.6 }}
+                    icon={ICON_PHONE}
+                    placeholder={"Phone Number"}
+                    keyboardType={"number-pad"}
+                    onChangeText={text => this.setState({ phone: text })}
+                  />
+                </View>
                 <CustomTextInput
                   icon={ICON_MAIL}
                   placeholder={"Email"}
@@ -157,12 +176,8 @@ export default class Register extends React.Component<Props, State> {
                 />
               </View>
               <View style={styles.tosContainer}>
-                <Text style={styles.caption}>
-                  By registering I agree to the
-                </Text>
-                <Text style={styles.tos}>
-                  Terms of Service and Privacy Policy
-                </Text>
+                <Text style={styles.caption}>By registering I agree to the</Text>
+                <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
               </View>
               <FixedButton
                 isLoading={this.state.isLoading}

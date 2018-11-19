@@ -18,6 +18,7 @@ import Login from "./src/screens/auth/Login"
 import OTPVerification from "./src/screens/auth/OTPVerification"
 import ChangePassword from "./src/screens/auth/ChangePassword"
 import Email from "./src/screens/auth/Email"
+import CountrySelect from "./src/screens/auth/CountrySelect"
 
 // Main tab screens
 import Home from "./src/screens/main/Home"
@@ -145,6 +146,7 @@ const Navigator = createStackNavigator(
     OTP: { screen: OTPVerification },
     Welcome: { screen: Welcome },
     Register: { screen: Register },
+    CountrySelect: { screen: CountrySelect },
     ChangePassword: { screen: ChangePassword },
     Email: { screen: Email },
     Food: { screen: Food },
