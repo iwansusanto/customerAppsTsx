@@ -5,7 +5,8 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
-  Alert
+  Alert,
+  ImageStyle
 } from "react-native"
 
 import Text from "../../components/CustomText"
@@ -54,8 +55,8 @@ export default class Email extends React.Component<Props, State> {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          <Image source={OVERLAY} style={styles.overlay} />
-          <Image source={LOGO} style={styles.logo} />
+          <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
+          <Image source={LOGO} style={styles.logo as ImageStyle} />
           <Text style={styles.subtitle}>RESET YOUR PASSWORD</Text>
           <Text style={styles.caption}>ENTER YOUR EMAIL ADDRESS</Text>
           <CustomTextInput
@@ -84,7 +85,9 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    marginTop: metrics.DEVICE_HEIGHT * 0.05
+    marginTop: metrics.IS_IPHONE_X
+      ? metrics.DEVICE_HEIGHT * 0.15
+      : metrics.DEVICE_HEIGHT * 0.05
   },
 
   overlay: {

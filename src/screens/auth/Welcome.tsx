@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image } from "react-native"
+import { View, StyleSheet, Image, ImageStyle } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
 // Custom component used in the screen
@@ -52,8 +52,8 @@ export default class Welcome extends React.Component<Props, any> {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={LOGO} style={styles.logo} />
-        <Image source={OVERLAY} style={styles.overlay} />
+        <Image source={LOGO} style={styles.logo as ImageStyle} />
+        <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
         <Text style={styles.title}>WELCOME TO MSHWAR APP</Text>
         <Text style={styles.caption}>WE TAKE YOUR ORDER RESPONSIBLY</Text>
         <View style={styles.defaultAuthButtonContainer}>
@@ -91,7 +91,9 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    marginTop: metrics.DEVICE_HEIGHT * 0.15,
+    marginTop: metrics.IS_IPHONE_X
+      ? metrics.DEVICE_HEIGHT * 0.25
+      : metrics.DEVICE_HEIGHT * 0.15
   },
 
   title: {
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
   overlay: {
     position: "absolute",
     bottom: 0,
-    width: metrics.DEVICE_WIDTH,
+    width: metrics.DEVICE_WIDTH
   },
 
   tosContainer: {

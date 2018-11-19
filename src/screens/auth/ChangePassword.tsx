@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Image,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  ImageStyle
 } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
@@ -59,8 +60,8 @@ export default class ChangePassword extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          <Image source={OVERLAY} style={styles.overlay} />
-          <Image source={LOGO} style={styles.logo} />
+          <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
+          <Image source={LOGO} style={styles.logo as ImageStyle} />
           <Text style={styles.title}>CHANGE PASSWORD</Text>
           <View style={styles.formContainer}>
             <CustomTextInput
@@ -95,7 +96,9 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    marginTop: metrics.DEVICE_HEIGHT * 0.05
+    marginTop: metrics.IS_IPHONE_X
+      ? metrics.DEVICE_HEIGHT * 0.15
+      : metrics.DEVICE_HEIGHT * 0.05
   },
 
   title: {
