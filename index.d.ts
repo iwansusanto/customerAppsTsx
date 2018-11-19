@@ -68,11 +68,12 @@ interface Category {
 }
 
 interface CategoryResponse {
-  data: Category
+  type: []
+  data: Category[]
 }
 
 interface CategoryContext {
-  categories: Category
+  categories: Category[]
   getCategories: Function
 }
 

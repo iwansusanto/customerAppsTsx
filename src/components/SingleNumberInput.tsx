@@ -1,17 +1,19 @@
 // Number input for OTP screen which only contains 1 character max
 
 import React from "react"
-import { TextInput, View, StyleSheet, TextInputProps } from "react-native"
+import {
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  Text
+} from "react-native"
 
-// Props typing
-interface SingleNumberInputProps extends TextInputProps {
-  ref?: any
+interface Props extends TouchableOpacityProps {
+  value: string
 }
 
-export default class SingleNumberInput extends React.Component<
-  SingleNumberInputProps,
-  any
-> {
+export default class SingleNumberInput extends React.Component<Props> {
   // Text input reference
   private textInputRef: TextInput | null = null
 
@@ -19,17 +21,14 @@ export default class SingleNumberInput extends React.Component<
   focus = () => this.textInputRef!.focus()
 
   render() {
-    const props: SingleNumberInputProps = this.props
     return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.textInput}
-          maxLength={1}
-          keyboardType={"numeric"}
-          {...props}
-          ref={ref => (this.textInputRef = ref)}
-        />
-      </View>
+      <TouchableOpacity
+        {...this.props}
+        activeOpacity={1}
+        style={styles.container}
+      >
+        <Text style={styles.textInput}>{this.props.value}</Text>
+      </TouchableOpacity>
     )
   }
 }

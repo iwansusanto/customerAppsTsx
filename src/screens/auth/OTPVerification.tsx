@@ -1,4 +1,4 @@
-import React from "react"
+import React, { createRef } from "react"
 import {
   View,
   StyleSheet,
@@ -32,11 +32,8 @@ interface Props {
 
 // State typing
 interface State {
-  digitOne: string
-  digitTwo: string
-  digitThree: string
-  digitFour: string
   isLoading: boolean
+  otp: string
 }
 
 export default class OTPVerification extends React.Component<Props, State> {
@@ -50,46 +47,22 @@ export default class OTPVerification extends React.Component<Props, State> {
 
   // Initial state
   state = {
-    digitOne: "",
-    digitTwo: "",
-    digitThree: "",
-    digitFour: "",
-    isLoading: false
-  }
-
-  componentDidMount() {
-    this.formRef["digitOne"].focus()
+    isLoading: false,
+    otp: ""
   }
 
   // Reference object for the text inputs
-  private formRef: any = {}
+  hiddenInputRef = createRef<TextInput>()
 
-  // @param nextRef: string - Used to determine the next text input to focus
-  // @param value: string - Value of the text input to pass into screen state
-  handleFormFocusChange(nextRef: string, value: string): void {
-    // Set the state of every text inputs according to value entered
-    // From the nextRef param, we can determine the current text input to set its state into
-    switch (nextRef) {
-      case "digitTwo":
-        this.setState({ digitOne: value })
-        break
-      case "digitThree":
-        this.setState({ digitTwo: value })
-        break
-      case "digitFour":
-        this.setState({ digitThree: value })
-        break
-      case "close":
-        this.setState({ digitFour: value })
-
-        // Dismiss the keyboard in the last text input for convenience
-        Keyboard.dismiss()
-        // Return because we don't want to call focus method below
-        return
-    }
-
+  handleFormFocusChange = () => {
     // Focus to the next text input based on nextRef param
-    this.formRef[nextRef].focus()
+    if (this.hiddenInputRef.current) {
+      this.hiddenInputRef.current.focus()
+    }
+  }
+
+  handleOtpType = (text: string) => {
+    this.setState({ otp: text })
   }
 
   handleLoginButtonPressed = (otp: Function) => async () => {
@@ -99,12 +72,11 @@ export default class OTPVerification extends React.Component<Props, State> {
 
     const email = this.props.navigation.getParam("email")
     const password = this.props.navigation.getParam("password")
-    const { digitOne, digitTwo, digitThree, digitFour } = this.state
 
     const result = await otp({
       email,
       password,
-      otp: `${digitOne}${digitTwo}${digitThree}${digitFour}`
+      otp: this.state.otp
     })
 
     this.setState({ isLoading: false })
@@ -127,33 +99,32 @@ export default class OTPVerification extends React.Component<Props, State> {
               <Text style={styles.caption}>
                 Email verification has been sent to
               </Text>
-              <Text style={styles.email}>adipramudya@hotmail.com</Text>
+              <TextInput
+                style={{ height: 0 }}
+                ref={this.hiddenInputRef}
+                value={this.state.otp}
+                onChangeText={this.handleOtpType}
+                keyboardType={"numeric"}
+                maxLength={4}
+              />
+              <Text style={styles.email}>{this.props.navigation.getParam("email")}</Text>
               <Text style={styles.code}>ENTER CODE</Text>
               <View style={styles.codeInputContainer}>
                 <SingleNumberInput
-                  ref={(ref: any) => (this.formRef["digitOne"] = ref)}
-                  onChangeText={this.handleFormFocusChange.bind(
-                    this,
-                    "digitTwo"
-                  )}
+                  value={this.state.otp[0]}
+                  onPress={this.handleFormFocusChange}
                 />
                 <SingleNumberInput
-                  ref={(ref: any) => (this.formRef["digitTwo"] = ref)}
-                  onChangeText={this.handleFormFocusChange.bind(
-                    this,
-                    "digitThree"
-                  )}
+                  value={this.state.otp[1]}
+                  onPress={this.handleFormFocusChange}
                 />
                 <SingleNumberInput
-                  ref={(ref: any) => (this.formRef["digitThree"] = ref)}
-                  onChangeText={this.handleFormFocusChange.bind(
-                    this,
-                    "digitFour"
-                  )}
+                  value={this.state.otp[2]}
+                  onPress={this.handleFormFocusChange}
                 />
                 <SingleNumberInput
-                  ref={(ref: any) => (this.formRef["digitFour"] = ref)}
-                  onChangeText={this.handleFormFocusChange.bind(this, "close")}
+                  value={this.state.otp[3]}
+                  onPress={this.handleFormFocusChange}
                 />
               </View>
               <Text style={styles.resend}>Resend code in 00:30</Text>
