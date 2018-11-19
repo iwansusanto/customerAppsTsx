@@ -14,7 +14,7 @@ export default class CategoryContextProvider extends Component<{}, State> {
 
   getCategories = async () => {
     try {
-      const { data } = await api.client.post<CategoryResponse>("/categories")
+      const { data } = await api.client.post<CategoryResponse>("/v2/categories")
       console.log(data);
       this.setState({ categories: data.data })
     } catch (err) {
