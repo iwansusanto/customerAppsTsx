@@ -7,9 +7,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ImageStyle,
-  Alert
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 
 // Custom component used in the screen
 import Text from "../../components/CustomText"
@@ -214,15 +217,16 @@ export default class Register extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: metrics.PRIMARY_COLOR,
-    alignItems: "center"
+    alignItems: "center",
+    flex: 1
   },
 
   overlay: {
     position: "absolute",
     bottom: 0,
-    width: metrics.DEVICE_WIDTH
+    width: metrics.DEVICE_WIDTH,
+    height: metrics.DEVICE_HEIGHT * 0.4
   },
 
   logo: {
@@ -251,8 +255,7 @@ const styles = StyleSheet.create({
 
   tosContainer: {
     alignItems: "center",
-    position: "absolute",
-    bottom: 65
+    marginTop: 50
   },
 
   tos: {

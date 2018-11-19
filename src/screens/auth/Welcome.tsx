@@ -53,7 +53,11 @@ export default class Welcome extends React.Component<Props, any> {
     return (
       <View style={styles.container}>
         <Image source={LOGO} style={styles.logo as ImageStyle} />
-        <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
+        <Image
+          source={OVERLAY}
+          style={styles.overlay as ImageStyle}
+          resizeMode={"contain"}
+        />
         <Text style={styles.title}>WELCOME TO MSHWAR APP</Text>
         <Text style={styles.caption}>WE TAKE YOUR ORDER RESPONSIBLY</Text>
         <View style={styles.defaultAuthButtonContainer}>
@@ -129,14 +133,15 @@ const styles = StyleSheet.create({
 
   facebookAuthButton: {
     backgroundColor: metrics.FACEBOOK_COLOR,
-    width: metrics.DEVICE_WIDTH * 0.6,
+    padding: 10,
     marginTop: 20
   },
 
   overlay: {
     position: "absolute",
     bottom: 0,
-    width: metrics.DEVICE_WIDTH
+    width: metrics.DEVICE_WIDTH,
+    height: metrics.DEVICE_HEIGHT * 0.4
   },
 
   tosContainer: {

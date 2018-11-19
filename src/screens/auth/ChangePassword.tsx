@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
   overlay: {
     position: "absolute",
     bottom: 0,
-    width: metrics.DEVICE_WIDTH
+    width: metrics.DEVICE_WIDTH,
+    height: metrics.DEVICE_HEIGHT * 0.4
   },
 
   logo: {

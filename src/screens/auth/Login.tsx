@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  ImageStyle
+  ImageStyle,
+  KeyboardAvoidingView
 } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
@@ -121,44 +122,50 @@ class Login extends React.Component<Props, State> {
     return (
       <UserContext.Consumer>
         {context => (
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.container}>
-              <Image source={LOGO} style={styles.logo as ImageStyle} />
-              <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
-              <View style={styles.welcomeMessageContainer}>
-                <Text style={[styles.welcomeMessage, { fontSize: 18 }]}>
-                  ENTER YOUR ACCOUNT
-                </Text>
-                <Text style={[styles.welcomeMessage, { fontSize: 16 }]}>
-                  LET US DO THE REST
-                </Text>
-              </View>
-              <View style={styles.formContainer}>
-                <CustomTextInput
-                  icon={ICON_MAIL}
-                  placeholder={"Email"}
-                  keyboardType={"email-address"}
-                  autoCapitalize="none"
-                  onChangeText={text => this.setState({ email: text })}
+          <KeyboardAvoidingView behavior={"padding"} style={{ flex: 1 }}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.container}>
+                <Image source={LOGO} style={styles.logo as ImageStyle} />
+                <Image
+                  source={OVERLAY}
+                  style={styles.overlay as ImageStyle}
+                  resizeMode={"contain"}
                 />
-                <CustomTextInput
-                  icon={ICON_KEY}
-                  placeholder={"Password"}
-                  secureTextEntry={true}
-                  onChangeText={text => this.setState({ password: text })}
+                <View style={styles.welcomeMessageContainer}>
+                  <Text style={[styles.welcomeMessage, { fontSize: 18 }]}>
+                    ENTER YOUR ACCOUNT
+                  </Text>
+                  <Text style={[styles.welcomeMessage, { fontSize: 16 }]}>
+                    LET US DO THE REST
+                  </Text>
+                </View>
+                <View style={styles.formContainer}>
+                  <CustomTextInput
+                    icon={ICON_MAIL}
+                    placeholder={"Email"}
+                    keyboardType={"email-address"}
+                    autoCapitalize="none"
+                    onChangeText={text => this.setState({ email: text })}
+                  />
+                  <CustomTextInput
+                    icon={ICON_KEY}
+                    placeholder={"Password"}
+                    secureTextEntry={true}
+                    onChangeText={text => this.setState({ password: text })}
+                  />
+                  <Text style={styles.forgot} onPress={this.handleForgetPasswordPressed}>
+                    FORGOT PASSWORD
+                  </Text>
+                </View>
+                <FixedButton
+                  isLoading={this.state.isLoading}
+                  label={"LOGIN"}
+                  backgroundColor={metrics.SECONDARY_COLOR}
+                  onPress={this.handleLoginButtonPressed(context.login)}
                 />
-                <Text style={styles.forgot} onPress={this.handleForgetPasswordPressed}>
-                  FORGOT PASSWORD
-                </Text>
               </View>
-              <FixedButton
-                isLoading={this.state.isLoading}
-                label={"LOGIN"}
-                backgroundColor={metrics.SECONDARY_COLOR}
-                onPress={this.handleLoginButtonPressed(context.login)}
-              />
-            </View>
-          </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
         )}
       </UserContext.Consumer>
     )
@@ -175,7 +182,8 @@ const styles = StyleSheet.create({
   overlay: {
     width: metrics.DEVICE_WIDTH,
     position: "absolute",
-    bottom: 0
+    bottom: 0,
+    height: metrics.DEVICE_HEIGHT * 0.4
   },
 
   logo: {

@@ -7,10 +7,7 @@ import {
   Keyboard,
   TextInput
 } from "react-native"
-import {
-  NavigationStackScreenOptions,
-  NavigationScreenProp
-} from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
 // Custom components used in the screen
 import Text from "../../components/CustomText"
@@ -96,9 +93,7 @@ export default class OTPVerification extends React.Component<Props, State> {
             <View style={styles.container}>
               <Image source={LOGO} style={styles.logo} />
               <Image source={OVERLAY} style={styles.overlay} />
-              <Text style={styles.caption}>
-                Email verification has been sent to
-              </Text>
+              <Text style={styles.caption}>Email verification has been sent to</Text>
               <TextInput
                 style={{ height: 0 }}
                 ref={this.hiddenInputRef}
@@ -136,12 +131,8 @@ export default class OTPVerification extends React.Component<Props, State> {
                 onPress={this.handleLoginButtonPressed(context.otp)}
               />
               <View style={styles.tosContainer}>
-                <Text style={styles.caption}>
-                  By registering I agree to the
-                </Text>
-                <Text style={styles.tos}>
-                  Terms of Service and Privacy Policy
-                </Text>
+                <Text style={styles.caption}>By registering I agree to the</Text>
+                <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -161,7 +152,8 @@ const styles = StyleSheet.create({
   overlay: {
     width: metrics.DEVICE_WIDTH,
     position: "absolute",
-    bottom: 0
+    bottom: 0,
+    height: metrics.DEVICE_HEIGHT * 0.4
   },
 
   logo: {
