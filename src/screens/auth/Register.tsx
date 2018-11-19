@@ -226,7 +226,9 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    marginTop: metrics.DEVICE_HEIGHT * 0.05
+    marginTop: metrics.IS_IPHONE_X
+      ? metrics.DEVICE_HEIGHT * 0.15
+      : metrics.DEVICE_HEIGHT * 0.05
   },
 
   title: {
