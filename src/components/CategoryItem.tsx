@@ -24,16 +24,18 @@ const CategoryItem = (props: Props) => (
     <Image
       source={{ uri: props.picture }}
       style={styles.image}
-      resizeMode="stretch"
+      resizeMode="cover"
     />
     <Image source={ICON} style={styles.icon} />
-    <Text style={styles.subtitle}>{props.title}</Text>
+    <View style={styles.subtitleView}>
+      <Text style={styles.subtitle}>{props.title}</Text>
+    </View>
   </TouchableOpacity>
 )
 
 const styles = StyleSheet.create({
   container: {
-    width: metrics.DEVICE_WIDTH * 0.6,
+    width: metrics.DEVICE_WIDTH * 0.9,
     height: metrics.DEVICE_WIDTH * 0.35,
     borderRadius: 15,
     justifyContent: "center",
@@ -58,13 +60,20 @@ const styles = StyleSheet.create({
     left: 5
   },
 
+  subtitleView: {
+    position: "absolute",
+    bottom: 10,
+    left: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderRadius: 10
+  },
+
   subtitle: {
     fontSize: 14,
     fontWeight: "bold",
     color: "white",
-    position: "absolute",
-    bottom: 10,
-    left: 5
   }
 })
 
