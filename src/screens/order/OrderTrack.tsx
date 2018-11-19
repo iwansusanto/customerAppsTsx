@@ -227,6 +227,10 @@ class OrderTrack extends React.Component<Props, any> {
     if (mapView) {
       mapView.animateToRegion(driverLocation)
     }
+
+    if (order.order_status.name === "COMPLETE") {
+      this.props.navigation.replace("Home")
+    }
   }
 
   componentDidMount() {
@@ -248,7 +252,7 @@ class OrderTrack extends React.Component<Props, any> {
         </View>
         <View style={styles.destinationItemContainer}>
           <Image source={ICON_TIME} />
-          <Text style={styles.destinationTime}>AS SOON AS POSSIBLE</Text>
+          <Text style={styles.destinationTime}>{order.order_status.name}</Text>
         </View>
         <View>
           <MapView
