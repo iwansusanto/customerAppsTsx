@@ -22,6 +22,6 @@ export default {
   DEVICE_WIDTH: width,
   DEVICE_HEIGHT: height,
   OS: Platform.OS,
-  IS_IPHONE_X: Platform.OS === "ios" && (height === 812 || width === 812),
+  IS_IPHONE_X: Platform.OS === "ios" && (height === 812 || height === 896),
   TAB_BAR_ICON_STYLE: styles.tabBarIcon
 }

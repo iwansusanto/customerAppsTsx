@@ -13,7 +13,6 @@ import Text from "../../components/CustomText"
 import Countries from "../../../assets/CountryCodes.json"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import metrics from "../../config/metrics"
-import { any } from "prop-types"
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
@@ -22,6 +21,12 @@ interface Props {
 export default class CountrySelect extends React.Component<Props, any> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Select your country"
+  }
+
+  selectCountry(item: any) {
+    let callback = this.props.navigation.getParam("onSelect")
+    this.props.navigation.goBack()
+    callback(item.code, item.dial_code)
   }
 
   render() {
@@ -34,7 +39,7 @@ export default class CountrySelect extends React.Component<Props, any> {
               name={item.name}
               dial_code={item.dial_code}
               code={item.code}
-              onPress={() => this.props.navigation.goBack()}
+              onPress={() => this.selectCountry(item)}
             />
           )}
         />

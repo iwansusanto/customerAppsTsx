@@ -36,7 +36,7 @@ export default (props: FixedButtonProps) => (
 const styles = StyleSheet.create({
   container: {
     width: metrics.DEVICE_WIDTH,
-    height: 50,
+    height: metrics.IS_IPHONE_X ? 65 : 50,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",

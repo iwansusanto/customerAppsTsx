@@ -42,6 +42,8 @@ interface State {
   password: string
   name: string
   phone: string
+  countryCode: string
+  countryPhoneCode: string
 }
 
 export default class Register extends React.Component<Props, State> {
@@ -80,7 +82,9 @@ export default class Register extends React.Component<Props, State> {
     email: "",
     password: "",
     phone: "",
-    name: ""
+    name: "",
+    countryCode: "QA",
+    countryPhoneCode: "+974"
   }
 
   // Constructor
@@ -96,8 +100,8 @@ export default class Register extends React.Component<Props, State> {
     if (this.state.isLoading) return
 
     this.setState({ isLoading: true })
-    const { email, password, phone, name } = this.state
-
+    let { email, password, phone, name } = this.state
+    phone = `${this.state.countryPhoneCode}${this.state.phone}`
     const result = await register({
       email,
       password,
@@ -116,6 +120,13 @@ export default class Register extends React.Component<Props, State> {
       // TODO: show register failed
       Alert.alert("Failed", "Your registration has failed, please try again")
     }
+  }
+
+  setCountry = (countryCode: string, countryPhoneCode: string) => {
+    this.setState({
+      countryCode: countryCode,
+      countryPhoneCode: countryPhoneCode
+    })
   }
 
   render() {
@@ -146,10 +157,18 @@ export default class Register extends React.Component<Props, State> {
                       alignItems: "center",
                       justifyContent: "center"
                     }}
-                    onPress={() => this.props.navigation.navigate("CountrySelect")}
+                    onPress={() =>
+                      this.props.navigation.navigate("CountrySelect", {
+                        onSelect: this.setCountry
+                      })
+                    }
                   >
                     <Image
-                      source={{ uri: "https://www.countryflags.io/be/flat/64.png" }}
+                      source={{
+                        uri: `https://www.countryflags.io/${
+                          this.state.countryCode
+                        }/flat/64.png`
+                      }}
                       style={{ width: 40, height: 40 }}
                     />
                   </TouchableOpacity>

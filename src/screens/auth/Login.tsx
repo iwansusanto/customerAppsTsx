@@ -5,12 +5,10 @@ import {
   Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  ImageStyle
 } from "react-native"
-import {
-  NavigationStackScreenOptions,
-  NavigationScreenProp
-} from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
 // Custom components used in the screen
 import withUserContext from "../../components/consumers/withUserContext"
@@ -85,9 +83,7 @@ class Login extends React.Component<Props, State> {
 
     // Function binding to this class
     this.handleLoginButtonPressed = this.handleLoginButtonPressed.bind(this)
-    this.handleForgetPasswordPressed = this.handleForgetPasswordPressed.bind(
-      this
-    )
+    this.handleForgetPasswordPressed = this.handleForgetPasswordPressed.bind(this)
   }
 
   // Login button press handler
@@ -127,8 +123,8 @@ class Login extends React.Component<Props, State> {
         {context => (
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
-              <Image source={LOGO} style={styles.logo} />
-              <Image source={OVERLAY} style={styles.overlay} />
+              <Image source={LOGO} style={styles.logo as ImageStyle} />
+              <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
               <View style={styles.welcomeMessageContainer}>
                 <Text style={[styles.welcomeMessage, { fontSize: 18 }]}>
                   ENTER YOUR ACCOUNT
@@ -151,10 +147,7 @@ class Login extends React.Component<Props, State> {
                   secureTextEntry={true}
                   onChangeText={text => this.setState({ password: text })}
                 />
-                <Text
-                  style={styles.forgot}
-                  onPress={this.handleForgetPasswordPressed}
-                >
+                <Text style={styles.forgot} onPress={this.handleForgetPasswordPressed}>
                   FORGOT PASSWORD
                 </Text>
               </View>
