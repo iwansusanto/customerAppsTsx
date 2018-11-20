@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   FlatList,
   ActionSheetIOS,
-  Alert
+  Alert,
+  GeolocationReturnType
 } from "react-native"
 import RNGooglePlaces from "react-native-google-places"
 import {
@@ -20,7 +21,10 @@ import {
 } from "react-native-popup-menu"
 
 import Text from "../../components/CustomText"
-import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+import {
+  NavigationStackScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import FixedButton from "../../components/FixedButton"
@@ -29,6 +33,9 @@ import AddressItem from "../../components/AddressItem"
 import withCartContext from "../../components/consumers/withCartContext"
 import api from "../../api"
 import withOrderContext from "../../components/consumers/withOrderContext"
+import { Region } from "react-native-maps"
+import Geocoder from "react-native-geocoder"
+import withUserContext from "../../components/consumers/withUserContext"
 
 const ICON_MARKER = require("../../../assets/ic_marker_order.png")
 const ICON_TIME = require("../../../assets/ic_time.png")
@@ -40,6 +47,7 @@ interface Props {
   navigation: NavigationScreenProp<any, any>
   cart: CartContext
   order: OrderContext
+  user: UserContext
 }
 
 interface State {
@@ -50,6 +58,8 @@ interface State {
   selectedAddressIndex: number
   notes: string
   shippingPrice: number
+  lat: number
+  lng: number
 }
 
 class OrderReview extends React.Component<Props, State> {
@@ -59,12 +69,14 @@ class OrderReview extends React.Component<Props, State> {
 
   state = {
     address: "",
-    destination: false,
+    destination: true,
     schedule: true,
     addresses: [] as UserAddress[],
     selectedAddressIndex: -1,
     notes: "",
-    shippingPrice: -1
+    shippingPrice: -1,
+    lat: 0,
+    lng: 0
   }
 
   monthAsString(monthIndex: number) {
@@ -146,7 +158,14 @@ class OrderReview extends React.Component<Props, State> {
 
   async handleAddressChange() {
     const place = await RNGooglePlaces.openPlacePickerModal()
-    this.setState({ address: place.name })
+    console.log(place)
+    this.setState({
+      address: place.address,
+      lat: place.latitude,
+      lng: place.longitude
+    })
+
+    this.createAddress()
   }
 
   async addAddress() {
@@ -162,11 +181,38 @@ class OrderReview extends React.Component<Props, State> {
     this.setState({ schedule })
   }
 
+  createAddress = async () => {
+    try {
+      const { data } = await api.client.post<AddressCreateResponse>(
+        "/address",
+        {
+          address: this.state.address,
+          lat: this.state.lat,
+          lng: this.state.lng,
+          phone: this.props.user.customer.phone,
+          fullname: "Home",
+          label: "Home"
+        }
+      )
+      console.log(data)
+      await this.getAddress()
+
+      const newIdIndex = this.state.addresses.findIndex(
+        item => item.id === data.address_data.id
+      )
+      await this.setState({ selectedAddressIndex: newIdIndex })
+
+      this.getShippingPrice()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   getAddress = async () => {
     try {
       const { data } = await api.client.get<AddressResponse>("/address")
       console.log(data)
-      this.setState({ addresses: data.address_data })
+      await this.setState({ addresses: data.address_data })
     } catch (err) {
       console.log(err)
     }
@@ -226,6 +272,29 @@ class OrderReview extends React.Component<Props, State> {
 
   async componentWillMount() {
     await this.getAddress()
+
+    navigator.geolocation.getCurrentPosition(
+      async (position: GeolocationReturnType) => {
+        try {
+          const address = await Geocoder.geocodePosition({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          })
+
+          console.log(address)
+
+          this.setState({
+            address: address[0].formattedAddress,
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          })
+
+          await this.createAddress()
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    )
   }
 
   render() {
@@ -254,16 +323,22 @@ class OrderReview extends React.Component<Props, State> {
             <View>
               <TouchableOpacity
                 style={styles.destionationButton}
-                onPress={this.selectDestination(false)}
+                onPress={this.selectDestination(true)}
               >
                 <Image
-                  source={this.state.destination === true ? RADIO_ACTIVE : RADIO_INACTIVE}
+                  source={
+                    this.state.destination === true
+                      ? RADIO_ACTIVE
+                      : RADIO_INACTIVE
+                  }
                 />
               </TouchableOpacity>
               <Text style={styles.contentTitle}>Destination</Text>
               <View style={styles.destinationInputContainer}>
                 <TextInput
                   placeholder={"Address"}
+                  editable={false}
+                  multiline
                   style={{ flex: 1 }}
                   value={this.state.address}
                 />
@@ -280,7 +355,9 @@ class OrderReview extends React.Component<Props, State> {
               >
                 <Image
                   source={
-                    this.state.destination === false ? RADIO_ACTIVE : RADIO_INACTIVE
+                    this.state.destination === false
+                      ? RADIO_ACTIVE
+                      : RADIO_INACTIVE
                   }
                 />
               </TouchableOpacity>
@@ -288,6 +365,7 @@ class OrderReview extends React.Component<Props, State> {
               {this.state.destination === false && (
                 <>
                   <FlatList
+                    style={{ flex: 1 }}
                     data={this.state.addresses}
                     extraData={this.state.selectedAddressIndex}
                     keyExtractor={item => item.id.toString()}
@@ -327,10 +405,14 @@ class OrderReview extends React.Component<Props, State> {
                 onPress={this.selectSchedule(true)}
               >
                 <Image
-                  source={this.state.schedule === true ? RADIO_ACTIVE : RADIO_INACTIVE}
+                  source={
+                    this.state.schedule === true ? RADIO_ACTIVE : RADIO_INACTIVE
+                  }
                 />
               </TouchableOpacity>
-              <Text style={styles.contentCaption}>Immediately send to your address</Text>
+              <Text style={styles.contentCaption}>
+                Immediately send to your address
+              </Text>
             </View>
             <View style={styles.contentDivider} />
             <View>
@@ -339,7 +421,11 @@ class OrderReview extends React.Component<Props, State> {
                 onPress={this.selectSchedule(true)}
               >
                 <Image
-                  source={this.state.schedule === false ? RADIO_ACTIVE : RADIO_INACTIVE}
+                  source={
+                    this.state.schedule === false
+                      ? RADIO_ACTIVE
+                      : RADIO_INACTIVE
+                  }
                 />
               </TouchableOpacity>
               <Text style={styles.contentTitle}>Schedule Order</Text>
@@ -604,4 +690,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withOrderContext(withCartContext(OrderReview))
+export default withUserContext(withOrderContext(withCartContext(OrderReview)))
