@@ -7,7 +7,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ImageStyle,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Alert
 } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
@@ -109,6 +110,7 @@ class Login extends React.Component<Props, State> {
       })
     } else {
       // TODO: show login failed
+      Alert.alert("Failed", "Login failed, please try again")
     }
   }
 
@@ -160,7 +162,11 @@ class Login extends React.Component<Props, State> {
                 <FixedButton
                   isLoading={this.state.isLoading}
                   label={"LOGIN"}
-                  backgroundColor={metrics.SECONDARY_COLOR}
+                  backgroundColor={
+                    this.state.email.length > 0 && this.state.password.length > 0
+                      ? metrics.SECONDARY_COLOR
+                      : metrics.INACTIVE_COLOR
+                  }
                   onPress={this.handleLoginButtonPressed(context.login)}
                 />
               </View>

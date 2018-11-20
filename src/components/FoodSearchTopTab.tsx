@@ -18,7 +18,7 @@ export default class TobTab extends React.Component<Props, any> {
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.subtitle}>Craving certain food, We'll help you find it?</Text>
+        <Text style={styles.subtitle}>Search what you're craving for</Text>
         <SearchBar style={styles.search} />
         <View style={styles.tabContainer}>
           <FlatList

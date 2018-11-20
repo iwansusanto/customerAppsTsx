@@ -94,7 +94,8 @@ export default class OTPVerification extends React.Component<Props, State> {
             <View style={styles.container}>
               <Image source={LOGO} style={styles.logo as ImageStyle} />
               <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
-              <Text style={styles.caption}>Email verification has been sent to</Text>
+              <Text style={styles.caption}>Email verification has been sent</Text>
+              <Text style={[styles.caption, { marginTop: 5 }]}>to your email</Text>
               <TextInput
                 style={{ height: 0 }}
                 ref={this.hiddenInputRef}
@@ -103,7 +104,7 @@ export default class OTPVerification extends React.Component<Props, State> {
                 keyboardType={"numeric"}
                 maxLength={4}
               />
-              <Text style={styles.email}>{this.props.navigation.getParam("email")}</Text>
+              {/* <Text style={styles.email}>{this.props.navigation.getParam("email")}</Text> */}
               <Text style={styles.code}>ENTER CODE</Text>
               <View style={styles.codeInputContainer}>
                 <SingleNumberInput
@@ -123,12 +124,16 @@ export default class OTPVerification extends React.Component<Props, State> {
                   onPress={this.handleFormFocusChange}
                 />
               </View>
-              <Text style={styles.resend}>Resend code in 00:30</Text>
-              <Text style={styles.changeNumber}>CHANGE NUMBER</Text>
+              {/* <Text style={styles.resend}>Resend code in 00:30</Text>
+              <Text style={styles.changeNumber}>CHANGE NUMBER</Text> */}
               <FixedButton
                 isLoading={this.state.isLoading}
                 label={"LOGIN"}
-                backgroundColor={metrics.SECONDARY_COLOR}
+                backgroundColor={
+                  this.state.otp.length === 4
+                    ? metrics.SECONDARY_COLOR
+                    : metrics.INACTIVE_COLOR
+                }
                 onPress={this.handleLoginButtonPressed(context.otp)}
               />
               <View style={styles.tosContainer}>
@@ -160,7 +165,9 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    marginTop: metrics.DEVICE_HEIGHT * 0.1
+    marginTop: metrics.IS_IPHONE_X
+      ? metrics.DEVICE_HEIGHT * 0.2
+      : metrics.DEVICE_HEIGHT * 0.1
   },
 
   caption: {
@@ -205,8 +212,7 @@ const styles = StyleSheet.create({
 
   tosContainer: {
     alignItems: "center",
-    position: "absolute",
-    bottom: 65
+    marginTop: 50
   },
 
   tos: {

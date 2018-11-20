@@ -133,6 +133,7 @@ export default class Register extends React.Component<Props, State> {
   }
 
   render() {
+    const { email, password, phone, name } = this.state
     return (
       <UserContext.Consumer>
         {context => (
@@ -204,7 +205,14 @@ export default class Register extends React.Component<Props, State> {
               <FixedButton
                 isLoading={this.state.isLoading}
                 label={"REGISTER"}
-                backgroundColor={metrics.SECONDARY_COLOR}
+                backgroundColor={
+                  email.length > 0 &&
+                  password.length > 0 &&
+                  phone.length > 0 &&
+                  name.length > 0
+                    ? metrics.SECONDARY_COLOR
+                    : metrics.INACTIVE_COLOR
+                }
                 onPress={this.handleRegisterButtonPressed(context.register)}
               />
             </View>

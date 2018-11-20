@@ -14,6 +14,11 @@ import withSearchContext from "../../components/consumers/withSearchContext"
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_HEART = require("../../../assets/ic_heart.png")
 
+const ICON_RATING = require("../../../assets/ic_rating.png")
+const ICON_NEARBY = require("../../../assets/ic_nearby.png")
+const ICON_NEW = require("../../../assets/ic_new.png")
+const ICON_TIMELAPSE = require("../../../assets/ic_timelapse.png")
+
 interface Props {
   navigation: NavigationScreenProp<any, any>
   suggestion: SuggestionContext
@@ -59,10 +64,22 @@ class Food extends React.Component<Props, any> {
           <Text style={styles.subtitle}>Pick by categories</Text>
           <View style={styles.categoryListContainer}>
             <View style={styles.categoryListRow}>
-              <FoodCategory onPress={this.search(1)} />
-              <FoodCategory onPress={this.search(2)} />
-              <FoodCategory onPress={this.search(3)} />
-              <FoodCategory onPress={this.search(4)} />
+              <FoodCategory
+                onPress={this.search(1)}
+                icon={ICON_RATING}
+                caption={"Rating"}
+              />
+              <FoodCategory
+                onPress={this.search(2)}
+                icon={ICON_NEARBY}
+                caption={"Nearby"}
+              />
+              <FoodCategory onPress={this.search(3)} icon={ICON_NEW} caption={"New"} />
+              <FoodCategory
+                onPress={this.search(4)}
+                icon={ICON_TIMELAPSE}
+                caption={"24 Hours"}
+              />
             </View>
           </View>
         </View>
@@ -150,7 +167,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginLeft: 40,
     fontSize: 18,
-    marginTop: 10
+    marginTop: 10,
+    color: "white"
   }
 })
 
