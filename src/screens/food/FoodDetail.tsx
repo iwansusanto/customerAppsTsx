@@ -29,6 +29,7 @@ interface Props {
 
 interface State {
   selectedAdditional: boolean[]
+  additionalPrice: number
 }
 
 class FoodDetail extends React.Component<Props, State> {
@@ -41,7 +42,8 @@ class FoodDetail extends React.Component<Props, State> {
   })
 
   state = {
-    selectedAdditional: [] as boolean[]
+    selectedAdditional: [] as boolean[],
+    additionalPrice: 0
   }
 
   async componentWillMount() {
@@ -52,7 +54,7 @@ class FoodDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const { id, title, additional, picture } = this.props.navigation.state.params
+    const { id, title, additional, picture, price } = this.props.navigation.state.params
     const { selectedAdditional } = this.state
     console.log(selectedAdditional)
     return (
@@ -63,27 +65,30 @@ class FoodDetail extends React.Component<Props, State> {
             <Text style={styles.subtitle}>{title}</Text>
             <View style={styles.detailContainer}>
               <Image style={styles.picture as ImageStyle} source={{ uri: picture }} />
-              <View style={styles.detail}>
-                <Text style={styles.title}>Add Extra Items</Text>
-                <Text style={styles.category}>Toppings</Text>
-                {additional !== null &&
-                  additional.topping.map((item: any, index: number) => (
-                    <AdditionalFoodItem
-                      key={item.id.toString()}
-                      onPress={this.handleClick(index)}
-                      active={selectedAdditional[index]}
-                      name={item.name}
-                      price={item.data}
-                    />
-                  ))}
-              </View>
+              {additional !== null && (
+                <View style={styles.detail}>
+                  <Text style={styles.title}>Add Extra Items</Text>
+                  <Text style={styles.category}>Toppings</Text>
+                  {additional !== null &&
+                    additional.topping.map((item: any, index: number) => (
+                      <AdditionalFoodItem
+                        key={item.id.toString()}
+                        onPress={this.handleClick(index)}
+                        active={selectedAdditional[index]}
+                        name={item.name}
+                        price={item.data}
+                      />
+                    ))}
+                </View>
+              )}
               <CustomTextInput icon={ICON_NOTE} placeholder={"Add notes"} />
             </View>
           </View>
         </KeyboardAwareScrollView>
         <TouchableOpacity style={styles.addToCartButton} onPress={this.addToCart}>
           <Text style={styles.addToCartLabel}>Add to cart</Text>
-          <Text style={styles.addToCartLabel}>Rp. 20.000</Text>
+          <Text style={styles.addToCartLabel}>{`QR ${Number(price) +
+            Number(this.state.additionalPrice)}`}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -95,7 +100,10 @@ class FoodDetail extends React.Component<Props, State> {
     let selected = this.state.selectedAdditional
     selected = new Array(additional.length).fill(false)
     selected[index] = true
-    this.setState({ selectedAdditional: selected })
+    this.setState({
+      selectedAdditional: selected,
+      additionalPrice: additional.topping[index].data
+    })
   }
 
   addToCart = async () => {

@@ -8,14 +8,11 @@ import {
   ScrollView,
   GeolocationReturnType
 } from "react-native"
-import MapView, { Region, Marker } from "react-native-maps"
+import MapView, { Region, Marker, PROVIDER_GOOGLE } from "react-native-maps"
 
 import Text from "../../components/CustomText"
 import BottomSheet from "../../components/BottomSheet"
-import {
-  NavigationStackScreenOptions,
-  NavigationScreenProp
-} from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import CartItemTrack from "../../components/CartItemTrack"
@@ -108,9 +105,7 @@ class OrderTrack extends React.Component<Props, any> {
             borderColor: "grey"
           }}
         >
-          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>
-            Payment Method
-          </Text>
+          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Payment Method</Text>
           <View style={{ flexDirection: "row" }}>
             <Text style={{ marginRight: 20 }}>{order.payment_method}</Text>
             <Image source={ICON_WALLET} />
@@ -127,9 +122,7 @@ class OrderTrack extends React.Component<Props, any> {
           }}
         >
           <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Total</Text>
-          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>
-            {order.total}
-          </Text>
+          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>{order.total}</Text>
         </View>
         <View
           style={{
@@ -141,9 +134,7 @@ class OrderTrack extends React.Component<Props, any> {
             borderColor: "grey"
           }}
         >
-          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>
-            Transaction Number
-          </Text>
+          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Transaction Number</Text>
           <Text>{order.id.toString()}</Text>
         </View>
         <CustomButton
@@ -261,6 +252,7 @@ class OrderTrack extends React.Component<Props, any> {
             showsUserLocation={true}
             style={styles.map}
             onMapReady={this.onMapReady}
+            provider={PROVIDER_GOOGLE}
           >
             <Marker
               title="Driver"

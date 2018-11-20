@@ -9,7 +9,8 @@ import {
   FlatList,
   ActionSheetIOS,
   Alert,
-  GeolocationReturnType
+  GeolocationReturnType,
+  DeviceEventEmitter
 } from "react-native"
 import RNGooglePlaces from "react-native-google-places"
 import {
@@ -21,10 +22,7 @@ import {
 } from "react-native-popup-menu"
 
 import Text from "../../components/CustomText"
-import {
-  NavigationStackScreenOptions,
-  NavigationScreenProp
-} from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import FixedButton from "../../components/FixedButton"
@@ -60,6 +58,8 @@ interface State {
   shippingPrice: number
   lat: number
   lng: number
+  selectedDate: string
+  selectedTime: string
 }
 
 class OrderReview extends React.Component<Props, State> {
@@ -76,7 +76,9 @@ class OrderReview extends React.Component<Props, State> {
     notes: "",
     shippingPrice: -1,
     lat: 0,
-    lng: 0
+    lng: 0,
+    selectedDate: this.getNextDays()[0],
+    selectedTime: this.getTime()[0]
   }
 
   monthAsString(monthIndex: number) {
@@ -170,7 +172,7 @@ class OrderReview extends React.Component<Props, State> {
 
   async addAddress() {
     const place = await RNGooglePlaces.openPlacePickerModal()
-    this.props.navigation.navigate("NewAddress", { address: place.name })
+    this.props.navigation.navigate("NewAddress", { address: place })
   }
 
   selectDestination = (destination: boolean) => () => {
@@ -183,17 +185,14 @@ class OrderReview extends React.Component<Props, State> {
 
   createAddress = async () => {
     try {
-      const { data } = await api.client.post<AddressCreateResponse>(
-        "/address",
-        {
-          address: this.state.address,
-          lat: this.state.lat,
-          lng: this.state.lng,
-          phone: this.props.user.customer.phone,
-          fullname: "Home",
-          label: "Home"
-        }
-      )
+      const { data } = await api.client.post<AddressCreateResponse>("/address", {
+        address: this.state.address,
+        lat: this.state.lat,
+        lng: this.state.lng,
+        phone: this.props.user.customer.phone,
+        fullname: "Home",
+        label: "Home"
+      })
       console.log(data)
       await this.getAddress()
 
@@ -270,35 +269,37 @@ class OrderReview extends React.Component<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    DeviceEventEmitter.removeAllListeners()
+  }
+
   async componentWillMount() {
+    DeviceEventEmitter.addListener("addressAdd", () => this.getAddress())
     await this.getAddress()
 
-    navigator.geolocation.getCurrentPosition(
-      async (position: GeolocationReturnType) => {
-        try {
-          const address = await Geocoder.geocodePosition({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          })
+    navigator.geolocation.getCurrentPosition(async (position: GeolocationReturnType) => {
+      try {
+        const address = await Geocoder.geocodePosition({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        })
 
-          console.log(address)
+        console.log(address)
 
-          this.setState({
-            address: address[0].formattedAddress,
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          })
+        this.setState({
+          address: address[0].formattedAddress,
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        })
 
-          await this.createAddress()
-        } catch (err) {
-          console.log(err)
-        }
+        await this.createAddress()
+      } catch (err) {
+        console.log(err)
       }
-    )
+    })
   }
 
   render() {
-    const days = this.getNextDays()
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -314,6 +315,11 @@ class OrderReview extends React.Component<Props, State> {
         <View style={styles.destinationItemContainer}>
           <Image source={ICON_TIME} />
           <Text style={styles.destinationTime}>SEND NOW</Text>
+          <Text
+            style={{ color: "white", fontWeight: "300", fontSize: 11, marginLeft: 20 }}
+          >
+            ARRIVES UNDER 15 MINS
+          </Text>
         </View>
         <ScrollView
           style={styles.contentContainer}
@@ -326,11 +332,7 @@ class OrderReview extends React.Component<Props, State> {
                 onPress={this.selectDestination(true)}
               >
                 <Image
-                  source={
-                    this.state.destination === true
-                      ? RADIO_ACTIVE
-                      : RADIO_INACTIVE
-                  }
+                  source={this.state.destination === true ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
               <Text style={styles.contentTitle}>Destination</Text>
@@ -355,9 +357,7 @@ class OrderReview extends React.Component<Props, State> {
               >
                 <Image
                   source={
-                    this.state.destination === false
-                      ? RADIO_ACTIVE
-                      : RADIO_INACTIVE
+                    this.state.destination === false ? RADIO_ACTIVE : RADIO_INACTIVE
                   }
                 />
               </TouchableOpacity>
@@ -367,7 +367,7 @@ class OrderReview extends React.Component<Props, State> {
                   <FlatList
                     style={{ flex: 1 }}
                     data={this.state.addresses}
-                    extraData={this.state.selectedAddressIndex}
+                    extraData={this.state}
                     keyExtractor={item => item.id.toString()}
                     renderItem={({ item, index }) => (
                       <AddressItem
@@ -387,15 +387,15 @@ class OrderReview extends React.Component<Props, State> {
                   >
                     <Text style={styles.addButtonLabel}>ADD</Text>
                   </TouchableOpacity>
+                  <View style={styles.contentDivider} />
+                  <TextInput
+                    onChangeText={text => this.setState({ notes: text })}
+                    placeholder={"ADD NOTES"}
+                    style={{ flex: 1 }}
+                  />
                 </>
               )}
             </View>
-            <View style={styles.contentDivider} />
-            <TextInput
-              onChangeText={text => this.setState({ notes: text })}
-              placeholder={"ADD NOTES"}
-              style={{ flex: 1 }}
-            />
           </View>
           <View style={styles.contentItemContainer}>
             <View>
@@ -405,14 +405,10 @@ class OrderReview extends React.Component<Props, State> {
                 onPress={this.selectSchedule(true)}
               >
                 <Image
-                  source={
-                    this.state.schedule === true ? RADIO_ACTIVE : RADIO_INACTIVE
-                  }
+                  source={this.state.schedule === true ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
-              <Text style={styles.contentCaption}>
-                Immediately send to your address
-              </Text>
+              <Text style={styles.contentCaption}>Immediately send to your address</Text>
             </View>
             <View style={styles.contentDivider} />
             <View>
@@ -421,16 +417,12 @@ class OrderReview extends React.Component<Props, State> {
                 onPress={this.selectSchedule(true)}
               >
                 <Image
-                  source={
-                    this.state.schedule === false
-                      ? RADIO_ACTIVE
-                      : RADIO_INACTIVE
-                  }
+                  source={this.state.schedule === false ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
               <Text style={styles.contentTitle}>Schedule Order</Text>
               <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-                <Menu>
+                <Menu onSelect={value => this.setState({ selectedDate: value })}>
                   <MenuTrigger>
                     <View
                       style={{
@@ -448,7 +440,7 @@ class OrderReview extends React.Component<Props, State> {
                         margin: 5
                       }}
                     >
-                      <Text>Tomorrow, Aug 13</Text>
+                      <Text>{this.state.selectedDate}</Text>
                     </View>
                   </MenuTrigger>
                   <MenuOptions>
@@ -459,7 +451,7 @@ class OrderReview extends React.Component<Props, State> {
                     ))}
                   </MenuOptions>
                 </Menu>
-                <Menu>
+                <Menu onSelect={value => this.setState({ selectedTime: value })}>
                   <MenuTrigger>
                     <View
                       style={{
@@ -477,10 +469,10 @@ class OrderReview extends React.Component<Props, State> {
                         margin: 5
                       }}
                     >
-                      <Text>09:00 - 09:30</Text>
+                      <Text>{this.state.selectedTime}</Text>
                     </View>
                   </MenuTrigger>
-                  <MenuOptions customStyles={{ optionsContainer: { width: 90 } }}>
+                  <MenuOptions customStyles={{ optionsContainer: { width: 100 } }}>
                     <ScrollView style={{ maxHeight: 200 }}>
                       {this.getTime().map(time => (
                         <MenuOption value={time}>

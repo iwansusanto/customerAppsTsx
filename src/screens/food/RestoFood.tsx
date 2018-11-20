@@ -31,7 +31,8 @@ export default class RestoFood extends React.Component<Props, any> {
                   id: item.id,
                   title: item.name,
                   additional: item.additional,
-                  picture: item.images[0]
+                  picture: item.images[0],
+                  price: item.price
                 })
               }}
             />
