@@ -12,6 +12,9 @@ interface Props {
   price: string
   quantity: number
   additional: CartAdditional[]
+  id: number
+  updateCartItem: (id: number, quantity: number) => () => void
+  deleteCartItem: () => void
 }
 
 export default (props: Props) => (
@@ -30,19 +33,23 @@ export default (props: Props) => (
         {props.price}
       </Text>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={props.updateCartItem(Math.max(props.quantity - 1, 1), props.id)}
+        >
           <Text style={{ fontWeight: "bold", fontSize: 25, marginRight: 10 }}>-</Text>
         </TouchableOpacity>
         <Text style={{ color: "#4A90E2", fontWeight: "bold", fontSize: 18 }}>
           {props.quantity.toString()}
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={props.updateCartItem(Math.max(props.quantity + 1, 1), props.id)}
+        >
           <Text style={{ fontWeight: "bold", fontSize: 25, marginLeft: 10 }}>+</Text>
         </TouchableOpacity>
       </View>
     </View>
     <View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={props.deleteCartItem}>
         <Image source={ICON_DELETE} />
       </TouchableOpacity>
     </View>
