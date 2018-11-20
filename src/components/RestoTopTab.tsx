@@ -17,6 +17,7 @@ const LABEL = require("../../assets/label_open.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
+  activeTab?: string
 }
 
 export default class RestoTopTab extends React.Component<Props, any> {
@@ -39,7 +40,9 @@ export default class RestoTopTab extends React.Component<Props, any> {
                 onPress={() => this.props.navigation.navigate(item.routeName)}
               >
                 <Text style={styles.label}>{item.routeName}</Text>
-                <View style={styles.underline} />
+                {navigation.state.routeName === item.routeName ? (
+                  <View style={styles.underline} />
+                ) : null}
               </TouchableOpacity>
             )}
             style={styles.list}

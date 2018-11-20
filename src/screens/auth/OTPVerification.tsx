@@ -5,7 +5,8 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
-  TextInput
+  TextInput,
+  ImageStyle
 } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
@@ -91,8 +92,8 @@ export default class OTPVerification extends React.Component<Props, State> {
         {context => (
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
-              <Image source={LOGO} style={styles.logo} />
-              <Image source={OVERLAY} style={styles.overlay} />
+              <Image source={LOGO} style={styles.logo as ImageStyle} />
+              <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
               <Text style={styles.caption}>Email verification has been sent to</Text>
               <TextInput
                 style={{ height: 0 }}
@@ -153,7 +154,9 @@ const styles = StyleSheet.create({
     width: metrics.DEVICE_WIDTH,
     position: "absolute",
     bottom: 0,
-    height: metrics.DEVICE_HEIGHT * 0.4
+    height: metrics.IS_IPHONE_X
+      ? metrics.DEVICE_HEIGHT * 0.4
+      : metrics.DEVICE_HEIGHT * 0.47
   },
 
   logo: {

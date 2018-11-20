@@ -141,7 +141,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: metrics.DEVICE_WIDTH,
-    height: metrics.DEVICE_HEIGHT * 0.4
+    height: metrics.IS_IPHONE_X
+      ? metrics.DEVICE_HEIGHT * 0.4
+      : metrics.DEVICE_HEIGHT * 0.47
   },
 
   tosContainer: {

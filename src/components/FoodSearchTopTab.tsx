@@ -14,6 +14,7 @@ interface Props {
 export default class TobTab extends React.Component<Props, any> {
   render() {
     const { navigation } = this.props
+    console.log(navigation.state.routes)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -29,7 +30,9 @@ export default class TobTab extends React.Component<Props, any> {
                 onPress={() => this.props.navigation.navigate(item.routeName)}
               >
                 <Text style={styles.label}>{item.routeName}</Text>
-                <View style={styles.underline} />
+                {navigation.state.routeName === item.routeName ? (
+                  <View style={styles.underline} />
+                ) : null}
               </TouchableOpacity>
             )}
             style={styles.list}

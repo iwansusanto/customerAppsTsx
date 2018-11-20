@@ -183,7 +183,9 @@ const styles = StyleSheet.create({
     width: metrics.DEVICE_WIDTH,
     position: "absolute",
     bottom: 0,
-    height: metrics.DEVICE_HEIGHT * 0.4
+    height: metrics.IS_IPHONE_X
+      ? metrics.DEVICE_HEIGHT * 0.4
+      : metrics.DEVICE_HEIGHT * 0.47
   },
 
   logo: {
