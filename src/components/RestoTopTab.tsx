@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   status: {
     position: "absolute",
     right: 20,
-    top: 10
+    top: 40
   },
 
   inactiveLabel: {
