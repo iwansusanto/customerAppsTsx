@@ -270,7 +270,7 @@ class OrderReview extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    DeviceEventEmitter.removeAllListeners()
+    DeviceEventEmitter.removeListener("addressAdd", () => this.getAddress())
   }
 
   async componentWillMount() {

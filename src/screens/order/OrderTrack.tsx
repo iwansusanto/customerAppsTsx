@@ -6,7 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  GeolocationReturnType
+  GeolocationReturnType,
+  Alert
 } from "react-native"
 import MapView, { Region, Marker, PROVIDER_GOOGLE } from "react-native-maps"
 
@@ -23,6 +24,7 @@ const ICON_TIME = require("../../../assets/ic_time.png")
 const ICON_PHONE = require("../../../assets/ic_phone_fill.png")
 const ICON_MESSAGE = require("../../../assets/ic_message.png")
 const ICON_WALLET = require("../../../assets/ic_wallet.png")
+const ICON_DRIVER = require("../../../assets/ic_driver_marker.png")
 
 const PROFILE_PICTURE = require("../../../assets/dummy_profile.png")
 
@@ -146,7 +148,7 @@ class OrderTrack extends React.Component<Props, any> {
             borderRadius: 0
           }}
           labelStyle={{ color: "white" }}
-          onPress={() => this.props.navigation.navigate("SearchDriver")}
+          onPress={() => this.props.navigation.goBack()}
         />
       </ScrollView>
     )
@@ -219,9 +221,22 @@ class OrderTrack extends React.Component<Props, any> {
       mapView.animateToRegion(driverLocation)
     }
 
-    if (order.order_status.name === "COMPLETE") {
-      this.props.navigation.replace("Home")
+    if (order.order_status_id === 7) {
+      Alert.alert("Thank you", "Your order has been finished", [
+        {
+          text: "OK",
+          onPress: () => this.props.navigation.navigate("Home")
+        }
+      ])
+    } else if (order.order_status_id === 8) {
+      Alert.alert("Cancelled", "Your order has been cancelled", [
+        {
+          text: "OK",
+          onPress: () => this.props.navigation.navigate("Home")
+        }
+      ])
     }
+    clearInterval(this.interval)
   }
 
   componentDidMount() {
@@ -262,6 +277,7 @@ class OrderTrack extends React.Component<Props, any> {
                 latitudeDelta: 0.001,
                 longitudeDelta: 0.001
               }}
+              image={ICON_DRIVER}
             />
           </MapView>
         </View>
