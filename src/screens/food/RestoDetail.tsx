@@ -121,7 +121,7 @@ class RestoDetail extends Component<Props, State> {
     <View
       style={{
         width: metrics.DEVICE_WIDTH,
-        height: 400,
+        height: metrics.DEVICE_HEIGHT,
         backgroundColor: "white",
         alignItems: "center",
         borderRightWidth: 2,

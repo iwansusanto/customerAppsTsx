@@ -11,10 +11,21 @@ interface Props {
   navigation: NavigationScreenProp<any, any>
 }
 
-export default class TobTab extends React.Component<Props, any> {
+interface State {
+  navigation: NavigationScreenProp<any, any>
+}
+
+export default class TobTab extends React.Component<Props, State> {
+  state = {
+    navigation: this.props.navigation
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    this.setState({ navigation: nextProps.navigation })
+  }
+
   render() {
-    const { navigation } = this.props
-    console.log(navigation.state.routes)
+    const { navigation } = this.state
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -24,13 +35,20 @@ export default class TobTab extends React.Component<Props, any> {
           <FlatList
             data={navigation.state.routes}
             horizontal
+            extraData={this.state}
             renderItem={({ item }: { item: any }) => (
               <TouchableOpacity
                 style={styles.labelContainer}
                 onPress={() => this.props.navigation.navigate(item.routeName)}
               >
-                <Text style={styles.label}>{item.routeName}</Text>
-                {navigation.state.routeName === item.routeName ? (
+                {navigation.state.routes[navigation.state.index].routeName ===
+                item.routeName ? (
+                  <Text style={styles.label}>{item.routeName}</Text>
+                ) : (
+                  <Text style={styles.inactiveLabel}>{item.routeName}</Text>
+                )}
+                {navigation.state.routes[navigation.state.index].routeName ===
+                item.routeName ? (
                   <View style={styles.underline} />
                 ) : null}
               </TouchableOpacity>
@@ -60,6 +78,12 @@ const styles = StyleSheet.create({
 
   label: {
     color: "white",
+    fontSize: 16,
+    fontWeight: "bold"
+  },
+
+  inactiveLabel: {
+    color: "#999999",
     fontSize: 16,
     fontWeight: "bold"
   },

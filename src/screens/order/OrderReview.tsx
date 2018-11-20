@@ -13,10 +13,7 @@ import {
 import RNGooglePlaces from "react-native-google-places"
 
 import Text from "../../components/CustomText"
-import {
-  NavigationStackScreenOptions,
-  NavigationScreenProp
-} from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import FixedButton from "../../components/FixedButton"
@@ -244,11 +241,7 @@ class OrderReview extends React.Component<Props, State> {
                 onPress={this.selectDestination(false)}
               >
                 <Image
-                  source={
-                    this.state.destination === true
-                      ? RADIO_ACTIVE
-                      : RADIO_INACTIVE
-                  }
+                  source={this.state.destination === true ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
               <Text style={styles.contentTitle}>Destination</Text>
@@ -271,9 +264,7 @@ class OrderReview extends React.Component<Props, State> {
               >
                 <Image
                   source={
-                    this.state.destination === false
-                      ? RADIO_ACTIVE
-                      : RADIO_INACTIVE
+                    this.state.destination === false ? RADIO_ACTIVE : RADIO_INACTIVE
                   }
                 />
               </TouchableOpacity>
@@ -320,14 +311,10 @@ class OrderReview extends React.Component<Props, State> {
                 onPress={this.selectSchedule(true)}
               >
                 <Image
-                  source={
-                    this.state.schedule === true ? RADIO_ACTIVE : RADIO_INACTIVE
-                  }
+                  source={this.state.schedule === true ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
-              <Text style={styles.contentCaption}>
-                Immediately send to your address
-              </Text>
+              <Text style={styles.contentCaption}>Immediately send to your address</Text>
             </View>
             <View style={styles.contentDivider} />
             <View>
@@ -336,17 +323,11 @@ class OrderReview extends React.Component<Props, State> {
                 onPress={this.selectSchedule(true)}
               >
                 <Image
-                  source={
-                    this.state.schedule === false
-                      ? RADIO_ACTIVE
-                      : RADIO_INACTIVE
-                  }
+                  source={this.state.schedule === false ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
               <Text style={styles.contentTitle}>Schedule Order</Text>
-              <View
-                style={{ flexDirection: "row", justifyContent: "space-around" }}
-              >
+              <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
                 <TouchableOpacity
                   style={{
                     borderColor: metrics.PRIMARY_COLOR,
@@ -409,6 +390,7 @@ class OrderReview extends React.Component<Props, State> {
           </View>
           <FlatList
             data={this.props.cart.cart.product_data}
+            style={{ width: metrics.DEVICE_WIDTH }}
             renderItem={({ item }) => (
               <OrderReviewItem
                 name={item.name}
@@ -524,7 +506,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     marginTop: 20,
-    marginBottom: 50
+    marginBottom: 80
   },
 
   contentItemContainer: {

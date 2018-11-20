@@ -1,10 +1,11 @@
 import React from "react"
-import { View, StyleSheet, Image } from "react-native"
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native"
 
 import Text from "./CustomText"
 import metrics from "../config/metrics"
 
 const DUMMY_FOOD = require("../../assets/dummy_food.png")
+const ICON_DELETE = require("../../assets/ic_delete.png")
 
 interface Props {
   name: string
@@ -28,11 +29,22 @@ export default (props: Props) => (
       <Text style={{ color: "#4A90E2", fontWeight: "bold", fontSize: 13 }}>
         {props.price}
       </Text>
-      <View style={{ flexDirection: "row" }}>
-        {/* <Text style={{ fontWeight: "bold", fontSize: 18, marginRight: 10 }}>-</Text> */}
-        <Text style={{ color: "#4A90E2", fontWeight: "bold", fontSize: 18 }}>{props.quantity.toString()}</Text>
-        {/* <Text style={{ fontWeight: "bold", fontSize: 18, marginLeft: 10 }}>+</Text> */}
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TouchableOpacity>
+          <Text style={{ fontWeight: "bold", fontSize: 25, marginRight: 10 }}>-</Text>
+        </TouchableOpacity>
+        <Text style={{ color: "#4A90E2", fontWeight: "bold", fontSize: 18 }}>
+          {props.quantity.toString()}
+        </Text>
+        <TouchableOpacity>
+          <Text style={{ fontWeight: "bold", fontSize: 25, marginLeft: 10 }}>+</Text>
+        </TouchableOpacity>
       </View>
+    </View>
+    <View>
+      <TouchableOpacity>
+        <Image source={ICON_DELETE} />
+      </TouchableOpacity>
     </View>
   </View>
 )
@@ -49,7 +61,6 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 1,
     width: metrics.DEVICE_WIDTH * 0.7,
-    height: 150,
     padding: 20,
     marginHorizontal: 10
   },
@@ -61,11 +72,12 @@ const styles = StyleSheet.create({
 
   priceContainer: {
     borderTopWidth: 0.3,
-    // borderBottomWidth: 0.3,
-    borderColor: "grey",
+    borderColor: "#EEEEEE",
     padding: 5,
     marginVertical: 10,
     justifyContent: "space-between",
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 0.3
   }
 })

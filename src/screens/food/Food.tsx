@@ -106,7 +106,8 @@ class Food extends React.Component<Props, any> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: "white"
   },
 
   captionContainer: {

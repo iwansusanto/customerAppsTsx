@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   container: {
     width: metrics.DEVICE_WIDTH * 0.9,
     height: 45,
-    borderColor: metrics.BORDER_COLOR,
+    borderColor: "grey",
     borderWidth: 1
   }
 })

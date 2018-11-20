@@ -5,7 +5,8 @@ import {
   Image,
   ScrollView,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  ImageStyle
 } from "react-native"
 
 import Text from "../../components/CustomText"
@@ -46,12 +47,7 @@ class FoodDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      id,
-      title,
-      additional,
-      picture
-    } = this.props.navigation.state.params
+    const { id, title, additional, picture } = this.props.navigation.state.params
     const { selectedAdditional } = this.state
     console.log(selectedAdditional)
     return (
@@ -61,7 +57,7 @@ class FoodDetail extends React.Component<Props, State> {
           <View style={styles.container}>
             <Text style={styles.subtitle}>{title}</Text>
             <View style={styles.detailContainer}>
-              <Image style={styles.picture} source={{ uri: picture }} />
+              <Image style={styles.picture as ImageStyle} source={{ uri: picture }} />
               <View style={styles.detail}>
                 <Text style={styles.title}>Add Extra Items</Text>
                 <Text style={styles.category}>Toppings</Text>
@@ -78,12 +74,10 @@ class FoodDetail extends React.Component<Props, State> {
             </View>
           </View>
         </ScrollView>
-        <FixedButton
-          label={"ADD TO CART"}
-          backgroundColor={metrics.SECONDARY_COLOR}
-          labelStyle={{ color: "white" }}
-          onPress={this.addToCart}
-        />
+        <TouchableOpacity style={styles.addToCartButton} onPress={this.addToCart}>
+          <Text style={styles.addToCartLabel}>Add to cart</Text>
+          <Text style={styles.addToCartLabel}>Rp. 20.000</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -161,6 +155,26 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 20,
     marginBottom: 10
+  },
+
+  addToCartButton: {
+    paddingHorizontal: 20,
+    position: "absolute",
+    bottom: 65,
+    borderWidth: 2,
+    borderRadius: 20,
+    borderColor: metrics.PRIMARY_COLOR,
+    width: metrics.DEVICE_WIDTH * 0.9,
+    height: 50,
+    backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+
+  addToCartLabel: {
+    fontWeight: "bold",
+    color: "#4A90E2"
   }
 })
 

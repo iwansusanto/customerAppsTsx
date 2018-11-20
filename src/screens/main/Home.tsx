@@ -159,7 +159,7 @@ class Home extends React.Component<Props, State> {
           </View>
         </View>
         <Text style={styles.searchCaption}>Search by vendors, foods, or items</Text>
-        <SearchBar />
+        <SearchBar onFocus={() => this.props.navigation.navigate("MainSearch")} />
         <FlatList
           contentContainerStyle={styles.categories}
           data={this.props.category.categories}
@@ -185,7 +185,7 @@ class Home extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5FCFF",
+    backgroundColor: "white",
     alignItems: "center"
   },
 

@@ -26,6 +26,7 @@ import Home from "./src/screens/main/Home"
 import Orders from "./src/screens/main/Orders"
 import Inbox from "./src/screens/main/Inbox"
 import Account from "./src/screens/main/Account"
+import MainSearch from "./src/screens/main/MainSearch"
 
 // Food screens
 import Food from "./src/screens/food/Food"
@@ -188,7 +189,8 @@ const Navigator = createStackNavigator(
     OrderReview: { screen: OrderReview },
     OrderTrack: { screen: OrderTrack },
     SearchDriver: { screen: SearchDriver },
-    NewAddress: { screen: NewAddress }
+    NewAddress: { screen: NewAddress },
+    MainSearch: { screen: MainSearch }
   },
   {
     // Configuration for header to use Primary Color defined in metrics

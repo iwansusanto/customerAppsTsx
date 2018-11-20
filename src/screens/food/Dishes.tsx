@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
 
   listContainer: {
     backgroundColor: "white",
-    borderRadius: 5
+    borderRadius: 20,
+    marginTop: 30
   }
 })
 

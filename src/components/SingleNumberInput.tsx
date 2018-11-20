@@ -22,11 +22,7 @@ export default class SingleNumberInput extends React.Component<Props> {
 
   render() {
     return (
-      <TouchableOpacity
-        {...this.props}
-        activeOpacity={1}
-        style={styles.container}
-      >
+      <TouchableOpacity {...this.props} activeOpacity={1} style={styles.container}>
         <Text style={styles.textInput}>{this.props.value}</Text>
       </TouchableOpacity>
     )
