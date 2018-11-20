@@ -72,12 +72,12 @@ export default class Welcome extends React.Component<Props, any> {
             onPress={this.handleRegisterButtonPressed}
           />
         </View>
-        <CustomButton
+        {/* <CustomButton
           label={"LOGIN WITH FACEBOOK"}
           labelStyle={styles.facebookAuthLabel}
           style={styles.facebookAuthButton}
           icon={ICON_FB}
-        />
+        /> */}
         <View style={styles.tosContainer}>
           <Text style={styles.caption}>By registering I agree to the</Text>
           <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>

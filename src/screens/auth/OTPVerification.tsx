@@ -6,7 +6,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TextInput,
-  ImageStyle
+  ImageStyle,
+  KeyboardAvoidingView
 } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
@@ -90,58 +91,60 @@ export default class OTPVerification extends React.Component<Props, State> {
     return (
       <UserContext.Consumer>
         {context => (
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.container}>
-              <Image source={LOGO} style={styles.logo as ImageStyle} />
-              <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
-              <Text style={styles.caption}>Email verification has been sent</Text>
-              <Text style={[styles.caption, { marginTop: 5 }]}>to your email</Text>
-              <TextInput
-                style={{ height: 0 }}
-                ref={this.hiddenInputRef}
-                value={this.state.otp}
-                onChangeText={this.handleOtpType}
-                keyboardType={"numeric"}
-                maxLength={4}
-              />
-              {/* <Text style={styles.email}>{this.props.navigation.getParam("email")}</Text> */}
-              <Text style={styles.code}>ENTER CODE</Text>
-              <View style={styles.codeInputContainer}>
-                <SingleNumberInput
-                  value={this.state.otp[0]}
-                  onPress={this.handleFormFocusChange}
+          <KeyboardAvoidingView behavior={"padding"} style={{ flex: 1 }}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.container}>
+                <Image source={LOGO} style={styles.logo as ImageStyle} />
+                <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
+                <Text style={styles.caption}>Email verification has been sent</Text>
+                <Text style={[styles.caption, { marginTop: 5 }]}>to your email</Text>
+                <TextInput
+                  style={{ height: 0 }}
+                  ref={this.hiddenInputRef}
+                  value={this.state.otp}
+                  onChangeText={this.handleOtpType}
+                  keyboardType={"numeric"}
+                  maxLength={4}
                 />
-                <SingleNumberInput
-                  value={this.state.otp[1]}
-                  onPress={this.handleFormFocusChange}
-                />
-                <SingleNumberInput
-                  value={this.state.otp[2]}
-                  onPress={this.handleFormFocusChange}
-                />
-                <SingleNumberInput
-                  value={this.state.otp[3]}
-                  onPress={this.handleFormFocusChange}
-                />
-              </View>
-              {/* <Text style={styles.resend}>Resend code in 00:30</Text>
+                {/* <Text style={styles.email}>{this.props.navigation.getParam("email")}</Text> */}
+                <Text style={styles.code}>ENTER CODE</Text>
+                <View style={styles.codeInputContainer}>
+                  <SingleNumberInput
+                    value={this.state.otp[0]}
+                    onPress={this.handleFormFocusChange}
+                  />
+                  <SingleNumberInput
+                    value={this.state.otp[1]}
+                    onPress={this.handleFormFocusChange}
+                  />
+                  <SingleNumberInput
+                    value={this.state.otp[2]}
+                    onPress={this.handleFormFocusChange}
+                  />
+                  <SingleNumberInput
+                    value={this.state.otp[3]}
+                    onPress={this.handleFormFocusChange}
+                  />
+                </View>
+                {/* <Text style={styles.resend}>Resend code in 00:30</Text>
               <Text style={styles.changeNumber}>CHANGE NUMBER</Text> */}
-              <FixedButton
-                isLoading={this.state.isLoading}
-                label={"LOGIN"}
-                backgroundColor={
-                  this.state.otp.length === 4
-                    ? metrics.SECONDARY_COLOR
-                    : metrics.INACTIVE_COLOR
-                }
-                onPress={this.handleLoginButtonPressed(context.otp)}
-              />
-              <View style={styles.tosContainer}>
-                <Text style={styles.caption}>By registering I agree to the</Text>
-                <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
+                <FixedButton
+                  isLoading={this.state.isLoading}
+                  label={"LOGIN"}
+                  backgroundColor={
+                    this.state.otp.length === 4
+                      ? metrics.SECONDARY_COLOR
+                      : metrics.INACTIVE_COLOR
+                  }
+                  onPress={this.handleLoginButtonPressed(context.otp)}
+                />
+                <View style={styles.tosContainer}>
+                  <Text style={styles.caption}>By registering I agree to the</Text>
+                  <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
+                </View>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
         )}
       </UserContext.Consumer>
     )
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
 
   tosContainer: {
     alignItems: "center",
-    marginTop: 50
+    marginTop: 30
   },
 
   tos: {

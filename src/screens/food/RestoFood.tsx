@@ -18,6 +18,7 @@ export default class RestoFood extends React.Component<Props, any> {
         <FlatList
           contentContainerStyle={{ paddingBottom: 100 }}
           data={this.props.data}
+          style={styles.listContainer}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
             <FoodItem
@@ -49,5 +50,11 @@ const styles = StyleSheet.create({
 
   list: {
     paddingTop: 20
+  },
+
+  listContainer: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    marginTop: 30
   }
 })

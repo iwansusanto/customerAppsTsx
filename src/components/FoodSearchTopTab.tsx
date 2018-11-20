@@ -36,6 +36,7 @@ export default class TobTab extends React.Component<Props, State> {
             data={navigation.state.routes}
             horizontal
             extraData={this.state}
+            showsHorizontalScrollIndicator={false}
             renderItem={({ item }: { item: any }) => (
               <TouchableOpacity
                 style={styles.labelContainer}

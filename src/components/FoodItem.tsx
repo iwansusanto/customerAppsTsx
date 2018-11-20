@@ -40,17 +40,11 @@ const styles = StyleSheet.create({
   container: {
     width: metrics.DEVICE_WIDTH * 0.9,
     flexDirection: "row",
-    backgroundColor: "white",
     padding: 20,
     borderRadius: 5,
     marginVertical: 5,
-    shadowColor: metrics.SHADOW_COLOR,
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowRadius: 5,
-    shadowOpacity: 1,
+    borderBottomWidth: 0.3,
+    borderBottomColor: "#EEEEEE",
     minHeight: 120
   },
 
