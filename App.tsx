@@ -26,6 +26,7 @@ import Home from "./src/screens/main/Home"
 import Orders from "./src/screens/main/Orders"
 import Inbox from "./src/screens/main/Inbox"
 import Account from "./src/screens/main/Account"
+import Help from "./src/screens/main/Help"
 import MainSearch from "./src/screens/main/MainSearch"
 
 // Food screens
@@ -88,6 +89,7 @@ const Main = createBottomTabNavigator(
   {
     Home: { screen: Home },
     Orders: { screen: Orders },
+    Help: { screen: Help },
     Inbox: { screen: Inbox },
     Account: {
       screen: Account,
