@@ -25,7 +25,7 @@ export default (props: Props) => (
     <Image style={styles.picture as ImageStyle} source={{ uri: props.picture }} />
     <View style={styles.detailContainer}>
       <Text style={styles.title}>{props.name}</Text>
-      <Text style={styles.price}>{props.price}</Text>
+      <Text style={styles.price}>{`QR. ${props.price}`}</Text>
     </View>
     <TouchableOpacity style={styles.favorite}>
       <Image source={ICON_HEART} />

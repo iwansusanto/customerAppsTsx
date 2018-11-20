@@ -23,6 +23,8 @@ import CartItem from "../../components/CartItem"
 import CustomButton from "../../components/CustomButton"
 import withCartContext from "../../components/consumers/withCartContext"
 
+const IC_MENU = require("../../../assets/ic_menu.png")
+
 interface Props {
   navigation: NavigationScreenProp<any, any>
   search: SearchContext
@@ -50,7 +52,6 @@ class RestoDetail extends Component<Props, State> {
   }
 
   public async componentWillMount() {
-    console.log(this.props)
     const merchantId = this.props.navigation.getParam("merchantId")
     await this.props.search.searchRestoDetail(merchantId)
     const menus: any = {}
@@ -66,7 +67,6 @@ class RestoDetail extends Component<Props, State> {
         <RestoFood navigation={this.props.navigation} data={[]} />
       )
     }
-    console.log(menus, this.props.search.resto.merchant)
     await this.setState({ menus })
 
     const { setParams } = this.props.navigation
@@ -91,7 +91,7 @@ class RestoDetail extends Component<Props, State> {
             content={this.renderBottomSheetContent}
             bottomUpSlideBtn={styles.bottomSheetSlideUpButton}
             slideUpButton={this.renderSlideUpButton()}
-            startHeight={80}
+            startHeight={100}
             topEnd={metrics.DEVICE_HEIGHT * 0.3}
           />
         )}
@@ -149,10 +149,15 @@ class RestoDetail extends Component<Props, State> {
 
   renderSlideUpButton() {
     return (
-      <View style={{ flex: 1, flexDirection: "row" }}>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("OrderReview")}
-        >
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "center"
+        }}
+      >
+        <Image source={IC_MENU} style={{ position: "absolute", top: -10 }} />
+        <TouchableOpacity onPress={() => this.props.navigation.navigate("OrderReview")}>
           <Image source={ICON_CART} />
         </TouchableOpacity>
         <View style={{ marginLeft: 20, justifyContent: "center", flex: 1 }}>
@@ -176,7 +181,7 @@ class RestoDetail extends Component<Props, State> {
           </Text>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("OrderReview")}
-            style={{ backgroundColor: "red", flex: 1 }}
+            style={{ flex: 1 }}
           >
             <Image source={ICON_ARROW} />
           </TouchableOpacity>

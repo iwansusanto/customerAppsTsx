@@ -1,11 +1,5 @@
 import React from "react"
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  FlatList
-} from "react-native"
+import { View, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native"
 
 import { NavigationScreenProp } from "react-navigation"
 import withSearchContext from "../../components/consumers/withSearchContext"
@@ -25,6 +19,7 @@ class Dishes extends React.Component<Props> {
           data={this.props.search.product_data}
           keyExtractor={item => item.id.toString()}
           contentContainerStyle={styles.list}
+          style={styles.listContainer}
           renderItem={({ item }) => (
             <DishItem
               name={item.name}
@@ -49,8 +44,12 @@ const styles = StyleSheet.create({
   },
 
   list: {
-    paddingTop: 20,
     paddingBottom: 20
+  },
+
+  listContainer: {
+    backgroundColor: "white",
+    borderRadius: 5
   }
 })
 

@@ -4,7 +4,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableOpacityProps,
-  Image
+  Image,
+  ImageStyle
 } from "react-native"
 
 import Text from "./CustomText"
@@ -19,7 +20,7 @@ interface Props extends TouchableOpacityProps {
 
 export default (props: Props) => (
   <TouchableOpacity style={styles.container} {...props}>
-    <Image style={styles.image} source={{ uri: props.image }} />
+    <Image style={styles.image as ImageStyle} source={{ uri: props.image }} />
     <View style={styles.detailContainer}>
       <Text style={styles.name}>{props.name}</Text>
       <Text style={styles.price}>Rp. 20.000</Text>
@@ -31,19 +32,12 @@ export default (props: Props) => (
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    borderRadius: 5,
     marginVertical: 5,
-    shadowColor: metrics.SHADOW_COLOR,
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowRadius: 5,
-    shadowOpacity: 1,
     width: metrics.DEVICE_WIDTH * 0.9,
     flexDirection: "row",
-    padding: 20
+    padding: 20,
+    borderBottomWidth: 0.3,
+    borderColor: "#EEEEEE"
   },
 
   detailContainer: {

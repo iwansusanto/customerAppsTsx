@@ -13,7 +13,7 @@ import * as Easing from "react-native/Libraries/Animated/src/Easing"
 
 const { width, height } = Dimensions.get("window")
 
-export default class BottomUpPanel extends Component {
+export default class BottomUpPanel extends Component<any, any> {
   static defaultProps = {
     isOpen: false
   }
