@@ -130,7 +130,15 @@ class OrderReview extends React.Component<Props, State> {
       j
     for (i = 9; i < 18; i++) {
       for (j = 0; j < 2; j++) {
-        arr.push(i + ":" + (j === 0 ? "00" : 30 * j))
+        arr.push(
+          i +
+            ":" +
+            (j === 0 ? "00" : 30 * j) +
+            " - " +
+            (j !== 0 ? i + 1 : i) +
+            ":" +
+            (j === 0 ? "30" : "00")
+        )
       }
     }
     return arr
@@ -383,10 +391,10 @@ class OrderReview extends React.Component<Props, State> {
                         margin: 5
                       }}
                     >
-                      <Text>09:00</Text>
+                      <Text>09:00 - 09:30</Text>
                     </View>
                   </MenuTrigger>
-                  <MenuOptions customStyles={{ optionsContainer: { width: 50 } }}>
+                  <MenuOptions customStyles={{ optionsContainer: { width: 90 } }}>
                     <ScrollView style={{ maxHeight: 200 }}>
                       {this.getTime().map(time => (
                         <MenuOption value={time}>
