@@ -23,6 +23,7 @@ const ICON_TIME = require("../../../assets/ic_time.png")
 const ICON_PHONE = require("../../../assets/ic_phone_fill.png")
 const ICON_MESSAGE = require("../../../assets/ic_message.png")
 const ICON_WALLET = require("../../../assets/ic_wallet.png")
+const ICON_CAR = require("../../../assets/ic_car_marker.png")
 
 const PROFILE_PICTURE = require("../../../assets/dummy_profile.png")
 
@@ -262,6 +263,7 @@ class OrderTrack extends React.Component<Props, any> {
                 latitudeDelta: 0.001,
                 longitudeDelta: 0.001
               }}
+              image={ICON_CAR}
             />
           </MapView>
         </View>
