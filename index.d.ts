@@ -308,6 +308,12 @@ interface AddressResponse {
   address_data: UserAddress[]
 }
 
+interface AddressCreateResponse {
+  success: boolean
+  message: string
+  address_data: UserAddress
+}
+
 interface ShippingResponse {
   distance: string
   delivery_price: string
