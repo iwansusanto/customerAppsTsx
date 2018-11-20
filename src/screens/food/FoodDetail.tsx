@@ -64,6 +64,7 @@ class FoodDetail extends React.Component<Props, State> {
                 {additional !== null &&
                   additional.topping.map((item: any, index: number) => (
                     <AdditionalFoodItem
+                      key={item.id.toString()}
                       onPress={this.handleClick(index)}
                       active={selectedAdditional[index]}
                       name={item.name}
@@ -84,8 +85,10 @@ class FoodDetail extends React.Component<Props, State> {
 
   handleClick = (index: number) => () => {
     console.log("index", index)
-    const selected = this.state.selectedAdditional
-    selected[index] = !selected[index]
+    const { additional } = this.props.navigation.state.params
+    let selected = this.state.selectedAdditional
+    selected = new Array(additional.length).fill(false)
+    selected[index] = true
     this.setState({ selectedAdditional: selected })
   }
 

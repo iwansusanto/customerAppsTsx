@@ -59,7 +59,7 @@ class Food extends React.Component<Props, any> {
           <Text style={styles.caption}>Stay where you are,</Text>
           <Text style={styles.caption}>We bring your favorites</Text>
         </View>
-        <SearchBar style={styles.searchBar} />
+        <SearchBar style={styles.searchBar} onFocus={() => this.props.navigation.navigate("MainSearch")} />
         <View style={styles.categoryContainer}>
           <Text style={styles.subtitle}>Pick by categories</Text>
           <View style={styles.categoryListContainer}>
