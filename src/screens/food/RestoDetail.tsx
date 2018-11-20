@@ -174,14 +174,14 @@ class RestoDetail extends Component<Props, State> {
               fontSize: 16,
               fontWeight: "bold",
               color: "#4A90E2",
-              marginRight: 20
+              paddingTop: 17
             }}
           >
             {this.props.cart.cart.total}
           </Text>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("OrderReview")}
-            style={{ flex: 1 }}
+            style={{ flex: 1, padding: 20 }}
           >
             <Image source={ICON_ARROW} />
           </TouchableOpacity>
