@@ -1,11 +1,5 @@
 import React from "react"
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  ImageStyle
-} from "react-native"
+import { View, TouchableOpacity, Image, StyleSheet, ImageStyle } from "react-native"
 import metrics from "../config/metrics"
 
 import Text from "./CustomText"
@@ -28,10 +22,7 @@ export default class CartItem extends React.Component<Props> {
       <View>
         <View style={styles.container}>
           <TouchableOpacity onPress={this.props.deleteCartItem}>
-            <Image
-              source={ICON_CANCEL}
-              style={styles.cancelIcon as ImageStyle}
-            />
+            <Image source={ICON_CANCEL} style={styles.cancelIcon as ImageStyle} />
           </TouchableOpacity>
           <View style={styles.detailContainer}>
             <View style={styles.mainDetail}>
@@ -47,11 +38,18 @@ export default class CartItem extends React.Component<Props> {
           </View>
         </View>
         <View style={styles.counterContainer}>
-          <TouchableOpacity onPress={this.props.updateCartItem(Math.max(this.props.quantity - 1, 1), this.props.id)}>
+          <TouchableOpacity
+            onPress={this.props.updateCartItem(
+              Math.max(this.props.quantity - 1, 1),
+              this.props.id
+            )}
+          >
             <Text style={styles.counterButton}>-</Text>
           </TouchableOpacity>
           <Text style={styles.counter}>{this.props.quantity.toString()}</Text>
-          <TouchableOpacity onPress={this.props.updateCartItem(this.props.quantity + 1, this.props.id)}>
+          <TouchableOpacity
+            onPress={this.props.updateCartItem(this.props.quantity + 1, this.props.id)}
+          >
             <Text style={styles.counterButton}>+</Text>
           </TouchableOpacity>
         </View>

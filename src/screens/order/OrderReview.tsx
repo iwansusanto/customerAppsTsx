@@ -299,6 +299,16 @@ class OrderReview extends React.Component<Props, State> {
     })
   }
 
+  deleteCartItem = (id: number) => async () => {
+    await this.props.cart.deleteCart(id)
+    await this.props.cart.getCart()
+  }
+
+  updateCartItem = (id: number, quantity: number) => async () => {
+    await this.props.cart.updateCart(quantity, id)
+    await this.props.cart.getCart()
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -497,6 +507,9 @@ class OrderReview extends React.Component<Props, State> {
                 price={item.price}
                 additional={item.additional}
                 quantity={item.quantity}
+                id={item.id}
+                updateCartItem={this.updateCartItem}
+                deleteCartItem={this.deleteCartItem(item.id)}
               />
             )}
             horizontal
@@ -537,7 +550,11 @@ class OrderReview extends React.Component<Props, State> {
         </ScrollView>
         <FixedButton
           label={"PROCEED"}
-          backgroundColor={metrics.PRIMARY_COLOR}
+          backgroundColor={
+            this.props.cart.cart.product_data.length > 0
+              ? metrics.PRIMARY_COLOR
+              : metrics.INACTIVE_COLOR
+          }
           labelStyle={{ color: "white" }}
           onPress={this.createOrder}
         />
