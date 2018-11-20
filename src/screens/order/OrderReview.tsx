@@ -11,6 +11,13 @@ import {
   Alert
 } from "react-native"
 import RNGooglePlaces from "react-native-google-places"
+import {
+  MenuProvider,
+  Menu,
+  MenuTrigger,
+  MenuOption,
+  MenuOptions
+} from "react-native-popup-menu"
 
 import Text from "../../components/CustomText"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
@@ -98,15 +105,15 @@ class OrderReview extends React.Component<Props, State> {
     for (var i = 0; i <= daysToAdd; i++) {
       var currentDate = new Date()
       currentDate.setDate(startDate.getDate() + i)
-      aryDates.push(
+      let date =
         this.dayAsString(currentDate.getDay()) +
-          ", " +
-          currentDate.getDate() +
-          " " +
-          this.monthAsString(currentDate.getMonth()) +
-          " " +
-          currentDate.getFullYear()
-      )
+        ", " +
+        currentDate.getDate() +
+        " " +
+        this.monthAsString(currentDate.getMonth()) +
+        " " +
+        currentDate.getFullYear()
+      aryDates.push(date)
     }
 
     return aryDates
@@ -214,6 +221,7 @@ class OrderReview extends React.Component<Props, State> {
   }
 
   render() {
+    const days = this.getNextDays()
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -328,60 +336,66 @@ class OrderReview extends React.Component<Props, State> {
               </TouchableOpacity>
               <Text style={styles.contentTitle}>Schedule Order</Text>
               <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-                <TouchableOpacity
-                  style={{
-                    borderColor: metrics.PRIMARY_COLOR,
-                    borderWidth: 0.3,
-                    borderRadius: 5,
-                    shadowColor: metrics.SHADOW_COLOR,
-                    shadowOffset: {
-                      width: 0,
-                      height: 2
-                    },
-                    shadowRadius: 5,
-                    shadowOpacity: 1,
-                    padding: 5,
-                    margin: 5
-                  }}
-                  onPress={() =>
-                    ActionSheetIOS.showActionSheetWithOptions(
-                      {
-                        options: ["Cancel", ...this.getNextDays()],
-                        cancelButtonIndex: 0
-                      },
-                      buttonIndex => console.log(buttonIndex)
-                    )
-                  }
-                >
-                  <Text>Tomorrow, Aug 13</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    borderColor: metrics.PRIMARY_COLOR,
-                    borderWidth: 0.3,
-                    borderRadius: 5,
-                    shadowColor: metrics.SHADOW_COLOR,
-                    shadowOffset: {
-                      width: 0,
-                      height: 2
-                    },
-                    shadowRadius: 5,
-                    shadowOpacity: 1,
-                    padding: 5,
-                    margin: 5
-                  }}
-                  onPress={() =>
-                    ActionSheetIOS.showActionSheetWithOptions(
-                      {
-                        options: ["Cancel", ...this.getTime()],
-                        cancelButtonIndex: 0
-                      },
-                      buttonIndex => console.log(buttonIndex)
-                    )
-                  }
-                >
-                  <Text>09:00</Text>
-                </TouchableOpacity>
+                <Menu>
+                  <MenuTrigger>
+                    <View
+                      style={{
+                        borderColor: metrics.PRIMARY_COLOR,
+                        borderWidth: 0.3,
+                        borderRadius: 5,
+                        shadowColor: metrics.SHADOW_COLOR,
+                        shadowOffset: {
+                          width: 0,
+                          height: 2
+                        },
+                        shadowRadius: 5,
+                        shadowOpacity: 1,
+                        padding: 5,
+                        margin: 5
+                      }}
+                    >
+                      <Text>Tomorrow, Aug 13</Text>
+                    </View>
+                  </MenuTrigger>
+                  <MenuOptions>
+                    {this.getNextDays().map(day => (
+                      <MenuOption value={day}>
+                        <Text style={{ marginVertical: 5 }}>{day}</Text>
+                      </MenuOption>
+                    ))}
+                  </MenuOptions>
+                </Menu>
+                <Menu>
+                  <MenuTrigger>
+                    <View
+                      style={{
+                        borderColor: metrics.PRIMARY_COLOR,
+                        borderWidth: 0.3,
+                        borderRadius: 5,
+                        shadowColor: metrics.SHADOW_COLOR,
+                        shadowOffset: {
+                          width: 0,
+                          height: 2
+                        },
+                        shadowRadius: 5,
+                        shadowOpacity: 1,
+                        padding: 5,
+                        margin: 5
+                      }}
+                    >
+                      <Text>09:00</Text>
+                    </View>
+                  </MenuTrigger>
+                  <MenuOptions customStyles={{ optionsContainer: { width: 50 } }}>
+                    <ScrollView style={{ maxHeight: 200 }}>
+                      {this.getTime().map(time => (
+                        <MenuOption value={time}>
+                          <Text style={{ marginVertical: 5 }}>{time}</Text>
+                        </MenuOption>
+                      ))}
+                    </ScrollView>
+                  </MenuOptions>
+                </Menu>
               </View>
               <Text style={styles.contentCaption}>
                 Your order will be scheduled to spesific time
@@ -506,7 +520,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     marginTop: 20,
-    marginBottom: 80
+    marginBottom: 65
   },
 
   contentItemContainer: {

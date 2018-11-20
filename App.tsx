@@ -6,6 +6,7 @@ import {
   NavigationNavigatorProps,
   NavigationScreenProp
 } from "react-navigation"
+import { MenuProvider } from "react-native-popup-menu"
 
 // Temporary name for entry point
 import AppW from "./src/screens/App"
@@ -66,21 +67,23 @@ import OrderContextProvider from "./src/components/providers/OrderContextProvide
 export default class App extends React.Component<any, any> {
   render() {
     return (
-      <OrderContextProvider>
-        <CartContextProvider>
-          <SearchContextProvider>
-            <SuggestionContextProvider>
-              <CategoryContextProvider>
-                <InboxContextProvider>
-                  <UserContextProvider>
-                    <Navigator />
-                  </UserContextProvider>
-                </InboxContextProvider>
-              </CategoryContextProvider>
-            </SuggestionContextProvider>
-          </SearchContextProvider>
-        </CartContextProvider>
-      </OrderContextProvider>
+      <MenuProvider>
+        <OrderContextProvider>
+          <CartContextProvider>
+            <SearchContextProvider>
+              <SuggestionContextProvider>
+                <CategoryContextProvider>
+                  <InboxContextProvider>
+                    <UserContextProvider>
+                      <Navigator />
+                    </UserContextProvider>
+                  </InboxContextProvider>
+                </CategoryContextProvider>
+              </SuggestionContextProvider>
+            </SearchContextProvider>
+          </CartContextProvider>
+        </OrderContextProvider>
+      </MenuProvider>
     )
   }
 }
