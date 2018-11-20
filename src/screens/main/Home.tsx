@@ -192,7 +192,8 @@ const styles = StyleSheet.create({
   customerDetail: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: metrics.DEVICE_WIDTH * 0.9
+    width: metrics.DEVICE_WIDTH * 0.9,
+    marginTop: 20
   },
 
   greeting: {

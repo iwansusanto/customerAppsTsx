@@ -106,8 +106,8 @@ class Food extends React.Component<Props, any> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "white"
+    alignItems: "center"
+    // backgroundColor: "white"
   },
 
   captionContainer: {
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     fontSize: 18,
     marginTop: 10,
-    color: "white"
+    color: metrics.IS_IPHONE_X ? "white" : "black"
   }
 })
 
