@@ -7,7 +7,8 @@ import {
   Image,
   TextInput,
   TextInputProps,
-  ImageSourcePropType
+  ImageSourcePropType,
+  ImageStyle
 } from "react-native"
 
 // Configs
@@ -23,7 +24,11 @@ export default (props: CustomTextInputProps) => {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.imageContainer}>
-        <Image source={props.icon} style={styles.icon} resizeMode={"contain"} />
+        <Image
+          source={props.icon}
+          style={styles.icon as ImageStyle}
+          resizeMode={"contain"}
+        />
       </View>
       <TextInput {...otherProps} style={styles.textInput} />
     </View>
