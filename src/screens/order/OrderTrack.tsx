@@ -6,7 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  GeolocationReturnType
+  GeolocationReturnType,
+  Alert
 } from "react-native"
 import MapView, { Region, Marker, PROVIDER_GOOGLE } from "react-native-maps"
 
@@ -147,7 +148,7 @@ class OrderTrack extends React.Component<Props, any> {
             borderRadius: 0
           }}
           labelStyle={{ color: "white" }}
-          onPress={() => this.props.navigation.navigate("SearchDriver")}
+          onPress={() => this.props.navigation.goBack()}
         />
       </ScrollView>
     )
@@ -220,8 +221,20 @@ class OrderTrack extends React.Component<Props, any> {
       mapView.animateToRegion(driverLocation)
     }
 
-    if (order.order_status.name === "COMPLETE") {
-      this.props.navigation.replace("Home")
+    if (order.order_status_id === 7) {
+      Alert.alert("Thank you", "Your order has been finished", [
+        {
+          text: "OK",
+          onPress: () => this.props.navigation.navigate("Home")
+        }
+      ])
+    } else if (order.order_status_id === 8) {
+      Alert.alert("Cancelled", "Your order has been cancelled", [
+        {
+          text: "OK",
+          onPress: () => this.props.navigation.navigate("Home")
+        }
+      ])
     }
   }
 
