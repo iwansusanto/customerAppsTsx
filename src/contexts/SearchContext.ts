@@ -7,8 +7,11 @@ let data: SearchContext = {
   product_data: [],
   merchant_data: [],
   resto: {} as SearchRestoResponse,
-  search: (query: string, categoryId: number) => Promise.resolve(false),
-  searchRestoDetail: (menuId: number) => Promise.resolve(false)
+  result: {} as SearchResponse,
+  search: (type: number) => Promise.resolve(false),
+  searchByName: (name: string) => Promise.resolve(false),
+  searchRestoDetail: (menuId: number) => Promise.resolve(false),
+  searchBySuggestion: (categoryId: number) => Promise.resolve(false)
 }
 
 const SearchContext = createContext(data)

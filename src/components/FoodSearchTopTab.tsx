@@ -30,12 +30,13 @@ export default class TobTab extends React.Component<Props, State> {
       <View style={styles.container}>
         <HeaderOverlay />
         <Text style={styles.subtitle}>Search what you're craving for</Text>
-        <SearchBar style={styles.search} />
+        <SearchBar style={styles.search} onFocus={() => this.props.navigation.navigate("MainSearch")} />
         <View style={styles.tabContainer}>
           <FlatList
             data={navigation.state.routes}
             horizontal
             extraData={this.state}
+            showsHorizontalScrollIndicator={false}
             renderItem={({ item }: { item: any }) => (
               <TouchableOpacity
                 style={styles.labelContainer}

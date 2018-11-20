@@ -6,6 +6,7 @@ import {
   NavigationNavigatorProps,
   NavigationScreenProp
 } from "react-navigation"
+import { MenuProvider } from "react-native-popup-menu"
 
 // Temporary name for entry point
 import AppW from "./src/screens/App"
@@ -26,6 +27,7 @@ import Home from "./src/screens/main/Home"
 import Orders from "./src/screens/main/Orders"
 import Inbox from "./src/screens/main/Inbox"
 import Account from "./src/screens/main/Account"
+import Help from "./src/screens/main/Help"
 import MainSearch from "./src/screens/main/MainSearch"
 
 // Food screens
@@ -65,21 +67,23 @@ import OrderContextProvider from "./src/components/providers/OrderContextProvide
 export default class App extends React.Component<any, any> {
   render() {
     return (
-      <OrderContextProvider>
-        <CartContextProvider>
-          <SearchContextProvider>
-            <SuggestionContextProvider>
-              <CategoryContextProvider>
-                <InboxContextProvider>
-                  <UserContextProvider>
-                    <Navigator />
-                  </UserContextProvider>
-                </InboxContextProvider>
-              </CategoryContextProvider>
-            </SuggestionContextProvider>
-          </SearchContextProvider>
-        </CartContextProvider>
-      </OrderContextProvider>
+      <MenuProvider>
+        <OrderContextProvider>
+          <CartContextProvider>
+            <SearchContextProvider>
+              <SuggestionContextProvider>
+                <CategoryContextProvider>
+                  <InboxContextProvider>
+                    <UserContextProvider>
+                      <Navigator />
+                    </UserContextProvider>
+                  </InboxContextProvider>
+                </CategoryContextProvider>
+              </SuggestionContextProvider>
+            </SearchContextProvider>
+          </CartContextProvider>
+        </OrderContextProvider>
+      </MenuProvider>
     )
   }
 }
@@ -88,6 +92,7 @@ const Main = createBottomTabNavigator(
   {
     Home: { screen: Home },
     Orders: { screen: Orders },
+    Help: { screen: Help },
     Inbox: { screen: Inbox },
     Account: {
       screen: Account,

@@ -4,7 +4,8 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  TouchableOpacityProps
+  TouchableOpacityProps,
+  ImageStyle
 } from "react-native"
 
 // Custom component used in this component
@@ -23,10 +24,10 @@ const CategoryItem = (props: Props) => (
   <TouchableOpacity style={styles.container} {...props}>
     <Image
       source={{ uri: props.picture }}
-      style={styles.image}
+      style={styles.image as ImageStyle}
       resizeMode="cover"
     />
-    <Image source={ICON} style={styles.icon} />
+    <Image source={ICON} style={styles.icon as ImageStyle} />
     <View style={styles.subtitleView}>
       <Text style={styles.subtitle}>{props.title}</Text>
     </View>
@@ -36,7 +37,9 @@ const CategoryItem = (props: Props) => (
 const styles = StyleSheet.create({
   container: {
     width: metrics.DEVICE_WIDTH * 0.9,
-    height: metrics.DEVICE_WIDTH * 0.35,
+    height: metrics.IS_IPHONE_X
+      ? metrics.DEVICE_WIDTH * 0.5
+      : metrics.DEVICE_WIDTH * 0.35,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 14,
     fontWeight: "bold",
-    color: "white",
+    color: "white"
   }
 })
 

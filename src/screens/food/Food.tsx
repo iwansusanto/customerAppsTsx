@@ -59,7 +59,10 @@ class Food extends React.Component<Props, any> {
           <Text style={styles.caption}>Stay where you are,</Text>
           <Text style={styles.caption}>We bring your favorites</Text>
         </View>
-        <SearchBar style={styles.searchBar} />
+        <SearchBar
+          style={styles.searchBar}
+          onFocus={() => this.props.navigation.navigate("MainSearch")}
+        />
         <View style={styles.categoryContainer}>
           <Text style={styles.subtitle}>Pick by categories</Text>
           <View style={styles.categoryListContainer}>
@@ -106,8 +109,8 @@ class Food extends React.Component<Props, any> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "white"
+    alignItems: "center"
+    // backgroundColor: "white"
   },
 
   captionContainer: {
@@ -133,6 +136,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "white",
     padding: 20,
+    paddingBottom: 40,
     borderRadius: 10,
     shadowColor: metrics.SHADOW_COLOR,
     shadowOffset: {
@@ -154,7 +158,8 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    fontSize: 18
+    fontSize: 18,
+    marginVertical: 20
   },
 
   suggestionsList: {
@@ -168,8 +173,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginLeft: 40,
     fontSize: 18,
-    marginTop: 10,
-    color: "white"
+    marginTop: metrics.IS_IPHONE_X ? 40 : 15
   }
 })
 

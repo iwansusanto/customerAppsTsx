@@ -8,9 +8,18 @@ import {
   TouchableOpacity,
   FlatList,
   ActionSheetIOS,
-  Alert
+  Alert,
+  GeolocationReturnType,
+  DeviceEventEmitter
 } from "react-native"
 import RNGooglePlaces from "react-native-google-places"
+import {
+  MenuProvider,
+  Menu,
+  MenuTrigger,
+  MenuOption,
+  MenuOptions
+} from "react-native-popup-menu"
 
 import Text from "../../components/CustomText"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
@@ -22,6 +31,9 @@ import AddressItem from "../../components/AddressItem"
 import withCartContext from "../../components/consumers/withCartContext"
 import api from "../../api"
 import withOrderContext from "../../components/consumers/withOrderContext"
+import { Region } from "react-native-maps"
+import Geocoder from "react-native-geocoder"
+import withUserContext from "../../components/consumers/withUserContext"
 
 const ICON_MARKER = require("../../../assets/ic_marker_order.png")
 const ICON_TIME = require("../../../assets/ic_time.png")
@@ -33,6 +45,7 @@ interface Props {
   navigation: NavigationScreenProp<any, any>
   cart: CartContext
   order: OrderContext
+  user: UserContext
 }
 
 interface State {
@@ -43,6 +56,10 @@ interface State {
   selectedAddressIndex: number
   notes: string
   shippingPrice: number
+  lat: number
+  lng: number
+  selectedDate: string
+  selectedTime: string
 }
 
 class OrderReview extends React.Component<Props, State> {
@@ -52,12 +69,16 @@ class OrderReview extends React.Component<Props, State> {
 
   state = {
     address: "",
-    destination: false,
+    destination: true,
     schedule: true,
     addresses: [] as UserAddress[],
     selectedAddressIndex: -1,
     notes: "",
-    shippingPrice: -1
+    shippingPrice: -1,
+    lat: 0,
+    lng: 0,
+    selectedDate: this.getNextDays()[0],
+    selectedTime: this.getTime()[0]
   }
 
   monthAsString(monthIndex: number) {
@@ -98,15 +119,15 @@ class OrderReview extends React.Component<Props, State> {
     for (var i = 0; i <= daysToAdd; i++) {
       var currentDate = new Date()
       currentDate.setDate(startDate.getDate() + i)
-      aryDates.push(
+      let date =
         this.dayAsString(currentDate.getDay()) +
-          ", " +
-          currentDate.getDate() +
-          " " +
-          this.monthAsString(currentDate.getMonth()) +
-          " " +
-          currentDate.getFullYear()
-      )
+        ", " +
+        currentDate.getDate() +
+        " " +
+        this.monthAsString(currentDate.getMonth()) +
+        " " +
+        currentDate.getFullYear()
+      aryDates.push(date)
     }
 
     return aryDates
@@ -123,7 +144,15 @@ class OrderReview extends React.Component<Props, State> {
       j
     for (i = 9; i < 18; i++) {
       for (j = 0; j < 2; j++) {
-        arr.push(i + ":" + (j === 0 ? "00" : 30 * j))
+        arr.push(
+          i +
+            ":" +
+            (j === 0 ? "00" : 30 * j) +
+            " - " +
+            (j !== 0 ? i + 1 : i) +
+            ":" +
+            (j === 0 ? "30" : "00")
+        )
       }
     }
     return arr
@@ -131,12 +160,19 @@ class OrderReview extends React.Component<Props, State> {
 
   async handleAddressChange() {
     const place = await RNGooglePlaces.openPlacePickerModal()
-    this.setState({ address: place.name })
+    console.log(place)
+    this.setState({
+      address: place.address,
+      lat: place.latitude,
+      lng: place.longitude
+    })
+
+    this.createAddress()
   }
 
   async addAddress() {
     const place = await RNGooglePlaces.openPlacePickerModal()
-    this.props.navigation.navigate("NewAddress", { address: place.name })
+    this.props.navigation.navigate("NewAddress", { address: place })
   }
 
   selectDestination = (destination: boolean) => () => {
@@ -147,11 +183,35 @@ class OrderReview extends React.Component<Props, State> {
     this.setState({ schedule })
   }
 
+  createAddress = async () => {
+    try {
+      const { data } = await api.client.post<AddressCreateResponse>("/address", {
+        address: this.state.address,
+        lat: this.state.lat,
+        lng: this.state.lng,
+        phone: this.props.user.customer.phone,
+        fullname: "Home",
+        label: "Home"
+      })
+      console.log(data)
+      await this.getAddress()
+
+      const newIdIndex = this.state.addresses.findIndex(
+        item => item.id === data.address_data.id
+      )
+      await this.setState({ selectedAddressIndex: newIdIndex })
+
+      this.getShippingPrice()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   getAddress = async () => {
     try {
       const { data } = await api.client.get<AddressResponse>("/address")
       console.log(data)
-      this.setState({ addresses: data.address_data })
+      await this.setState({ addresses: data.address_data })
     } catch (err) {
       console.log(err)
     }
@@ -209,8 +269,34 @@ class OrderReview extends React.Component<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    DeviceEventEmitter.removeAllListeners()
+  }
+
   async componentWillMount() {
+    DeviceEventEmitter.addListener("addressAdd", () => this.getAddress())
     await this.getAddress()
+
+    navigator.geolocation.getCurrentPosition(async (position: GeolocationReturnType) => {
+      try {
+        const address = await Geocoder.geocodePosition({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        })
+
+        console.log(address)
+
+        this.setState({
+          address: address[0].formattedAddress,
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        })
+
+        await this.createAddress()
+      } catch (err) {
+        console.log(err)
+      }
+    })
   }
 
   render() {
@@ -229,6 +315,11 @@ class OrderReview extends React.Component<Props, State> {
         <View style={styles.destinationItemContainer}>
           <Image source={ICON_TIME} />
           <Text style={styles.destinationTime}>SEND NOW</Text>
+          <Text
+            style={{ color: "white", fontWeight: "300", fontSize: 11, marginLeft: 20 }}
+          >
+            ARRIVES UNDER 15 MINS
+          </Text>
         </View>
         <ScrollView
           style={styles.contentContainer}
@@ -238,7 +329,7 @@ class OrderReview extends React.Component<Props, State> {
             <View>
               <TouchableOpacity
                 style={styles.destionationButton}
-                onPress={this.selectDestination(false)}
+                onPress={this.selectDestination(true)}
               >
                 <Image
                   source={this.state.destination === true ? RADIO_ACTIVE : RADIO_INACTIVE}
@@ -248,6 +339,8 @@ class OrderReview extends React.Component<Props, State> {
               <View style={styles.destinationInputContainer}>
                 <TextInput
                   placeholder={"Address"}
+                  editable={false}
+                  multiline
                   style={{ flex: 1 }}
                   value={this.state.address}
                 />
@@ -272,8 +365,9 @@ class OrderReview extends React.Component<Props, State> {
               {this.state.destination === false && (
                 <>
                   <FlatList
+                    style={{ flex: 1 }}
                     data={this.state.addresses}
-                    extraData={this.state.selectedAddressIndex}
+                    extraData={this.state}
                     keyExtractor={item => item.id.toString()}
                     renderItem={({ item, index }) => (
                       <AddressItem
@@ -293,15 +387,15 @@ class OrderReview extends React.Component<Props, State> {
                   >
                     <Text style={styles.addButtonLabel}>ADD</Text>
                   </TouchableOpacity>
+                  <View style={styles.contentDivider} />
+                  <TextInput
+                    onChangeText={text => this.setState({ notes: text })}
+                    placeholder={"ADD NOTES"}
+                    style={{ flex: 1 }}
+                  />
                 </>
               )}
             </View>
-            <View style={styles.contentDivider} />
-            <TextInput
-              onChangeText={text => this.setState({ notes: text })}
-              placeholder={"ADD NOTES"}
-              style={{ flex: 1 }}
-            />
           </View>
           <View style={styles.contentItemContainer}>
             <View>
@@ -328,60 +422,66 @@ class OrderReview extends React.Component<Props, State> {
               </TouchableOpacity>
               <Text style={styles.contentTitle}>Schedule Order</Text>
               <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-                <TouchableOpacity
-                  style={{
-                    borderColor: metrics.PRIMARY_COLOR,
-                    borderWidth: 0.3,
-                    borderRadius: 5,
-                    shadowColor: metrics.SHADOW_COLOR,
-                    shadowOffset: {
-                      width: 0,
-                      height: 2
-                    },
-                    shadowRadius: 5,
-                    shadowOpacity: 1,
-                    padding: 5,
-                    margin: 5
-                  }}
-                  onPress={() =>
-                    ActionSheetIOS.showActionSheetWithOptions(
-                      {
-                        options: ["Cancel", ...this.getNextDays()],
-                        cancelButtonIndex: 0
-                      },
-                      buttonIndex => console.log(buttonIndex)
-                    )
-                  }
-                >
-                  <Text>Tomorrow, Aug 13</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    borderColor: metrics.PRIMARY_COLOR,
-                    borderWidth: 0.3,
-                    borderRadius: 5,
-                    shadowColor: metrics.SHADOW_COLOR,
-                    shadowOffset: {
-                      width: 0,
-                      height: 2
-                    },
-                    shadowRadius: 5,
-                    shadowOpacity: 1,
-                    padding: 5,
-                    margin: 5
-                  }}
-                  onPress={() =>
-                    ActionSheetIOS.showActionSheetWithOptions(
-                      {
-                        options: ["Cancel", ...this.getTime()],
-                        cancelButtonIndex: 0
-                      },
-                      buttonIndex => console.log(buttonIndex)
-                    )
-                  }
-                >
-                  <Text>09:00</Text>
-                </TouchableOpacity>
+                <Menu onSelect={value => this.setState({ selectedDate: value })}>
+                  <MenuTrigger>
+                    <View
+                      style={{
+                        borderColor: metrics.PRIMARY_COLOR,
+                        borderWidth: 0.3,
+                        borderRadius: 5,
+                        shadowColor: metrics.SHADOW_COLOR,
+                        shadowOffset: {
+                          width: 0,
+                          height: 2
+                        },
+                        shadowRadius: 5,
+                        shadowOpacity: 1,
+                        padding: 5,
+                        margin: 5
+                      }}
+                    >
+                      <Text>{this.state.selectedDate}</Text>
+                    </View>
+                  </MenuTrigger>
+                  <MenuOptions>
+                    {this.getNextDays().map(day => (
+                      <MenuOption value={day}>
+                        <Text style={{ marginVertical: 5 }}>{day}</Text>
+                      </MenuOption>
+                    ))}
+                  </MenuOptions>
+                </Menu>
+                <Menu onSelect={value => this.setState({ selectedTime: value })}>
+                  <MenuTrigger>
+                    <View
+                      style={{
+                        borderColor: metrics.PRIMARY_COLOR,
+                        borderWidth: 0.3,
+                        borderRadius: 5,
+                        shadowColor: metrics.SHADOW_COLOR,
+                        shadowOffset: {
+                          width: 0,
+                          height: 2
+                        },
+                        shadowRadius: 5,
+                        shadowOpacity: 1,
+                        padding: 5,
+                        margin: 5
+                      }}
+                    >
+                      <Text>{this.state.selectedTime}</Text>
+                    </View>
+                  </MenuTrigger>
+                  <MenuOptions customStyles={{ optionsContainer: { width: 100 } }}>
+                    <ScrollView style={{ maxHeight: 200 }}>
+                      {this.getTime().map(time => (
+                        <MenuOption value={time}>
+                          <Text style={{ marginVertical: 5 }}>{time}</Text>
+                        </MenuOption>
+                      ))}
+                    </ScrollView>
+                  </MenuOptions>
+                </Menu>
               </View>
               <Text style={styles.contentCaption}>
                 Your order will be scheduled to spesific time
@@ -506,7 +606,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     marginTop: 20,
-    marginBottom: 80
+    marginBottom: 65
   },
 
   contentItemContainer: {
@@ -582,4 +682,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withOrderContext(withCartContext(OrderReview))
+export default withUserContext(withOrderContext(withCartContext(OrderReview)))

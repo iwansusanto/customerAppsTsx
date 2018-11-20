@@ -13,14 +13,31 @@ import Text from "../../components/CustomText"
 import Countries from "../../../assets/CountryCodes.json"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import metrics from "../../config/metrics"
+import SearchBar from "../../components/SearchBar"
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
 }
 
-export default class CountrySelect extends React.Component<Props, any> {
+interface Country {
+  name: string
+  dial_code: string
+  code: string
+}
+
+interface State {
+  filteredCountry: Array<Country>
+  allCountries: Array<Country>
+}
+
+export default class CountrySelect extends React.Component<Props, State> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Select your country"
+  }
+
+  state = {
+    filteredCountry: Countries,
+    allCountries: Countries
   }
 
   selectCountry(item: any) {
@@ -29,12 +46,29 @@ export default class CountrySelect extends React.Component<Props, any> {
     callback(item.code, item.dial_code)
   }
 
+  filter(query: string) {
+    let filteredCountry = []
+    for (let country of this.state.allCountries) {
+      let isExist = country.name.toLowerCase().search(query) >= 0
+      if (isExist) {
+        filteredCountry.push(country)
+      }
+    }
+    this.setState({ filteredCountry: filteredCountry })
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        <SearchBar
+          style={styles.searchBar}
+          onChangeText={value => this.filter(value)}
+          autoCapitalize={"none"}
+        />
         <FlatList
-          data={Countries}
-          renderItem={({ item }) => (
+          data={this.state.filteredCountry}
+          extraData={this.state}
+          renderItem={({ item }: { item: Country }) => (
             <CountryItem
               name={item.name}
               dial_code={item.dial_code}
@@ -92,5 +126,10 @@ const styles = StyleSheet.create({
   countryName: {
     flex: 1,
     marginHorizontal: 20
+  },
+
+  searchBar: {
+    width: metrics.DEVICE_WIDTH,
+    borderWidth: 0
   }
 })

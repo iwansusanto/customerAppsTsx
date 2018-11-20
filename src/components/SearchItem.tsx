@@ -18,8 +18,8 @@ interface Props extends TouchableOpacityProps {
 
 export default (props: Props) => (
   <TouchableOpacity {...props} style={styles.container}>
-    <Image source={ICON_HISTORY} style={{ flex: 1 }} resizeMode={"contain"} />
-    <Text style={{ flex: 7 }}>{props.label}</Text>
+    {/* <Image source={ICON_HISTORY} style={{ flex: 1 }} resizeMode={"contain"} /> */}
+    <Text style={{ flex: 7, marginLeft: 30 }}>{props.label}</Text>
   </TouchableOpacity>
 )
 

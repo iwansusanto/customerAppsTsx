@@ -8,6 +8,7 @@ interface SearchState extends SearchResponse {
   currentSearchId: number
   currentSearchType: string
   currentRestoId: number
+  result: SearchResponse
 }
 
 export default class SearchContextProvider extends Component<{}, SearchState> {
@@ -18,6 +19,7 @@ export default class SearchContextProvider extends Component<{}, SearchState> {
     product_data: [],
     merchant_data: [],
     resto: {} as SearchRestoResponse,
+    result: {} as SearchResponse,
     currentSearchId: -1,
     currentSearchType: "type",
     currentRestoId: -1
@@ -79,9 +81,9 @@ export default class SearchContextProvider extends Component<{}, SearchState> {
   searchRestoDetail = async (menuId: number) => {
     if (this.state.currentRestoId !== menuId) {
       this.setState({
-        resto: {} as SearchRestoResponse
+        resto: {} as SearchRestoResponse,
+        currentRestoId: menuId
       })
-      this.setState({ currentRestoId: menuId })
     }
 
     try {
@@ -102,6 +104,42 @@ export default class SearchContextProvider extends Component<{}, SearchState> {
     }
   }
 
+  searchByName = async (name: string) => {
+    try {
+      const { data } = await api.client.post<SearchResponse>("/search", {
+        name
+      })
+      console.log(data)
+
+      if (data.success) {
+        this.setState({ result: data })
+      } else {
+        this.setState({
+          result: {
+            product_found: 0,
+            merchant_found: 0,
+            product_data: [],
+            merchant_data: [],
+            success: false
+          }
+        })
+      }
+      return true
+    } catch (err) {
+      this.setState({
+        result: {
+          product_found: 0,
+          merchant_found: 0,
+          product_data: [],
+          merchant_data: [],
+          success: false
+        }
+      })
+      console.log(err.response.data)
+      return false
+    }
+  }
+
   public render() {
     return (
       <SearchContext.Provider
@@ -109,7 +147,8 @@ export default class SearchContextProvider extends Component<{}, SearchState> {
           ...this.state,
           search: this.search,
           searchBySuggestion: this.searchBySuggestion,
-          searchRestoDetail: this.searchRestoDetail
+          searchRestoDetail: this.searchRestoDetail,
+          searchByName: this.searchByName
         }}
       >
         {this.props.children}

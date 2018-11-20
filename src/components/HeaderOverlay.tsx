@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
     borderRadius: radius / 2,
     position: "absolute",
     right: metrics.DEVICE_WIDTH / 2 - radius / 2,
-    top: metrics.DEVICE_WIDTH * 1.1 * -1
+    top: metrics.IS_IPHONE_X
+      ? metrics.DEVICE_WIDTH * 1.5 * -1
+      : metrics.DEVICE_WIDTH * 1.1 * -1
   }
 })

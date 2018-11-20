@@ -9,6 +9,8 @@ import {
   ImageStyle
 } from "react-native"
 
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+
 import Text from "../../components/CustomText"
 import { NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
@@ -16,6 +18,9 @@ import metrics from "../../config/metrics"
 import AdditionalFoodItem from "../../components/AdditionalFoodItem"
 import FixedButton from "../../components/FixedButton"
 import withCartContext from "../../components/consumers/withCartContext"
+import CustomTextInput from "../../components/CustomTextInput"
+
+const ICON_NOTE = require("../../../assets/ic_add_note.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
@@ -24,6 +29,7 @@ interface Props {
 
 interface State {
   selectedAdditional: boolean[]
+  additionalPrice: number
 }
 
 class FoodDetail extends React.Component<Props, State> {
@@ -36,7 +42,8 @@ class FoodDetail extends React.Component<Props, State> {
   })
 
   state = {
-    selectedAdditional: [] as boolean[]
+    selectedAdditional: [] as boolean[],
+    additionalPrice: 0
   }
 
   async componentWillMount() {
@@ -47,36 +54,41 @@ class FoodDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const { id, title, additional, picture } = this.props.navigation.state.params
+    const { id, title, additional, picture, price } = this.props.navigation.state.params
     const { selectedAdditional } = this.state
     console.log(selectedAdditional)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <ScrollView>
+        <KeyboardAwareScrollView>
           <View style={styles.container}>
             <Text style={styles.subtitle}>{title}</Text>
             <View style={styles.detailContainer}>
               <Image style={styles.picture as ImageStyle} source={{ uri: picture }} />
-              <View style={styles.detail}>
-                <Text style={styles.title}>Add Extra Items</Text>
-                <Text style={styles.category}>Toppings</Text>
-                {additional !== null &&
-                  additional.topping.map((item: any, index: number) => (
-                    <AdditionalFoodItem
-                      onPress={this.handleClick(index)}
-                      active={selectedAdditional[index]}
-                      name={item.name}
-                      price={item.data}
-                    />
-                  ))}
-              </View>
+              {additional !== null && (
+                <View style={styles.detail}>
+                  <Text style={styles.title}>Add Extra Items</Text>
+                  <Text style={styles.category}>Toppings</Text>
+                  {additional !== null &&
+                    additional.topping.map((item: any, index: number) => (
+                      <AdditionalFoodItem
+                        key={item.id.toString()}
+                        onPress={this.handleClick(index)}
+                        active={selectedAdditional[index]}
+                        name={item.name}
+                        price={item.data}
+                      />
+                    ))}
+                </View>
+              )}
+              <CustomTextInput icon={ICON_NOTE} placeholder={"Add notes"} />
             </View>
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
         <TouchableOpacity style={styles.addToCartButton} onPress={this.addToCart}>
           <Text style={styles.addToCartLabel}>Add to cart</Text>
-          <Text style={styles.addToCartLabel}>Rp. 20.000</Text>
+          <Text style={styles.addToCartLabel}>{`QR ${Number(price) +
+            Number(this.state.additionalPrice)}`}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -84,9 +96,14 @@ class FoodDetail extends React.Component<Props, State> {
 
   handleClick = (index: number) => () => {
     console.log("index", index)
-    const selected = this.state.selectedAdditional
-    selected[index] = !selected[index]
-    this.setState({ selectedAdditional: selected })
+    const { additional } = this.props.navigation.state.params
+    let selected = this.state.selectedAdditional
+    selected = new Array(additional.length).fill(false)
+    selected[index] = true
+    this.setState({
+      selectedAdditional: selected,
+      additionalPrice: additional.topping[index].data
+    })
   }
 
   addToCart = async () => {
@@ -160,7 +177,7 @@ const styles = StyleSheet.create({
   addToCartButton: {
     paddingHorizontal: 20,
     position: "absolute",
-    bottom: 65,
+    bottom: metrics.IS_IPHONE_X ? 65 : 20,
     borderWidth: 2,
     borderRadius: 20,
     borderColor: metrics.PRIMARY_COLOR,

@@ -9,10 +9,7 @@ import {
 } from "react-native"
 
 import Text from "../../components/CustomText"
-import {
-  NavigationTabScreenOptions,
-  NavigationScreenProp
-} from "react-navigation"
+import { NavigationTabScreenOptions, NavigationScreenProp } from "react-navigation"
 import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import CustomButton from "../../components/CustomButton"
@@ -71,7 +68,9 @@ class Account extends React.Component<Props, any> {
               <Text style={styles.pointsLabel}>Points</Text>
               <View style={styles.pointValueContainer}>
                 <Image source={ICON_POINT} />
-                <Text style={styles.pointValue}>{this.props.user.customer.total_point}</Text>
+                <Text style={styles.pointValue}>
+                  {this.props.user.customer.total_point}
+                </Text>
               </View>
             </View>
           </View>
@@ -179,7 +178,7 @@ const styles = StyleSheet.create({
   facebookContainer: {
     marginTop: 20,
     borderTopWidth: 1,
-    borderColor: metrics.BORDER_COLOR,
+    borderColor: "#EEEEEE",
     alignItems: "center",
     padding: 10
   },

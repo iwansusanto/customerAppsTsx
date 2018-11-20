@@ -1,18 +1,9 @@
 import React from "react"
-import {
-  View,
-  StyleSheet,
-  Image,
-  ImageStyle,
-  TouchableOpacity
-} from "react-native"
+import { View, StyleSheet, Image, ImageStyle, TouchableOpacity } from "react-native"
 
 import Text from "../../components/CustomText"
 import metrics from "../../config/metrics"
-import {
-  NavigationStackScreenOptions,
-  NavigationScreenProp
-} from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import FixedButton from "../../components/FixedButton"
 import withOrderContext from "../../components/consumers/withOrderContext"
 
@@ -51,11 +42,12 @@ class SearchDriver extends React.Component<Props> {
       <View style={styles.container}>
         <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
         <Text style={[styles.caption, { marginTop: 20 }]}>Sit back User</Text>
-        <Text style={styles.caption}>
-          We are searching the nearest driver from you
-        </Text>
+        <Text style={styles.caption}>We are searching the nearest driver from you</Text>
         <Image source={ICON_SEARCH} style={{ marginTop: 50 }} />
-        <TouchableOpacity style={styles.cancelButtonContainer}>
+        <TouchableOpacity
+          style={styles.cancelButtonContainer}
+          onPress={() => this.props.navigation.goBack()}
+        >
           <Image source={ICON_CANCEL} />
           <Text
             style={{
