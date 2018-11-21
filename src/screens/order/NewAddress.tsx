@@ -32,7 +32,7 @@ export default class NewAddress extends React.Component<Props, State> {
 
   state = {
     name: this.props.navigation.getParam("address").name,
-    addressName: "",
+    addressName: this.props.navigation.getParam("address").address,
     contactName: "",
     phoneNumber: "",
     isLoading: false
@@ -72,6 +72,7 @@ export default class NewAddress extends React.Component<Props, State> {
         <CustomTextInput
           icon={IC_LOCATION}
           placeholder={"Address name"}
+          value={this.state.addressName}
           onChangeText={value => this.setState({ addressName: value })}
         />
         <CustomTextInput

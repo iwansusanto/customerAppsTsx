@@ -11,7 +11,8 @@ export default class CartContextProvider extends Component<{}, CartResponse> {
     product_data: [],
     updated_at: "",
     created_at: "",
-    total: ""
+    total: "",
+    status: false
   }
 
   deleteCart = async (id: number) => {
@@ -27,7 +28,7 @@ export default class CartContextProvider extends Component<{}, CartResponse> {
     } catch (err) {
       console.log(err.response.data)
       return false
-    } 
+    }
   }
 
   updateCart = async (id: number, quantity: number) => {
@@ -69,15 +70,26 @@ export default class CartContextProvider extends Component<{}, CartResponse> {
 
   getCart = async () => {
     try {
-      const { data } = await api.client.get<CartResponse | []>("/cart")
+      const { data } = await api.client.get<CartResponse>("/cart")
       console.log(data)
-
-      if (data === []) {
-        return this.setState({ total: "", product_data: [] })
+      if (!data.status) {
+        this.setState({
+          id: 0,
+          customer_id: 0,
+          merchant_id: 0,
+          product_data: [],
+          updated_at: "",
+          created_at: "",
+          total: "",
+          status: false
+        })
+      } else {
+        const result = data as CartResponse
+        this.setState(result)
       }
-
-      const result = data as CartResponse
-      this.setState(result)
+      // if (data === []) {
+      //   return this.setState({ total: "", product_data: [] })
+      // }
     } catch (err) {
       console.log(err.response.data)
       return false

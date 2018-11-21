@@ -269,6 +269,7 @@ interface CartResponse {
   updated_at: string
   created_at: string
   total: string
+  status: boolean
 }
 
 interface CartContext {

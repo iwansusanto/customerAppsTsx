@@ -9,7 +9,8 @@ import {
   GeolocationReturnType,
   ScrollView,
   FlatList,
-  ImageStyle
+  ImageStyle,
+  DeviceEventEmitter
 } from "react-native"
 import { NavigationScreenProp, NavigationTabScreenOptions } from "react-navigation"
 import MapView, { Region, PROVIDER_GOOGLE } from "react-native-maps"
@@ -25,6 +26,7 @@ import CategoryItem from "../../components/CategoryItem"
 
 import withUserContext from "../../components/consumers/withUserContext"
 import withCategoryContext from "../../components/consumers/withCategoryContext"
+import withCartContext from "../../components/consumers/withCartContext"
 
 // Assets
 const ICON_POINT = require("../../../assets/point.png")
@@ -38,6 +40,7 @@ interface Props {
   navigation: NavigationScreenProp<any, any>
   user: UserContext
   category: CategoryContext
+  cart: CartContext
 }
 
 interface State {
@@ -122,8 +125,16 @@ class Home extends React.Component<Props, State> {
     })
   }
 
+  componentWillMount() {
+    DeviceEventEmitter.addListener("shouldCartUpdate", () => this.props.cart.getCart())
+  }
+
   async componentDidMount() {
     await this.props.category.getCategories()
+  }
+
+  componentWillUnmount() {
+    DeviceEventEmitter.removeListener("shouldCartUpdate", () => this.props.cart.getCart())
   }
 
   render() {
@@ -274,4 +285,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withUserContext(withCategoryContext(Home))
+export default withCartContext(withUserContext(withCategoryContext(Home)))
