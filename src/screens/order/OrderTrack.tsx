@@ -223,7 +223,7 @@ class OrderTrack extends React.Component<Props, any> {
       mapView.animateToRegion(driverLocation)
     }
 
-    if (order.order_status_id === 7) {
+    if (order.order_status_id === 6) {
       DeviceEventEmitter.emit("shouldCartUpdate")
       Alert.alert("Thank you", "Your order has been finished", [
         {
