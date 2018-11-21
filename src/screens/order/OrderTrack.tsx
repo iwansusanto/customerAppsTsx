@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   ScrollView,
   GeolocationReturnType,
-  Alert
+  Alert,
+  DeviceEventEmitter
 } from "react-native"
 import MapView, { Region, Marker, PROVIDER_GOOGLE } from "react-native-maps"
 
@@ -205,10 +206,11 @@ class OrderTrack extends React.Component<Props, any> {
   }
 
   checkOrder = async () => {
+    console.log("checkorder")
     await this.props.order.getOrderDetail()
     const order = this.props.order.orderDetail
     const driver = this.props.order.orderDetail.driver_data as DriverData
-
+    console.log(order)
     const driverLocation = {
       latitude: Number(driver.driver_location.lat),
       longitude: Number(driver.driver_location.lng),
@@ -222,25 +224,28 @@ class OrderTrack extends React.Component<Props, any> {
     }
 
     if (order.order_status_id === 7) {
+      DeviceEventEmitter.emit("shouldCartUpdate")
       Alert.alert("Thank you", "Your order has been finished", [
         {
           text: "OK",
           onPress: () => this.props.navigation.navigate("Home")
         }
       ])
+      clearInterval(this.interval)
     } else if (order.order_status_id === 8) {
+      DeviceEventEmitter.emit("shouldCartUpdate")
       Alert.alert("Cancelled", "Your order has been cancelled", [
         {
           text: "OK",
           onPress: () => this.props.navigation.navigate("Home")
         }
       ])
+      clearInterval(this.interval)
     }
-    clearInterval(this.interval)
   }
 
   componentDidMount() {
-    this.interval = setInterval(this.checkOrder, 30000)
+    this.interval = setInterval(this.checkOrder, 2000)
   }
 
   render() {
