@@ -1,9 +1,6 @@
 import React from "react"
 import { View, StyleSheet, Image, ImageStyle, FlatList } from "react-native"
-import {
-  NavigationStackScreenOptions,
-  NavigationScreenProp
-} from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
 import Text from "../../components/CustomText"
 import HeaderOverlay from "../../components/HeaderOverlay"
@@ -90,7 +87,9 @@ class MainSearch extends React.Component<Props, State> {
         id: result.id,
         title: result.name,
         additional: food.additional,
-        picture: food.images[0]
+        picture: food.images[0],
+        price: food.price,
+        merchantId: food.merchant_id
       })
     }
   }
@@ -110,10 +109,7 @@ class MainSearch extends React.Component<Props, State> {
             data={this.state.results}
             keyExtractor={item => `${item.type}.${item.id}`}
             renderItem={({ item }) => (
-              <SearchItem
-                label={item.name}
-                onPress={this.handleClick(item, item.type)}
-              />
+              <SearchItem label={item.name} onPress={this.handleClick(item, item.type)} />
             )}
           />
         </View>
