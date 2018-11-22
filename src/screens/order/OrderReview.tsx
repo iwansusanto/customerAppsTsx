@@ -388,6 +388,11 @@ class OrderReview extends React.Component<Props, State> {
                         person={item.fullname}
                         address={item.address}
                         phone={item.phone}
+                        handleEditPressed={() =>
+                          this.props.navigation.navigate("NewAddress", {
+                            editAddress: item
+                          })
+                        }
                       />
                     )}
                   />
@@ -398,14 +403,14 @@ class OrderReview extends React.Component<Props, State> {
                     <Text style={styles.addButtonLabel}>ADD</Text>
                   </TouchableOpacity>
                   <View style={styles.contentDivider} />
-                  <TextInput
-                    onChangeText={text => this.setState({ notes: text })}
-                    placeholder={"ADD NOTES"}
-                    style={{ flex: 1 }}
-                  />
                 </>
               )}
             </View>
+            <TextInput
+              onChangeText={text => this.setState({ notes: text })}
+              placeholder={"ADD NOTES"}
+              style={{ flex: 1, marginTop: 20 }}
+            />
           </View>
           <View style={styles.contentItemContainer}>
             <View>

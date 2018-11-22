@@ -107,7 +107,7 @@ class FoodDetail extends React.Component<Props, State> {
   }
 
   addToCart = async () => {
-    const { id, additional } = this.props.navigation.state.params
+    const { id, additional, merchantId } = this.props.navigation.state.params
     const { selectedAdditional } = this.state
 
     const additionalIds: number[] = []
@@ -121,7 +121,7 @@ class FoodDetail extends React.Component<Props, State> {
 
     await this.props.cart.addToCart(1, id, additionalValues, "")
     this.props.cart.getCart()
-    this.props.navigation.goBack()
+    this.props.navigation.navigate("RestoDetail", { merchantId: merchantId })
   }
 }
 

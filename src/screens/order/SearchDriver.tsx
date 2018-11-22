@@ -7,6 +7,8 @@ import { NavigationStackScreenOptions, NavigationScreenProp } from "react-naviga
 import FixedButton from "../../components/FixedButton"
 import withOrderContext from "../../components/consumers/withOrderContext"
 
+import api from "../../api"
+
 const OVERLAY = require("../../../assets/overlay-search-driver.png")
 const ICON_SEARCH = require("../../../assets/ic_search_driver.png")
 const ICON_CANCEL = require("../../../assets/ic_cancel_driver.png")
@@ -16,8 +18,16 @@ interface Props {
   order: OrderContext
 }
 
-class SearchDriver extends React.Component<Props> {
+interface State {
+  isLoading: boolean
+}
+
+class SearchDriver extends React.Component<Props, State> {
   interval: number = -1
+
+  state = {
+    isLoading: false
+  }
 
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Searching for Driver"
@@ -31,6 +41,12 @@ class SearchDriver extends React.Component<Props> {
       this.props.navigation.replace("OrderTrack")
       clearInterval(this.interval)
     }
+  }
+
+  makeNewOrder = async () => {
+    this.setState({ isLoading: true })
+    await api.client.delete(`/order/${this.props.order.orderDetail.id}`)
+    this.props.navigation.navigate("Home")
   }
 
   componentDidMount() {
@@ -64,6 +80,8 @@ class SearchDriver extends React.Component<Props> {
           label={"MAKE NEW ORDER"}
           labelStyle={{ color: "white" }}
           backgroundColor={metrics.SECONDARY_COLOR}
+          isLoading={this.state.isLoading}
+          onPress={this.makeNewOrder}
         />
       </View>
     )

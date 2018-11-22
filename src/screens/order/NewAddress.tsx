@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, DeviceEventEmitter } from "react-native"
+import { View, StyleSheet, DeviceEventEmitter, Alert } from "react-native"
 
 import Text from "../../components/CustomText"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
@@ -23,6 +23,8 @@ interface State {
   contactName: string
   phoneNumber: string
   isLoading: boolean
+  lat: number
+  lng: number
 }
 
 export default class NewAddress extends React.Component<Props, State> {
@@ -31,11 +33,35 @@ export default class NewAddress extends React.Component<Props, State> {
   }
 
   state = {
-    name: this.props.navigation.getParam("address").name,
-    addressName: this.props.navigation.getParam("address").address,
+    name: "",
+    addressName: "",
     contactName: "",
     phoneNumber: "",
-    isLoading: false
+    isLoading: false,
+    lat: 0,
+    lng: 0
+  }
+
+  componentDidMount() {
+    const address = this.props.navigation.getParam("address")
+    const editAddress = this.props.navigation.getParam("editAddress")
+    if (address) {
+      this.setState({
+        name: address.name,
+        addressName: address.address,
+        lat: address.latitude,
+        lng: address.longitude
+      })
+    } else {
+      this.setState({
+        name: editAddress.address,
+        addressName: editAddress.label,
+        lat: editAddress.lat,
+        lng: editAddress.lng,
+        phoneNumber: editAddress.phone,
+        contactName: editAddress.fullname
+      })
+    }
   }
 
   createAddressFromAddButton = async () => {
@@ -58,9 +84,33 @@ export default class NewAddress extends React.Component<Props, State> {
     this.setState({ isLoading: false })
   }
 
+  editAddress = async () => {
+    this.setState({ isLoading: true })
+    const place = this.state
+    try {
+      const { data } = await api.client.post<any>(
+        `/address/${this.props.navigation.getParam("editAddress").id}`,
+        {
+          address: place.name,
+          lat: place.lat,
+          lng: place.lng,
+          phone: place.phoneNumber,
+          fullname: place.contactName,
+          label: place.addressName
+        }
+      )
+      DeviceEventEmitter.emit("addressAdd")
+      this.props.navigation.goBack(null)
+    } catch (err) {
+      Alert.alert("Error", err.message)
+    }
+    this.setState({ isLoading: false })
+  }
+
   render() {
     const place = this.props.navigation.getParam("address")
     console.log(place)
+    console.log(this.props.navigation.getParam("editAddress"))
     return (
       <View style={styles.container}>
         <CustomTextInput
@@ -78,18 +128,24 @@ export default class NewAddress extends React.Component<Props, State> {
         <CustomTextInput
           icon={IC_USER}
           placeholder={"Contact name"}
+          value={this.state.contactName}
           onChangeText={value => this.setState({ contactName: value })}
         />
         <CustomTextInput
           icon={IC_PHONE}
           placeholder={"Phone number"}
+          value={this.state.phoneNumber}
           onChangeText={value => this.setState({ phoneNumber: value })}
         />
         <FixedButton
           label={"SAVE ADDRESS"}
           backgroundColor={metrics.PRIMARY_COLOR}
           labelStyle={{ color: "white" }}
-          onPress={() => this.createAddressFromAddButton()}
+          onPress={() =>
+            this.props.navigation.getParam("address")
+              ? this.createAddressFromAddButton()
+              : this.editAddress()
+          }
           isLoading={this.state.isLoading}
         />
       </View>

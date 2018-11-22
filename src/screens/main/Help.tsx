@@ -53,7 +53,7 @@ export default class Help extends React.Component<any, State> {
         <HeaderOverlay />
         <Text style={styles.title}>Help Center</Text>
         <Text style={styles.subtitle}>May us help you</Text>
-        <SearchBar />
+        {/* <SearchBar /> */}
         <ScrollView style={styles.helpContainer}>
           <HelpItem
             content={HELP_ITEM}
@@ -61,6 +61,7 @@ export default class Help extends React.Component<any, State> {
             isContentVisible={this.state.activeItem === "Mshwar Food"}
             onPress={() => this.setState({ activeItem: "Mshwar Food" })}
           />
+          {/*
           <HelpItem
             content={HELP_ITEM}
             title={"Mshwar Mart"}
@@ -79,6 +80,7 @@ export default class Help extends React.Component<any, State> {
             isContentVisible={this.state.activeItem === "Other"}
             onPress={() => this.setState({ activeItem: "Other" })}
           />
+          */}
           <View style={{ height: 50 }} />
         </ScrollView>
       </View>

@@ -45,6 +45,10 @@ import NewAddress from "./src/screens/order/NewAddress"
 // Account screens
 import EditProfile from "./src/screens/account/EditProfile"
 
+// Misc screens
+import PrivacyPolicy from "./src/screens/misc/PrivacyPolicy"
+import Terms from "./src/screens/misc/Terms"
+
 // Contains constant values used for the app
 import metrics from "./src/config/metrics"
 import { Image } from "react-native"
@@ -195,7 +199,9 @@ const Navigator = createStackNavigator(
     OrderTrack: { screen: OrderTrack },
     SearchDriver: { screen: SearchDriver },
     NewAddress: { screen: NewAddress },
-    MainSearch: { screen: MainSearch }
+    MainSearch: { screen: MainSearch },
+    PrivacyPolicy: { screen: PrivacyPolicy },
+    Terms: { screen: Terms }
   },
   {
     // Configuration for header to use Primary Color defined in metrics

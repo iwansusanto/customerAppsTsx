@@ -6,6 +6,7 @@ import Text from "./CustomText"
 import api from "../api"
 
 const ICON_CHECK = require("../../assets/ic_check.png")
+const ICON_EDIT = require("../../assets/ic_edit.png")
 
 interface Props {
   selected: boolean
@@ -15,6 +16,7 @@ interface Props {
   phone: string
   setSelected: () => void
   deleteAddress: () => void
+  handleEditPressed: () => void
 }
 
 export default (props: Props) => (
@@ -31,9 +33,14 @@ export default (props: Props) => (
       {props.selected && <Text style={styles.subtitle}>{props.phone}</Text>}
     </TouchableOpacity>
     {props.selected && (
-      <TouchableOpacity onPress={props.deleteAddress} style={styles.delete}>
-        <Text style={styles.deleteButton}>DELETE</Text>
-      </TouchableOpacity>
+      <View style={styles.modifyContainer}>
+        <TouchableOpacity onPress={props.deleteAddress}>
+          <Text style={styles.deleteButton}>DELETE</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ marginLeft: 20 }} onPress={props.handleEditPressed}>
+          <Image source={ICON_EDIT} style={{ width: 20, height: 20 }} />
+        </TouchableOpacity>
+      </View>
     )}
   </View>
 )
@@ -70,9 +77,10 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
 
-  delete: {
+  modifyContainer: {
     position: "absolute",
     top: 12,
-    right: 10
+    right: 10,
+    flexDirection: "row"
   }
 })
