@@ -79,11 +79,17 @@ class Account extends React.Component<Props, any> {
               <Text style={styles.menuLabel}>Change language</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => this.props.navigation.navigate("Terms")}
+            >
               <Text style={styles.menuLabel}>Terms of Service</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => this.props.navigation.navigate("PrivacyPolicy")}
+            >
               <Text style={styles.menuLabel}>Privacy Policy</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
