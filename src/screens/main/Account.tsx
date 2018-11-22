@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
 
   facebookAuthButton: {
     backgroundColor: metrics.FACEBOOK_COLOR,
-    width: metrics.DEVICE_WIDTH * 0.6,
+    padding: 10,
     marginTop: 20
   },
 
