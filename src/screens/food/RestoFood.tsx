@@ -24,6 +24,7 @@ export default class RestoFood extends React.Component<Props, any> {
             <FoodItem
               name={item.name}
               picture={item.images[0]}
+              description={item.description}
               price={item.price}
               onPress={() => {
                 console.log(item)

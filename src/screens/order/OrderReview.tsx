@@ -449,13 +449,15 @@ class OrderReview extends React.Component<Props, State> {
             <View>
               <TouchableOpacity
                 style={styles.destionationButton}
-                onPress={this.selectSchedule(true)}
+                onPress={this.selectSchedule(false)}
               >
                 <Image
                   source={this.state.schedule === false ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
               <Text style={styles.contentTitle}>Schedule Order</Text>
+              {this.state.schedule === false && (
+                <>
               <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
                 <Menu onSelect={value => this.setState({ selectedDate: value })}>
                   <MenuTrigger>
@@ -521,6 +523,8 @@ class OrderReview extends React.Component<Props, State> {
               <Text style={styles.contentCaption}>
                 Your order will be scheduled to spesific time
               </Text>
+              </>
+              )}
             </View>
           </View>
           <FlatList
