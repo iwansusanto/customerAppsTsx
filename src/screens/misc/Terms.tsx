@@ -18,7 +18,7 @@ export default class Terms extends React.Component {
       //   Mshwar Company ("we," "our" or "Mshwar") is committed to protecting the privacy of all visitors to our website Mshwarapp.com and all visitors who access our website or services through any mobile application (together, "Website"). Please read the following privacy policy which explains how we use and protect your information.
       //   </Text>
       // </ScrollView>
-      <WebView style={styles.container} source={TOS_HTML} scalesPageToFit={false} />
+      <WebView style={styles.container} originWhitelist={['*']} source={TOS_HTML} scalesPageToFit={false} />
     )
   }
 }
