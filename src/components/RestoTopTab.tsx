@@ -34,13 +34,14 @@ export default class RestoTopTab extends React.Component<Props, State> {
 
   render() {
     const { navigation } = this.state
+    console.log('haaaaa');
+    console.log(this.state)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.subtitle}>Skycrawler tower, Doha, Qatar</Text>
-        <Text style={styles.subtitle}>12345 Wide Street</Text>
+        <Text style={styles.subtitle}>Al-Shafi Rd. near Applebees, Al Rayyan, Doha, Qatar</Text>
         <Text style={styles.hours}>8 AM - 10 PM</Text>
-        <Text style={styles.tags}>western • chicken • fastfood</Text>
+        <Text style={styles.tags}>rice • bread • fastfood</Text>
         <View style={styles.tabContainer}>
           <FlatList
             data={navigation.state.routes}
