@@ -4,11 +4,11 @@ import { ScrollView, StyleSheet, WebView } from "react-native"
 import Text from "../../components/CustomText"
 import { NavigationStackScreenOptions } from "react-navigation"
 
-const TOS_HTML = require("../../../assets/tos.html")
+const TOS_HTML = require("../../../assets/privacy.html")
 
 export default class PrivacyPolicy extends React.Component {
   static navigationOptions: NavigationStackScreenOptions = {
-    title: "Privacy Policy"
+    title: "Mshwar Privacy Policy"
   }
 
   render() {
