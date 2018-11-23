@@ -25,6 +25,9 @@ export default class UserContextProvider extends Component<{}, LoginResponse> {
         password
       })
 
+      if (data.success) {
+        this.changeUser(data)
+      }
       return data.success
     } catch (err) {
       console.log(err.response.data)
