@@ -121,7 +121,8 @@ class FoodDetail extends React.Component<Props, State> {
 
     await this.props.cart.addToCart(1, id, additionalValues, "")
     this.props.cart.getCart()
-    this.props.navigation.navigate("RestoDetail", { merchantId: merchantId })
+    this.props.navigation.navigate("RestoDetail", { merchantId: 1 })
+    // this.props.navigation.navigate("RestoDetail", { merchantId: merchantId })
   }
 }
 

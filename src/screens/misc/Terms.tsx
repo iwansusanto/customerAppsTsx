@@ -8,7 +8,7 @@ const TOS_HTML = require("../../../assets/tos.html")
 
 export default class Terms extends React.Component {
   static navigationOptions: NavigationStackScreenOptions = {
-    title: "Terms of Service"
+    title: "Mshwar Terms and Conditions"
   }
 
   render() {
