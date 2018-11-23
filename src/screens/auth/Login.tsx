@@ -104,10 +104,11 @@ class Login extends React.Component<Props, State> {
     this.setState({ isLoading: false })
 
     if (result) {
-      this.props.navigation.navigate("OTP", {
-        email,
-        password
-      })
+      // this.props.navigation.navigate("OTP", {
+      //   email,
+      //   password
+      // })
+      this.props.navigation.replace("Home")
     } else {
       // TODO: show login failed
       Alert.alert("Failed", "Login failed, please try again")
