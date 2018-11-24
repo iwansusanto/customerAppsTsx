@@ -28,11 +28,11 @@ export default (props: Props) => (
       <Text style={styles.title}>{props.name}</Text>
       <Text style={styles.description}>{props.description}</Text>
       <Text style={styles.price}>{`QR. ${props.price}`}</Text>
-    </View>
+    </View>{/*
     <TouchableOpacity style={styles.favorite}>
       <Image source={ICON_HEART} />
     </TouchableOpacity>
-    {/* <TouchableOpacity style={styles.add}>
+     <TouchableOpacity style={styles.add}>
       <Image source={ICON_PLUS} />
     </TouchableOpacity> */}
   </TouchableOpacity>
