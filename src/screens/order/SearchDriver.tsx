@@ -60,6 +60,7 @@ class SearchDriver extends React.Component<Props, State> {
         <Text style={[styles.caption, { marginTop: 20 }]}>Sit back User</Text>
         <Text style={styles.caption}>We are searching the nearest driver from you</Text>
         <Image source={ICON_SEARCH} style={{ marginTop: 50 }} />
+        {/*
         <TouchableOpacity
           style={styles.cancelButtonContainer}
           onPress={() => this.props.navigation.goBack()}
@@ -76,6 +77,7 @@ class SearchDriver extends React.Component<Props, State> {
             CANCEL
           </Text>
         </TouchableOpacity>
+        */}
         <FixedButton
           label={"MAKE NEW ORDER"}
           labelStyle={{ color: "white" }}
