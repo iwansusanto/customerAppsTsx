@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>13</string>
+	<string>14</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -48,13 +48,13 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) need to access your Camera</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) need to access your Location</string>
+	<string>Your current location  will be displayed on the apps and used for directons, nearby search result, and estimated distance</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>$(PRODUCT_NAME) need to access your Location</string>
+	<string>Your current location  will be displayed on the apps and used for directons, nearby search result, and estimated distance</string>
 	<key>NSLocationUsageDescription</key>
-	<string>$(PRODUCT_NAME) need to access your Location</string>
+	<string>Your current location  will be displayed on the apps and used for directons, nearby search result, and estimated distance</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) need to access your Location</string>
+	<string>Your current location  will be displayed on the apps and used for directons, nearby search result, and estimated distance</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) need to access your Microphone (for videos)</string>
 	<key>NSMotionUsageDescription</key>
