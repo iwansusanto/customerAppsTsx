@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 
   foodTitle: {
     fontWeight: "bold",
-    fontSize: 18
+    fontSize: 13
   },
 
   priceContainer: {
