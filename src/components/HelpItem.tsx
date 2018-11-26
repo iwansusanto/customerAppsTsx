@@ -33,10 +33,12 @@ export default class HelpItem extends React.Component<Props, State> {
 
   render() {
     return (
-      <TouchableOpacity style={styles.container} {...this.props}>
+      <View style={styles.container} {...this.props}>
         <View style={styles.titleContainer}>
           <Text>{this.props.title}</Text>
+          {/*
           <Image source={ICON_ARROW} />
+          */}
         </View>
         {this.state.isContentVisible ? (
           <View>
@@ -45,7 +47,7 @@ export default class HelpItem extends React.Component<Props, State> {
             ))}
           </View>
         ) : null}
-      </TouchableOpacity>
+      </View>
     )
   }
 }

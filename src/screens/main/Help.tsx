@@ -17,7 +17,7 @@ interface State {
 
 export default class Help extends React.Component<any, State> {
   state = {
-    activeItem: ""
+    activeItem: "Mshwar Food"
   }
 
   // Tab bar configs
@@ -59,7 +59,6 @@ export default class Help extends React.Component<any, State> {
             content={HELP_ITEM}
             title={"Mshwar Food"}
             isContentVisible={this.state.activeItem === "Mshwar Food"}
-            onPress={() => this.setState({ activeItem: "Mshwar Food" })}
           />
           {/*
           <HelpItem
