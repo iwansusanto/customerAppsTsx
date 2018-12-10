@@ -96,9 +96,13 @@ class MainSearch extends React.Component<Props, State> {
   }
 
   render() {
+    console.log(this.state.results.length)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
+        {this.state.results.length === 0 && (
+          <Text style={styles.noresult}>No result found</Text>
+        )}
         <View style={styles.searchContainer}>
           <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
           <SearchBar
@@ -141,6 +145,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "center",
     top: metrics.DEVICE_HEIGHT * 0.3
+  },
+
+  noresult: {
+    position: "absolute",
+    top: 100,
+    zIndex: 10
   }
 })
 
