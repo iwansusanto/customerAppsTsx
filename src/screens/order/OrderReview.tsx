@@ -60,6 +60,8 @@ interface State {
   lng: number
   selectedDate: string
   selectedTime: string
+  nameMerchant: string
+  alamatMerchant: string
 }
 
 class OrderReview extends React.Component<Props, State> {
@@ -78,7 +80,9 @@ class OrderReview extends React.Component<Props, State> {
     lat: 0,
     lng: 0,
     selectedDate: this.getNextDays()[0],
-    selectedTime: this.getTime()[0]
+    selectedTime: this.getTime()[0],
+    nameMerchant: "",
+    alamatMerchant: ""
   }
 
   monthAsString(monthIndex: number) {
@@ -217,6 +221,21 @@ class OrderReview extends React.Component<Props, State> {
     }
   }
 
+  getMerchantAddress = async () => {
+    try {
+      const { data } = await api.client.get<MerchantDetailResponse>("/merchants/1")
+      console.log('merchant data')
+      console.log(data)
+
+      this.setState({
+        nameMerchant: data.name,
+        alamatMerchant: data.address
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   setSelectedAddress = (index: number) => async () => {
     await this.setState({ selectedAddressIndex: index })
     await this.getShippingPrice()
@@ -270,7 +289,7 @@ class OrderReview extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    DeviceEventEmitter.removeAllListeners()
+    DeviceEventEmitter.removeListener("addressAdd", () => this.getAddress())
   }
 
   async componentWillMount() {
@@ -310,16 +329,17 @@ class OrderReview extends React.Component<Props, State> {
   }
 
   render() {
+    this.getMerchantAddress()
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.restoName}>Mc Donalds</Text>
-        <Text style={styles.restoAddress}>Tebet dalam, faraway</Text>
+        <Text style={styles.restoName}>{this.state.nameMerchant}</Text>
+        <Text style={styles.restoAddress}>{this.state.alamatMerchant}</Text>
         <View style={styles.divider} />
         <View style={styles.destinationItemContainer}>
           <Image source={ICON_MARKER} />
           <Text style={styles.destinationAddress}>
-            Doha, Main Street, Faraway 01, Your Area
+            {this.state.address}
           </Text>
         </View>
         <View style={styles.destinationItemContainer}>
@@ -388,6 +408,11 @@ class OrderReview extends React.Component<Props, State> {
                         person={item.fullname}
                         address={item.address}
                         phone={item.phone}
+                        handleEditPressed={() =>
+                          this.props.navigation.navigate("NewAddress", {
+                            editAddress: item
+                          })
+                        }
                       />
                     )}
                   />
@@ -398,14 +423,14 @@ class OrderReview extends React.Component<Props, State> {
                     <Text style={styles.addButtonLabel}>ADD</Text>
                   </TouchableOpacity>
                   <View style={styles.contentDivider} />
-                  <TextInput
-                    onChangeText={text => this.setState({ notes: text })}
-                    placeholder={"ADD NOTES"}
-                    style={{ flex: 1 }}
-                  />
                 </>
               )}
             </View>
+            <TextInput
+              onChangeText={text => this.setState({ notes: text })}
+              placeholder={"ADD NOTES"}
+              style={{ flex: 1, marginTop: 20 }}
+            />
           </View>
           <View style={styles.contentItemContainer}>
             <View>
@@ -424,13 +449,15 @@ class OrderReview extends React.Component<Props, State> {
             <View>
               <TouchableOpacity
                 style={styles.destionationButton}
-                onPress={this.selectSchedule(true)}
+                onPress={this.selectSchedule(false)}
               >
                 <Image
                   source={this.state.schedule === false ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
               <Text style={styles.contentTitle}>Schedule Order</Text>
+              {this.state.schedule === false && (
+                <>
               <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
                 <Menu onSelect={value => this.setState({ selectedDate: value })}>
                   <MenuTrigger>
@@ -496,6 +523,8 @@ class OrderReview extends React.Component<Props, State> {
               <Text style={styles.contentCaption}>
                 Your order will be scheduled to spesific time
               </Text>
+              </>
+              )}
             </View>
           </View>
           <FlatList

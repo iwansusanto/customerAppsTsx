@@ -6,7 +6,9 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  GeolocationReturnType
+  GeolocationReturnType,
+  Alert,
+  DeviceEventEmitter
 } from "react-native"
 import MapView, { Region, Marker, PROVIDER_GOOGLE } from "react-native-maps"
 
@@ -23,6 +25,7 @@ const ICON_TIME = require("../../../assets/ic_time.png")
 const ICON_PHONE = require("../../../assets/ic_phone_fill.png")
 const ICON_MESSAGE = require("../../../assets/ic_message.png")
 const ICON_WALLET = require("../../../assets/ic_wallet.png")
+const ICON_DRIVER = require("../../../assets/ic_driver_marker.png")
 
 const PROFILE_PICTURE = require("../../../assets/dummy_profile.png")
 
@@ -146,7 +149,7 @@ class OrderTrack extends React.Component<Props, any> {
             borderRadius: 0
           }}
           labelStyle={{ color: "white" }}
-          onPress={() => this.props.navigation.navigate("SearchDriver")}
+          onPress={() => this.props.navigation.goBack()}
         />
       </ScrollView>
     )
@@ -203,10 +206,11 @@ class OrderTrack extends React.Component<Props, any> {
   }
 
   checkOrder = async () => {
+    console.log("checkorder")
     await this.props.order.getOrderDetail()
     const order = this.props.order.orderDetail
     const driver = this.props.order.orderDetail.driver_data as DriverData
-
+    console.log(order)
     const driverLocation = {
       latitude: Number(driver.driver_location.lat),
       longitude: Number(driver.driver_location.lng),
@@ -219,13 +223,29 @@ class OrderTrack extends React.Component<Props, any> {
       mapView.animateToRegion(driverLocation)
     }
 
-    if (order.order_status.name === "COMPLETE") {
-      this.props.navigation.replace("Home")
+    if (order.order_status_id === 6) {
+      DeviceEventEmitter.emit("shouldCartUpdate")
+      Alert.alert("Thank you", "Your order has been finished", [
+        {
+          text: "OK",
+          onPress: () => this.props.navigation.navigate("Home")
+        }
+      ])
+      clearInterval(this.interval)
+    } else if (order.order_status_id === 8) {
+      DeviceEventEmitter.emit("shouldCartUpdate")
+      Alert.alert("Cancelled", "Your order has been cancelled", [
+        {
+          text: "OK",
+          onPress: () => this.props.navigation.navigate("Home")
+        }
+      ])
+      clearInterval(this.interval)
     }
   }
 
   componentDidMount() {
-    this.interval = setInterval(this.checkOrder, 30000)
+    this.interval = setInterval(this.checkOrder, 2000)
   }
 
   render() {
@@ -262,6 +282,7 @@ class OrderTrack extends React.Component<Props, any> {
                 latitudeDelta: 0.001,
                 longitudeDelta: 0.001
               }}
+              image={ICON_DRIVER}
             />
           </MapView>
         </View>

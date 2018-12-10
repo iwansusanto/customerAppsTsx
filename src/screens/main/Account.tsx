@@ -38,19 +38,24 @@ class Account extends React.Component<Props, any> {
           <Text style={styles.subtitle}>View your information</Text>
           <View style={styles.profileContainer}>
             <View style={styles.detailContainer}>
+              {/* 
               <Image source={PICTURE} />
+              */}
               <View style={styles.detail}>
                 <Text style={styles.name}>{this.props.user.customer.name}</Text>
                 <Text style={styles.info}>{this.props.user.customer.email}</Text>
                 <Text style={styles.info}>{this.props.user.customer.phone}</Text>
               </View>
+              {/*
               <TouchableOpacity
                 style={styles.editButton}
                 onPress={() => this.props.navigation.navigate("EditProfile")}
               >
                 <Text style={styles.edit}>EDIT</Text>
               </TouchableOpacity>
+              */}
             </View>
+              {/*
             <View style={styles.facebookContainer}>
               <Text style={styles.facebookCaption}>
                 Tap to connect with your Facebook account
@@ -62,7 +67,9 @@ class Account extends React.Component<Props, any> {
                 icon={ICON_FB}
               />
             </View>
+              */}
           </View>
+              {/*
           <View style={styles.profileContainer}>
             <View style={styles.pointsContainer}>
               <Text style={styles.pointsLabel}>Points</Text>
@@ -74,23 +81,34 @@ class Account extends React.Component<Props, any> {
               </View>
             </View>
           </View>
+              */}
           <View style={styles.menuContainer}>
+              {/*
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuLabel}>Change language</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
+              */}
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => this.props.navigation.navigate("Terms")}
+            >
               <Text style={styles.menuLabel}>Terms of Service</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => this.props.navigation.navigate("PrivacyPolicy")}
+            >
               <Text style={styles.menuLabel}>Privacy Policy</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
+              {/*
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuLabel}>Rate App</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
+              */}
           </View>
           <View style={styles.logoutButtonContainer}>
             <Button
@@ -195,7 +213,7 @@ const styles = StyleSheet.create({
 
   facebookAuthButton: {
     backgroundColor: metrics.FACEBOOK_COLOR,
-    width: metrics.DEVICE_WIDTH * 0.6,
+    padding: 10,
     marginTop: 20
   },
 

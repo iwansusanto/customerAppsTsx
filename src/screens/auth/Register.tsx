@@ -137,86 +137,88 @@ export default class Register extends React.Component<Props, State> {
     return (
       <UserContext.Consumer>
         {context => (
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.container}>
-              <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
-              <Image source={LOGO} style={styles.logo as ImageStyle} />
-              <Text style={styles.title}>MAKE A NEW ACCOUNT</Text>
-              <Text style={styles.caption}>FILL YOUR INFO AND GET STARTED</Text>
-              <View style={styles.formContainer}>
-                <CustomTextInput
-                  icon={ICON_USER}
-                  placeholder={"Name"}
-                  onChangeText={text => this.setState({ name: text })}
-                />
-                <View style={{ flexDirection: "row" }}>
-                  <TouchableOpacity
-                    style={{
-                      width: metrics.DEVICE_WIDTH * 0.17,
-                      height: 45,
-                      backgroundColor: "white",
-                      borderRadius: 5,
-                      marginVertical: 5,
-                      marginRight: metrics.DEVICE_WIDTH * 0.03,
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                    onPress={() =>
-                      this.props.navigation.navigate("CountrySelect", {
-                        onSelect: this.setCountry
-                      })
-                    }
-                  >
-                    <Image
-                      source={{
-                        uri: `https://www.countryflags.io/${
-                          this.state.countryCode
-                        }/flat/64.png`
-                      }}
-                      style={{ width: 40, height: 40 }}
-                    />
-                  </TouchableOpacity>
+          <KeyboardAvoidingView behavior={"padding"} style={{ flex: 1 }}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.container}>
+                <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
+                <Image source={LOGO} style={styles.logo as ImageStyle} />
+                <Text style={styles.title}>MAKE A NEW ACCOUNT</Text>
+                <Text style={styles.caption}>FILL YOUR INFO AND GET STARTED</Text>
+                <View style={styles.formContainer}>
                   <CustomTextInput
-                    style={{ width: metrics.DEVICE_WIDTH * 0.6 }}
-                    icon={ICON_PHONE}
-                    placeholder={"Phone Number"}
-                    keyboardType={"number-pad"}
-                    onChangeText={text => this.setState({ phone: text })}
+                    icon={ICON_USER}
+                    placeholder={"Name"}
+                    onChangeText={text => this.setState({ name: text })}
+                  />
+                  <View style={{ flexDirection: "row" }}>
+                    <TouchableOpacity
+                      style={{
+                        width: metrics.DEVICE_WIDTH * 0.17,
+                        height: 45,
+                        backgroundColor: "white",
+                        borderRadius: 5,
+                        marginVertical: 5,
+                        marginRight: metrics.DEVICE_WIDTH * 0.03,
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                      onPress={() =>
+                        this.props.navigation.navigate("CountrySelect", {
+                          onSelect: this.setCountry
+                        })
+                      }
+                    >
+                      <Image
+                        source={{
+                          uri: `https://www.countryflags.io/${
+                            this.state.countryCode
+                          }/flat/64.png`
+                        }}
+                        style={{ width: 40, height: 40 }}
+                      />
+                    </TouchableOpacity>
+                    <CustomTextInput
+                      style={{ width: metrics.DEVICE_WIDTH * 0.6 }}
+                      icon={ICON_PHONE}
+                      placeholder={"Phone Number"}
+                      keyboardType={"number-pad"}
+                      onChangeText={text => this.setState({ phone: text })}
+                    />
+                  </View>
+                  <CustomTextInput
+                    icon={ICON_MAIL}
+                    placeholder={"Email"}
+                    keyboardType={"email-address"}
+                    autoCapitalize="none"
+                    onChangeText={text => this.setState({ email: text })}
+                  />
+                  <CustomTextInput
+                    icon={ICON_KEY}
+                    placeholder={"Password"}
+                    secureTextEntry={true}
+                    onChangeText={text => this.setState({ password: text })}
                   />
                 </View>
-                <CustomTextInput
-                  icon={ICON_MAIL}
-                  placeholder={"Email"}
-                  keyboardType={"email-address"}
-                  autoCapitalize="none"
-                  onChangeText={text => this.setState({ email: text })}
-                />
-                <CustomTextInput
-                  icon={ICON_KEY}
-                  placeholder={"Password"}
-                  secureTextEntry={true}
-                  onChangeText={text => this.setState({ password: text })}
+                <View style={styles.tosContainer}>
+                  <Text style={styles.caption}>By registering I agree to the</Text>
+                  <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
+                </View>
+                <FixedButton
+                  isLoading={this.state.isLoading}
+                  label={"REGISTER"}
+                  backgroundColor={
+                    email.length > 0 &&
+                    password.length > 0 &&
+                    phone.length > 0 &&
+                    name.length > 0
+                      ? metrics.SECONDARY_COLOR
+                      : metrics.INACTIVE_COLOR
+                  }
+                  onPress={this.handleRegisterButtonPressed(context.register)}
                 />
               </View>
-              <View style={styles.tosContainer}>
-                <Text style={styles.caption}>By registering I agree to the</Text>
-                <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
-              </View>
-              <FixedButton
-                isLoading={this.state.isLoading}
-                label={"REGISTER"}
-                backgroundColor={
-                  email.length > 0 &&
-                  password.length > 0 &&
-                  phone.length > 0 &&
-                  name.length > 0
-                    ? metrics.SECONDARY_COLOR
-                    : metrics.INACTIVE_COLOR
-                }
-                onPress={this.handleRegisterButtonPressed(context.register)}
-              />
-            </View>
-          </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
         )}
       </UserContext.Consumer>
     )

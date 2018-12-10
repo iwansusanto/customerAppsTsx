@@ -41,7 +41,7 @@ export default class Orders extends React.Component {
         <HeaderOverlay />
         <Text style={styles.title}>Orders</Text>
         <FlatList
-          data={["1", "2", "3"]}
+          data={[]}
           renderItem={() => <OrderItem />}
           style={styles.list}
         />

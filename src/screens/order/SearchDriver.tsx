@@ -7,6 +7,8 @@ import { NavigationStackScreenOptions, NavigationScreenProp } from "react-naviga
 import FixedButton from "../../components/FixedButton"
 import withOrderContext from "../../components/consumers/withOrderContext"
 
+import api from "../../api"
+
 const OVERLAY = require("../../../assets/overlay-search-driver.png")
 const ICON_SEARCH = require("../../../assets/ic_search_driver.png")
 const ICON_CANCEL = require("../../../assets/ic_cancel_driver.png")
@@ -16,8 +18,16 @@ interface Props {
   order: OrderContext
 }
 
-class SearchDriver extends React.Component<Props> {
+interface State {
+  isLoading: boolean
+}
+
+class SearchDriver extends React.Component<Props, State> {
   interval: number = -1
+
+  state = {
+    isLoading: false
+  }
 
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Searching for Driver"
@@ -33,6 +43,12 @@ class SearchDriver extends React.Component<Props> {
     }
   }
 
+  makeNewOrder = async () => {
+    this.setState({ isLoading: true })
+    await api.client.delete(`/order/${this.props.order.orderDetail.id}`)
+    this.props.navigation.navigate("Home")
+  }
+
   componentDidMount() {
     this.interval = setInterval(this.checkOrder, 3000)
   }
@@ -44,6 +60,7 @@ class SearchDriver extends React.Component<Props> {
         <Text style={[styles.caption, { marginTop: 20 }]}>Sit back User</Text>
         <Text style={styles.caption}>We are searching the nearest driver from you</Text>
         <Image source={ICON_SEARCH} style={{ marginTop: 50 }} />
+        {/*
         <TouchableOpacity
           style={styles.cancelButtonContainer}
           onPress={() => this.props.navigation.goBack()}
@@ -60,10 +77,13 @@ class SearchDriver extends React.Component<Props> {
             CANCEL
           </Text>
         </TouchableOpacity>
+        */}
         <FixedButton
           label={"MAKE NEW ORDER"}
           labelStyle={{ color: "white" }}
           backgroundColor={metrics.SECONDARY_COLOR}
+          isLoading={this.state.isLoading}
+          onPress={this.makeNewOrder}
         />
       </View>
     )

@@ -17,6 +17,7 @@ const ICON_PLUS = require("../../assets/ic_plus.png")
 interface Props extends TouchableOpacityProps {
   picture: string
   name: string
+  description: string
   price: string
 }
 
@@ -25,12 +26,13 @@ export default (props: Props) => (
     <Image style={styles.picture as ImageStyle} source={{ uri: props.picture }} />
     <View style={styles.detailContainer}>
       <Text style={styles.title}>{props.name}</Text>
+      <Text style={styles.description}>{props.description}</Text>
       <Text style={styles.price}>{`QR. ${props.price}`}</Text>
-    </View>
+    </View>{/*
     <TouchableOpacity style={styles.favorite}>
       <Image source={ICON_HEART} />
     </TouchableOpacity>
-    {/* <TouchableOpacity style={styles.add}>
+     <TouchableOpacity style={styles.add}>
       <Image source={ICON_PLUS} />
     </TouchableOpacity> */}
   </TouchableOpacity>
@@ -56,9 +58,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18
   },
+  description: {
+    fontSize: 11
+  },
 
   price: {
-    fontSize: 18
+    fontSize: 14
   },
 
   detailContainer: {
