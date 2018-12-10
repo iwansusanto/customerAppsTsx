@@ -67,7 +67,7 @@ export default class Register extends React.Component<Props, State> {
       // Component rendered in the right side of the header which is a help button
       headerRight: (
         <TouchableOpacity>
-          <Image source={ICON_HELP} style={{ marginRight: 20 }} />
+          {/* <Image source={ICON_HELP} style={{ marginRight: 20 }} /> */}
         </TouchableOpacity>
       ),
 

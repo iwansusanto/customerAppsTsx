@@ -60,7 +60,7 @@ class Login extends React.Component<Props, State> {
       // Component rendered in the right side of the header which is a help button
       headerRight: (
         <TouchableOpacity>
-          <Image source={ICON_HELP} style={{ marginRight: 20 }} />
+          {/* <Image source={ICON_HELP} style={{ marginRight: 20 }} /> */}
         </TouchableOpacity>
       ),
 
@@ -157,7 +157,7 @@ class Login extends React.Component<Props, State> {
                     onChangeText={text => this.setState({ password: text })}
                   />
                   <Text style={styles.forgot} onPress={this.handleForgetPasswordPressed}>
-                    FORGOT PASSWORD
+                    {/* FORGOT PASSWORD */}
                   </Text>
                 </View>
                 <FixedButton
