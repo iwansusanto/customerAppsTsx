@@ -27,7 +27,7 @@ const ICON_MESSAGE = require("../../../assets/ic_message.png")
 const ICON_WALLET = require("../../../assets/ic_wallet.png")
 const ICON_DRIVER = require("../../../assets/ic_driver_marker.png")
 
-const PROFILE_PICTURE = require("../../../assets/dummy_profile.png")
+const PROFILE_PICTURE = require("../../../assets/mascaca.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
