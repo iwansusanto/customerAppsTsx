@@ -6,11 +6,17 @@ import { NavigationTabScreenOptions } from "react-navigation"
 import metrics from "../../config/metrics"
 import OrderItem from "../../components/OrderItem"
 import HeaderOverlay from "../../components/HeaderOverlay"
+import api from "../../api"
 
 const ICON_ACTIVE = require("../../../assets/ic_order_active.png")
 const ICON_INACTIVE = require("../../../assets/ic_order_inactive.png")
 
-export default class Orders extends React.Component {
+interface State {
+  isDataLoading: boolean
+  data: Array<any>
+}
+
+export default class Orders extends React.Component<any, State> {
   static navigationOptions: NavigationTabScreenOptions = {
     title: "Orders",
     tabBarIcon: ({ focused }) => {
@@ -35,15 +41,35 @@ export default class Orders extends React.Component {
     }
   }
 
+  state = {
+    isDataLoading: true,
+    data: []
+  }
+
+  async componentDidMount() {
+    this.setState({ isDataLoading: true })
+    const { data } = await api.client.get<any>("/orders")
+    console.log(data)
+    this.setState({ data: data, isDataLoading: false })
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <HeaderOverlay />
         <Text style={styles.title}>Orders</Text>
         <FlatList
-          data={[]}
-          renderItem={() => <OrderItem />}
+          data={this.state.data}
+          renderItem={({ item }: { item: any }) => (
+            <OrderItem
+              name={item.name}
+              date={item.ordered_at}
+              statusText={item.status_text}
+            />
+          )}
           style={styles.list}
+          refreshing={this.state.isDataLoading}
+          onRefresh={() => this.componentDidMount()}
         />
       </View>
     )
