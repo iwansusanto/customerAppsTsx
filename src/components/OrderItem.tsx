@@ -15,13 +15,19 @@ const PICTURE = require("../../assets/dummy_order.png")
 const ICON_PHONE = require("../../assets/ic_phone_fill.png")
 const ICON_MESSAGE = require("../../assets/ic_message.png")
 
-export default (props: TouchableOpacityProps) => (
+interface Props extends TouchableOpacityProps {
+  name: string
+  statusText: string
+  date: string
+}
+
+export default (props: Props) => (
   <TouchableOpacity style={styles.container} {...props}>
     <Image source={PICTURE} style={styles.image as ImageStyle} />
     <View style={styles.detailContainer}>
-      <Text style={styles.title}>Ayam Kecap koh Aseng</Text>
-      <Text style={styles.status}>ONGOING</Text>
-      <Text style={styles.date}>17 Aug, 10:00PM</Text>
+      <Text style={styles.title}>{props.name}</Text>
+      <Text style={styles.status}>{props.statusText}</Text>
+      <Text style={styles.date}>{props.date}</Text>
     </View>
     <View style={styles.iconContainer}>
       <TouchableOpacity>
