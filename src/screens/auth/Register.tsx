@@ -137,7 +137,7 @@ export default class Register extends React.Component<Props, State> {
     return (
       <UserContext.Consumer>
         {context => (
-          <KeyboardAvoidingView behavior={"padding"} style={{ flex: 1 }}>
+          <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View style={styles.container}>
                 <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
@@ -218,7 +218,7 @@ export default class Register extends React.Component<Props, State> {
                 />
               </View>
             </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
+          </KeyboardAwareScrollView>
         )}
       </UserContext.Consumer>
     )
