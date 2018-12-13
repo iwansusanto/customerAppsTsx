@@ -132,12 +132,23 @@ export default class Register extends React.Component<Props, State> {
     })
   }
 
+  scroll: any
+
+  handleKeyboardAppeared() {
+    this.scroll.props.scrollToPosition(0, 100, true)
+  }
+
   render() {
     const { email, password, phone, name } = this.state
     return (
       <UserContext.Consumer>
         {context => (
-          <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+          <KeyboardAwareScrollView
+            contentContainerStyle={{ flex: 1 }}
+            innerRef={ref => {
+              this.scroll = ref
+            }}
+          >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View style={styles.container}>
                 <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
@@ -149,6 +160,7 @@ export default class Register extends React.Component<Props, State> {
                     icon={ICON_USER}
                     placeholder={"Name"}
                     onChangeText={text => this.setState({ name: text })}
+                    onFocus={() => this.handleKeyboardAppeared()}
                   />
                   <View style={{ flexDirection: "row" }}>
                     <TouchableOpacity
