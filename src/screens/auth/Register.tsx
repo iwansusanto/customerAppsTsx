@@ -9,7 +9,9 @@ import {
   ImageStyle,
   Alert,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
+  Animated,
+  Dimensions
 } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
@@ -33,6 +35,11 @@ const ICON_MAIL = require("../../../assets/ic_mail.png")
 const ICON_KEY = require("../../../assets/ic_key.png")
 const ICON_HELP = require("../../../assets/ic-help.png")
 const ICON_BACK = require("../../../assets/ic_back.png")
+
+const window = Dimensions.get('window');
+
+const IMAGE_HEIGHT = window.width / 2;
+const IMAGE_HEIGHT_SMALL = window.width /7;
 
 // Props typing
 interface Props {
@@ -87,7 +94,9 @@ export default class Register extends React.Component<Props, State> {
     phone: "",
     name: "",
     countryCode: "QA",
-    countryPhoneCode: "+974"
+    countryPhoneCode: "+974",
+    animation         : new Animated.Value(0),
+    animationPosition : new Animated.Value(0)
   }
 
   // Constructor
@@ -96,7 +105,54 @@ export default class Register extends React.Component<Props, State> {
 
     // Function binding to this class
     this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(this)
+    // this.keyboardHeight = this.state.animation
   }
+
+  keyboardHeight = () => {
+    new Animated.Value(0)
+  }
+
+  componentWillMount () {
+    Keyboard.addListener('keyboardWillShow', this.keyboardWillShow)
+    Keyboard.addListener('keyboardWillHide', this.keyboardWillHide)
+  }
+
+  componentWillUnmount() {
+    Keyboard.addListener('keyboardWillShow', this.keyboardWillShow).remove()
+    Keyboard.addListener('keyboardWillHide', this.keyboardWillHide).remove()
+  }
+  // keyboardHeigh: () => void
+
+  keyboardWillShow = (event: any) => {
+    console.log(event)
+    console.log('height : ',window.height)
+    Animated.parallel([
+      Animated.timing(this.state.animation, {
+        duration: event.duration,
+        toValue: 100,
+      }),
+      Animated.timing(this.state.animationPosition, {
+        duration: event.duration,
+        toValue: window.height - (event.endCoordinates.screenY+100),
+      })
+    ]).start();
+  };
+
+
+  keyboardWillHide = (event: any) => {
+    Animated.parallel([
+      Animated.timing(this.state.animation, {
+        duration: event.duration,
+        toValue: 0,
+      }),
+      Animated.timing(this.state.animationPosition, {
+        duration: event.duration,
+        toValue: 0,
+      }),
+    ]).start();
+  };
+
+  
 
   // Register button press handler
   handleRegisterButtonPressed = (register: Function) => async () => {
@@ -143,14 +199,10 @@ export default class Register extends React.Component<Props, State> {
     return (
       <UserContext.Consumer>
         {context => (
-          <KeyboardAwareScrollView
-            contentContainerStyle={{ flex: 1 }}
-            innerRef={ref => {
-              this.scroll = ref
-            }}
-          >
+          <Animated.View style={[styles.container, { paddingBottom: this.state.animation }]}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View style={styles.container}>
+              <Animated.View style={[styles.container, { bottom: this.state.animationPosition }]}>
                 <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
                 <Image source={LOGO} style={styles.logo as ImageStyle} />
                 <Text style={styles.title}>MAKE A NEW ACCOUNT</Text>
@@ -160,7 +212,6 @@ export default class Register extends React.Component<Props, State> {
                     icon={ICON_USER}
                     placeholder={"Name"}
                     onChangeText={text => this.setState({ name: text })}
-                    onFocus={() => this.handleKeyboardAppeared()}
                   />
                   <View style={{ flexDirection: "row" }}>
                     <TouchableOpacity
@@ -228,9 +279,10 @@ export default class Register extends React.Component<Props, State> {
                   }
                   onPress={this.handleRegisterButtonPressed(context.register)}
                 />
+                </Animated.View>
               </View>
             </TouchableWithoutFeedback>
-          </KeyboardAwareScrollView>
+          </Animated.View>
         )}
       </UserContext.Consumer>
     )
