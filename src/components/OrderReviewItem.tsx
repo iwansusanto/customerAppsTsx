@@ -20,8 +20,10 @@ interface Props {
 export default (props: Props) => (
   <View style={styles.container}>
     <View style={{ flexDirection: "row" }}>
-      <Image source={DUMMY_FOOD} />
-      <View style={{ marginLeft: 20, justifyContent: "center" }}>
+      <View style={{flex: 3}}>
+        <Image source={DUMMY_FOOD} />
+      </View>
+      <View style={{ marginLeft: 20, justifyContent: "center", flex: 7 }}>
         <Text style={styles.foodTitle}>{props.name}</Text>
         {props.additional.map(item => (
           <Text style={{ marginTop: 5 }}>{item.name}</Text>
