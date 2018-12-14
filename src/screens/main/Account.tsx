@@ -28,12 +28,9 @@ interface Props {
 class Account extends React.Component<Props, any> {
   render() {
     return (
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={{ alignItems: "center" }}
-      >
+      <View style={styles.container} >
+        <HeaderOverlay />
         <View style={[styles.container, { alignItems: "center" }]}>
-          <HeaderOverlay />
           <Text style={styles.title}>Account</Text>
           <Text style={styles.subtitle}>View your information</Text>
           <View style={styles.profileContainer}>
@@ -121,7 +118,7 @@ class Account extends React.Component<Props, any> {
             />
           </View>
         </View>
-      </ScrollView>
+      </View>
     )
   }
 }

@@ -8,16 +8,16 @@ import metrics from "../config/metrics"
 
 const HEADER_BACKGROUND = require("../../assets/home-bg.png")
 
-export default class HeaderOverlay extends React.Component {
+export default class HeaderOverlayTab extends React.Component {
   render() {
-    // return <View style={styles.container} />
-    return (
-      <Image
-              style={styles.background}
-              resizeMode='cover'
-              source={HEADER_BACKGROUND} />
+    return <View style={styles.container} />
+    // return (
+    //   <Image
+    //           style={styles.background}
+    //           resizeMode='cover'
+    //           source={HEADER_BACKGROUND} />
 
-    )
+    // )
   }
 }
 

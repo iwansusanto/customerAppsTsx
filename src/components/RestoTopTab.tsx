@@ -38,7 +38,7 @@ export default class RestoTopTab extends React.Component<Props, State> {
     console.log(this.state)
     return (
       <View style={styles.container}>
-        <HeaderOverlay />
+        {/* <HeaderOverlay /> */}
         <Text style={styles.subtitle}>Al-Shafi Rd. near Applebees, Al Rayyan, Doha, Qatar</Text>
         <Text style={styles.hours}>8 AM - 10 PM</Text>
         <Text style={styles.tags}>rice • bread • fastfood</Text>

@@ -2,6 +2,7 @@ import React, { Component } from "react"
 
 import { createTabNavigator, NavigationScreenProp } from "react-navigation"
 import TopTab from "../../components/RestoTopTab"
+import HeaderOverlay from "../../components/HeaderOverlay"
 
 import RestoFood from "./RestoFood"
 import {
@@ -96,6 +97,7 @@ class RestoDetail extends Component<Props, State> {
           />
         )}
         <View style={{ flex: 1, zIndex: -1 }}>
+          <HeaderOverlay />
           <Tabs />
         </View>
       </View>
