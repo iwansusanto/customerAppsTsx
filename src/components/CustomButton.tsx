@@ -13,6 +13,7 @@ import {
 
 // Custom component used in this component
 import Text from "./CustomText"
+import metrics from "../config/metrics";
 
 // Props typing
 interface CustomButtonProps extends TouchableOpacityProps {
@@ -43,7 +44,8 @@ const styles = StyleSheet.create({
 
   label: {
     fontSize: 13,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: metrics.WHITE_COLOR
   },
 
   icon: {

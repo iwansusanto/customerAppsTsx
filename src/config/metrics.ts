@@ -14,11 +14,14 @@ const styles = StyleSheet.create({
 // Declare all constants used in the app
 export default {
   PRIMARY_COLOR: "#660099",
-  SECONDARY_COLOR: "#FFCC00",
+  SECONDARY_COLOR: "#7E00FF",
   FACEBOOK_COLOR: "#3B5998",
   INACTIVE_COLOR: "#9B9B9B",
   DANGER_COLOR: "#FF0033",
   SHADOW_COLOR: "rgba(184, 184, 184, 0.5)",
+  WHITE_COLOR: "#FFFFFF",
+  BLUE_SEA_COLOR: "#007AFF",
+  GOLD_COLOR: "#f9a608",
   DEVICE_WIDTH: width,
   DEVICE_HEIGHT: height,
   OS: Platform.OS,

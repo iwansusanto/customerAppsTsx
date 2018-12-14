@@ -706,7 +706,7 @@ const styles = StyleSheet.create({
 
   addButton: {
     padding: 5,
-    backgroundColor: "#7ED321",
+    backgroundColor: metrics.WHITE_COLOR,
     borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
@@ -716,7 +716,7 @@ const styles = StyleSheet.create({
   },
 
   addButtonLabel: {
-    color: "white",
+    color: metrics.BLUE_SEA_COLOR,
     fontSize: 13,
     fontWeight: "bold"
   },

@@ -29,7 +29,7 @@ import withCategoryContext from "../../components/consumers/withCategoryContext"
 import withCartContext from "../../components/consumers/withCartContext"
 
 // Assets
-const ICON_POINT = require("../../../assets/point.png")
+const ICON_POINT = require("../../../assets/point-bronze.png")
 const ICON_ACTIVE = require("../../../assets/ic_home_active.png")
 const ICON_INACTIVE = require("../../../assets/ic_home_inactive.png")
 const ICON_MARKER = require("../../../assets/ic_marker.png")
@@ -146,10 +146,15 @@ class Home extends React.Component<Props, State> {
         <View style={styles.customerDetail}>
           <Text style={styles.greeting}>Hi {this.props.user.customer.name}!</Text>
           <View>
-            <Text style={styles.current_point}>your current points</Text>
             <View style={styles.pointContainer}>
-              <Image source={ICON_POINT} style={styles.point_icon as ImageStyle} />
-              <Text style={styles.point}>{this.props.user.customer.total_point}</Text>
+              <View style={styles.iconPointContainer}>
+                <Image source={ICON_POINT} style={styles.point_icon as ImageStyle} />
+                <Text style={styles.lblIcon}>BRONZE</Text>
+              </View>
+              <View>
+                <Text style={styles.point}>{this.props.user.customer.total_point}</Text>
+                <Text style={styles.lblPoint}>POINTS</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -214,11 +219,24 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
 
-  current_point: {
-    color: "white",
-    fontFamily: "Helvetica",
-    fontWeight: "300",
-    fontSize: 14
+  iconPointContainer: {
+    justifyContent: 'center', 
+    alignItems: 'center',
+    borderRightWidth: 0.3,
+    borderColor: metrics.WHITE_COLOR,
+    paddingRight: 10,
+    marginRight: 10
+  },
+
+  lblIcon: {
+    color: metrics.GOLD_COLOR, 
+    fontSize: 8, 
+    paddingTop: 5
+  },
+
+  lblPoint: {
+    fontSize: 12, 
+    color: metrics.WHITE_COLOR
   },
 
   pointContainer: {
@@ -230,7 +248,6 @@ const styles = StyleSheet.create({
   point: {
     fontFamily: "Helvetica",
     fontSize: 24,
-    marginLeft: 5,
     color: "white"
   },
 

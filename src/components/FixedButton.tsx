@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
 
   label: {
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: metrics.WHITE_COLOR
   }
 })
