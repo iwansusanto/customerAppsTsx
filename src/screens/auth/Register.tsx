@@ -53,7 +53,10 @@ interface State {
   name: string
   phone: string
   countryCode: string
-  countryPhoneCode: string
+  countryPhoneCode: string,
+  animation         : any,
+  animationPosition : any,
+  keyboardShowed    : boolean
 }
 
 export default class Register extends React.Component<Props, State> {
@@ -96,7 +99,8 @@ export default class Register extends React.Component<Props, State> {
     countryCode: "QA",
     countryPhoneCode: "+974",
     animation         : new Animated.Value(0),
-    animationPosition : new Animated.Value(0)
+    animationPosition : new Animated.Value(0),
+    keyboardShowed    : false
   }
 
   // Constructor
@@ -124,22 +128,26 @@ export default class Register extends React.Component<Props, State> {
   // keyboardHeigh: () => void
 
   keyboardWillShow = (event: any) => {
-    console.log(event)
-    console.log('height : ',window.height)
-    Animated.parallel([
-      Animated.timing(this.state.animation, {
-        duration: event.duration,
-        toValue: 100,
-      }),
-      Animated.timing(this.state.animationPosition, {
-        duration: event.duration,
-        toValue: window.height - (event.endCoordinates.screenY+100),
-      })
-    ]).start();
+    // console.log('height', event);
+    // debugger;
+    this.setState({ keyboardShowed: !this.state.keyboardShowed })
+    if(event.startCoordinates.screenY < (event.endCoordinates.height * 3)){
+      Animated.parallel([
+        Animated.timing(this.state.animation, {
+          duration: event.duration,
+          toValue: 100,
+        }),
+        Animated.timing(this.state.animationPosition, {
+          duration: event.duration,
+          toValue: window.height - (event.endCoordinates.screenY+100),
+        })
+      ]).start();
+    }
   };
 
 
   keyboardWillHide = (event: any) => {
+    this.setState({ keyboardShowed: !this.state.keyboardShowed })
     Animated.parallel([
       Animated.timing(this.state.animation, {
         duration: event.duration,
