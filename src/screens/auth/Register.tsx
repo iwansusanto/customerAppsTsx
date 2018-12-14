@@ -145,6 +145,7 @@ export default class Register extends React.Component<Props, State> {
         {context => (
           <KeyboardAwareScrollView
             contentContainerStyle={{ flex: 1 }}
+            style={{ backgroundColor: metrics.PRIMARY_COLOR }}
             innerRef={ref => {
               this.scroll = ref
             }}
