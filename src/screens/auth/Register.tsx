@@ -135,11 +135,11 @@ export default class Register extends React.Component<Props, State> {
       Animated.parallel([
         Animated.timing(this.state.animation, {
           duration: event.duration,
-          toValue: 100,
+          toValue: 0,
         }),
         Animated.timing(this.state.animationPosition, {
           duration: event.duration,
-          toValue: window.height - (event.endCoordinates.screenY+100),
+          toValue: window.height - (event.endCoordinates.screenY+250),
         })
       ]).start();
     }

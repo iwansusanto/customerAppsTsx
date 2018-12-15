@@ -34,7 +34,7 @@ export default class RestoTopTab extends React.Component<Props, State> {
 
   render() {
     const { navigation } = this.state
-    console.log('haaaaa');
+    console.log('haaaaa jkt', this.props);
     console.log(this.state)
     return (
       <View style={styles.container}>
