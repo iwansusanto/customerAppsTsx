@@ -77,7 +77,12 @@ class RestoDetail extends Component<Props, State> {
 
   public render() {
     const Tabs = createTabNavigator(this.state.menus, {
-      tabBarComponent: ({ navigation }) => <TopTab navigation={navigation} />,
+      tabBarComponent: ({ navigation }) => (
+        <TopTab
+          navigation={navigation}
+          address={this.props.search.resto.merchant.address}
+        />
+      ),
       tabBarPosition: "top",
       swipeEnabled: true,
       animationEnabled: true
