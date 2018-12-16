@@ -13,6 +13,8 @@ import Text from "../../components/CustomText"
 import metrics from "../../config/metrics"
 import CustomTextInput from "../../components/CustomTextInput"
 import FixedButton from "../../components/FixedButton"
+import api from "../../api"
+
 import { NavigationScreenProp } from "react-navigation"
 
 const OVERLAY = require("../../../assets/overlay-login.png")
@@ -42,11 +44,18 @@ export default class Email extends React.Component<Props, State> {
     this.setState({ email: value })
   }
 
-  handleSendEmailButtonPressed(): void {
+  async handleSendEmailButtonPressed(): Promise<void> {
+    try {
+      const { data } = await api.client.post("/reset_password", {
+        email: this.state.email
+      })
+    } catch (err) {
+      Alert.alert("Error", err.message)
+    }
     Alert.alert("Email was sent to", this.state.email, [
       {
         text: "OK",
-        onPress: () => this.props.navigation.navigate("ChangePassword")
+        onPress: () => this.props.navigation.goBack()
       }
     ])
   }

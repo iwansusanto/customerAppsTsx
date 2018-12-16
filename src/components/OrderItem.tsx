@@ -7,6 +7,7 @@ import {
   Image,
   ImageStyle
 } from "react-native"
+import moment from "moment"
 import metrics from "../config/metrics"
 
 import Text from "../components/CustomText"
@@ -27,7 +28,7 @@ export default (props: Props) => (
     <View style={styles.detailContainer}>
       <Text style={styles.title}>{props.name}</Text>
       <Text style={styles.status}>{props.statusText}</Text>
-      <Text style={styles.date}>{props.date}</Text>
+      <Text style={styles.date}>{moment(props.date).format("DD MMMM YYYY hh:mm")}</Text>
     </View>
     <View style={styles.iconContainer}>
       <TouchableOpacity>
