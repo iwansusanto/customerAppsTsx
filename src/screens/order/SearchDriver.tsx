@@ -1,5 +1,13 @@
 import React from "react"
-import { View, StyleSheet, Image, ImageStyle, TouchableOpacity } from "react-native"
+import {
+  View,
+  StyleSheet,
+  Image,
+  ImageStyle,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator
+} from "react-native"
 
 import Text from "../../components/CustomText"
 import metrics from "../../config/metrics"
@@ -20,13 +28,15 @@ interface Props {
 
 interface State {
   isLoading: boolean
+  isCancelling: boolean
 }
 
 class SearchDriver extends React.Component<Props, State> {
   interval: number = -1
 
   state = {
-    isLoading: false
+    isLoading: false,
+    isCancelling: false
   }
 
   static navigationOptions: NavigationStackScreenOptions = {
@@ -53,6 +63,21 @@ class SearchDriver extends React.Component<Props, State> {
     this.interval = setInterval(this.checkOrder, 3000)
   }
 
+  handleCancelButtonPressed = async () => {
+    this.setState({ isCancelling: true })
+    const order = this.props.order.orderDetail
+    try {
+      await api.client.post("/cancel_order", {
+        order_id: order.id
+      })
+    } catch (err) {
+      Alert.alert("Error", err.message)
+      this.setState({ isCancelling: false })
+    }
+    this.setState({ isCancelling: false })
+    this.props.navigation.goBack()
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -60,24 +85,28 @@ class SearchDriver extends React.Component<Props, State> {
         <Text style={[styles.caption, { marginTop: 20 }]}>Sit back User</Text>
         <Text style={styles.caption}>We are searching the nearest driver from you</Text>
         <Image source={ICON_SEARCH} style={{ marginTop: 50 }} />
-        {/*
-        <TouchableOpacity
-          style={styles.cancelButtonContainer}
-          onPress={() => this.props.navigation.goBack()}
-        >
-          <Image source={ICON_CANCEL} />
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 16,
-              color: metrics.DANGER_COLOR,
-              marginTop: 20
-            }}
+        {!this.state.isCancelling ? (
+          <TouchableOpacity
+            style={styles.cancelButtonContainer}
+            onPress={this.handleCancelButtonPressed}
           >
-            CANCEL
-          </Text>
-        </TouchableOpacity>
-        */}
+            <Image source={ICON_CANCEL} />
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 16,
+                color: metrics.DANGER_COLOR,
+                marginTop: 20
+              }}
+            >
+              CANCEL
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.cancelButtonContainer}>
+            <ActivityIndicator />
+          </View>
+        )}
         <FixedButton
           label={"MAKE NEW ORDER"}
           labelStyle={{ color: "white" }}
