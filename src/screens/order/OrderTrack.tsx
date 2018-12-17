@@ -8,7 +8,8 @@ import {
   ScrollView,
   GeolocationReturnType,
   Alert,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  Linking
 } from "react-native"
 import MapView, { Region, Marker, PROVIDER_GOOGLE } from "react-native-maps"
 
@@ -172,10 +173,18 @@ class OrderTrack extends React.Component<Props, any> {
           }}
         >
           <Image source={PROFILE_PICTURE} />
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL(`tel:${this.props.order.orderDetail.driver_data!.phone}`)
+            }}
+          >
             <Image source={ICON_PHONE} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL(`sms:${this.props.order.orderDetail.driver_data!.phone}`)
+            }}
+          >
             <Image source={ICON_MESSAGE} />
           </TouchableOpacity>
           <View>

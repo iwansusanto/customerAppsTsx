@@ -17,6 +17,8 @@ const LABEL = require("../../assets/label_open.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
+  address: string
+  open: string
 }
 
 interface State {
@@ -34,14 +36,14 @@ export default class RestoTopTab extends React.Component<Props, State> {
 
   render() {
     const { navigation } = this.state
-    console.log('haaaaa jkt', this.props);
+    console.log("haaaaa")
     console.log(this.state)
     return (
       <View style={styles.container}>
-        {/* <HeaderOverlay /> */}
-        <Text style={styles.subtitle}>Al-Shafi Rd. near Applebees, Al Rayyan, Doha, Qatar</Text>
-        <Text style={styles.hours}>8 AM - 10 PM</Text>
-        <Text style={styles.tags}>rice • bread • fastfood</Text>
+        <HeaderOverlay />
+        <Text style={styles.subtitle}>{this.props.address}</Text>
+        <Text style={styles.hours}>{this.props.open}</Text>
+        {/* <Text style={styles.tags}>rice • bread • fastfood</Text> */}
         <View style={styles.tabContainer}>
           <FlatList
             data={navigation.state.routes}
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
   subtitle: {
     color: "white",
     fontWeight: "300",
-    fontSize: 18,
+    fontSize: 16,
     alignSelf: "flex-start",
     marginLeft: 20
   },

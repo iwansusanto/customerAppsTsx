@@ -56,6 +56,7 @@ interface State {
   selectedAddressIndex: number
   notes: string
   shippingPrice: number
+  estimation_time: string
   lat: number
   lng: number
   selectedDate: string
@@ -77,6 +78,7 @@ class OrderReview extends React.Component<Props, State> {
     selectedAddressIndex: -1,
     notes: "",
     shippingPrice: -1,
+    estimation_time: "",
     lat: 0,
     lng: 0,
     selectedDate: this.getNextDays()[0],
@@ -253,7 +255,7 @@ class OrderReview extends React.Component<Props, State> {
         merchant_id: this.props.cart.cart.merchant_id
       })
 
-      this.setState({ shippingPrice: Number(data.delivery_price) })
+      this.setState({ shippingPrice: Number(data.delivery_price),estimation_time: data.estimation_time  })
     } catch (err) {
       console.log(err)
     }
@@ -348,7 +350,7 @@ class OrderReview extends React.Component<Props, State> {
           <Text
             style={{ color: "white", fontWeight: "300", fontSize: 11, marginLeft: 20 }}
           >
-            ARRIVES UNDER 15 MINS
+            {this.state.estimation_time}
           </Text>
         </View>
         <ScrollView

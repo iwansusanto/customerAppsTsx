@@ -1,5 +1,6 @@
 import React from "react"
 import { View, StyleSheet, Image, FlatList } from "react-native"
+import moment from "moment"
 
 import Text from "../../components/CustomText"
 import { NavigationTabScreenOptions } from "react-navigation"
@@ -61,13 +62,15 @@ export default class Orders extends React.Component<any, State> {
         <Text style={styles.subtitle}>You haven't order anything</Text>
         <FlatList
           data={this.state.data}
-          renderItem={({ item }: { item: any }) => (
-            <OrderItem
-              name={item.name}
-              date={item.ordered_at}
-              statusText={item.status_text}
-            />
-          )}
+          renderItem={({ item }: { item: any }) => {
+            return (
+              <OrderItem
+                name={item.name}
+                date={item.ordered_at}
+                statusText={item.status_text}
+              />
+            )
+          }}
           style={styles.list}
           refreshing={this.state.isDataLoading}
           onRefresh={() => this.componentDidMount()}

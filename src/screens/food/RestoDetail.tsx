@@ -35,7 +35,8 @@ interface Props {
 interface State {
   menus: any
 }
-
+var addressnew = '';
+var opens = '';
 const LoadingMenu = () => (
   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <ActivityIndicator />
@@ -62,7 +63,16 @@ class RestoDetail extends Component<Props, State> {
           <RestoFood navigation={this.props.navigation} data={item.data} />
         ))
     )
-
+    addressnew = this.props.search.resto.merchant.address;
+    var String_1 = this.props.search.resto.merchant.open;
+    var String_2 = this.props.search.resto.merchant.close;
+    opens = String_1.concat(" - " , String_2);
+    // opens = "09 AM - 09 PM";
+ 
+    console.log('alamat ini harusnya muncul');
+    console.log(this.props.search.resto.merchant);
+    console.log(addressnew);
+    console.log(opens);
     if (Object.keys(menus).length === 0) {
       menus["Menu Unvailable"] = () => (
         <RestoFood navigation={this.props.navigation} data={[]} />
@@ -77,8 +87,17 @@ class RestoDetail extends Component<Props, State> {
   }
 
   public render() {
+    console.log('ini benerrrr');
+    console.log(addressnew);
+    console.log(opens);
     const Tabs = createTabNavigator(this.state.menus, {
-      tabBarComponent: ({ navigation }) => <TopTab navigation={navigation} />,
+      tabBarComponent: ({ navigation }) => (
+        <TopTab
+          navigation={navigation}
+          address={addressnew}
+          open={opens}
+        />
+      ),
       tabBarPosition: "top",
       swipeEnabled: true,
       animationEnabled: true
