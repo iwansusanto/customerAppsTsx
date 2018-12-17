@@ -5,6 +5,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
   Alert,
   ImageStyle
 } from "react-native"
@@ -16,6 +17,7 @@ import FixedButton from "../../components/FixedButton"
 import api from "../../api"
 
 import { NavigationScreenProp } from "react-navigation"
+import UserContext from "../../contexts/UserContext"
 
 const OVERLAY = require("../../../assets/overlay-login.png")
 const LOGO = require("../../../assets/logo-higres.png")
@@ -62,26 +64,36 @@ export default class Email extends React.Component<Props, State> {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
-          <Image source={LOGO} style={styles.logo as ImageStyle} />
-          <Text style={styles.subtitle}>RESET YOUR PASSWORD</Text>
-          <Text style={styles.caption}>ENTER YOUR EMAIL ADDRESS</Text>
-          <CustomTextInput
-            icon={ICON_MAIL}
-            placeholder={"Email"}
-            keyboardType={"email-address"}
-            style={styles.form}
-            onChangeText={this.handleEmailInputChange}
-          />
-          <FixedButton
-            backgroundColor={metrics.SECONDARY_COLOR}
-            label={"SEND EMAIL"}
-            onPress={this.handleSendEmailButtonPressed}
-          />
-        </View>
-      </TouchableWithoutFeedback>
+      <UserContext.Consumer>
+        {context => (
+          <KeyboardAvoidingView behavior={"padding"} style={{ flex: 1 }}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.container}>
+                <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
+                <Image source={LOGO} style={styles.logo as ImageStyle} />
+                <Text style={styles.subtitle}>RESET YOUR PASSWORD</Text>
+                <Text style={styles.caption}>ENTER YOUR EMAIL ADDRESS</Text>
+                <CustomTextInput
+                  icon={ICON_MAIL}
+                  placeholder={"Email"}
+                  keyboardType={"email-address"}
+                  style={styles.form}
+                  onChangeText={this.handleEmailInputChange}
+                />
+                <FixedButton
+                  backgroundColor={
+                    this.state.email.length > 0
+                      ? metrics.SECONDARY_COLOR
+                      : metrics.INACTIVE_COLOR
+                  }
+                  label={"SEND EMAIL"}
+                  onPress={this.handleSendEmailButtonPressed}
+                />
+              </View>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+        )}
+      </UserContext.Consumer>
     )
   }
 }
