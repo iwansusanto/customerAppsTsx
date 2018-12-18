@@ -149,24 +149,39 @@ const Navigator = createStackNavigator(
     Home: {
       screen: Main,
       navigationOptions: {
-        header: null
+        header: null,
+        gesturesEnabled: false
+
         // headerTitle: <Image source={LOGO} />
       }
     },
-    Login: { screen: Login },
-    OTP: { screen: OTPVerification },
-    Welcome: { screen: Welcome },
-    Register: { screen: Register },
-    CountrySelect: { screen: CountrySelect },
-    ChangePassword: { screen: ChangePassword },
-    Email: { screen: Email },
-    Food: { screen: Food },
+    Login: { screen: Login, navigationOptions: { gesturesEnabled: false } },
+    OTP: {
+      screen: OTPVerification,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    Welcome: { screen: Welcome, navigationOptions: { gesturesEnabled: false } },
+    Register: {
+      screen: Register,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    CountrySelect: {
+      screen: CountrySelect,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    ChangePassword: {
+      screen: ChangePassword,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    Email: { screen: Email, navigationOptions: { gesturesEnabled: false } },
+    Food: { screen: Food, navigationOptions: { gesturesEnabled: false } },
     FoodSearch: {
       screen: FoodSearch,
       navigationOptions: ({
         navigation
       }: {
         navigation: NavigationScreenProp<any, any>
+        gesturesEnabled: false
       }) => {
         const { state } = navigation
         return {
@@ -187,6 +202,7 @@ const Navigator = createStackNavigator(
         navigation
       }: {
         navigation: NavigationScreenProp<any, any>
+        gesturesEnabled: false
       }) => {
         const { state } = navigation
         return {
@@ -199,15 +215,39 @@ const Navigator = createStackNavigator(
         }
       }
     },
-    EditProfile: { screen: EditProfile },
-    FoodDetail: { screen: FoodDetail },
-    OrderReview: { screen: OrderReview },
-    OrderTrack: { screen: OrderTrack },
-    SearchDriver: { screen: SearchDriver },
-    NewAddress: { screen: NewAddress },
-    MainSearch: { screen: MainSearch },
-    PrivacyPolicy: { screen: PrivacyPolicy },
-    Terms: { screen: Terms }
+    EditProfile: {
+      screen: EditProfile,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    FoodDetail: {
+      screen: FoodDetail,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    OrderReview: {
+      screen: OrderReview,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    OrderTrack: {
+      screen: OrderTrack,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    SearchDriver: {
+      screen: SearchDriver,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    NewAddress: {
+      screen: NewAddress,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    MainSearch: {
+      screen: MainSearch,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    PrivacyPolicy: {
+      screen: PrivacyPolicy,
+      navigationOptions: { gesturesEnabled: false }
+    },
+    Terms: { screen: Terms, navigationOptions: { gesturesEnabled: false } }
   },
   {
     // Configuration for header to use Primary Color defined in metrics
