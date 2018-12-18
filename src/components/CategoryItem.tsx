@@ -36,8 +36,8 @@ const CategoryItem = (props: Props) => (
 
 const styles = StyleSheet.create({
   container: {
-    width: metrics.DEVICE_WIDTH * 0.9,
-    height: metrics.IS_IPHONE_X ? metrics.DEVICE_WIDTH * 0.5 : metrics.DEVICE_WIDTH * 0.3,
+    width: metrics.DEVICE_WIDTH * 0.7,
+    height: metrics.IS_IPHONE_X ? metrics.DEVICE_HEIGHT * 0.22 : metrics.DEVICE_HEIGHT * 0.22,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
