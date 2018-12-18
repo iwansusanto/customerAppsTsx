@@ -26,14 +26,24 @@ interface Props {
 }
 
 class Food extends React.Component<Props, any> {
-  static navigationOptions: NavigationStackScreenOptions = {
-    title: "Food",
-    headerTitle: <Image source={LOGO} />,
-    headerRight: (
-      <TouchableOpacity style={{ marginRight: 20 }}>
-        <Image source={ICON_HEART} />
-      </TouchableOpacity>
-    )
+  static navigationOptions = ({
+    // Navigation variable to be able to call navigation-related functions in the header
+    navigation
+  }: {
+    // Navigation variable type
+    navigation: NavigationScreenProp<any, any>
+  }): NavigationStackScreenOptions => {
+    // Destructuring functions inside navigation object for easy use
+    const { navigate, goBack } = navigation
+    return {
+      title: navigation.state.params.header,
+      headerTitle: <Image source={LOGO} />,
+      headerRight: (
+        <TouchableOpacity style={{ marginRight: 20 }}>
+          <Image source={ICON_HEART} />
+        </TouchableOpacity>
+      )
+    }
   }
 
   componentWillMount() {
@@ -48,7 +58,9 @@ class Food extends React.Component<Props, any> {
 
   searchBySuggestion = (parentId: number) => () => {
     this.props.search.searchBySuggestion(parentId)
-    this.props.navigation.navigate("FoodSearch")
+    this.props.navigation.navigate("FoodSearch", {
+      header: this.props.navigation.state.params.header
+    })
   }
 
   render() {
@@ -90,14 +102,16 @@ class Food extends React.Component<Props, any> {
         <FlatList
           data={this.props.suggestion.suggestions}
           keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => (
-            <FoodSuggestion
-              title={item.name}
-              picture={item.image_url}
-              venueCount={item.has_children}
-              onPress={this.searchBySuggestion(item.id)}
-            />
-          )}
+          renderItem={({ item }) => {
+            return (
+              <FoodSuggestion
+                title={item.name}
+                picture={item.image_url}
+                venueCount={item.has_children}
+                onPress={this.searchBySuggestion(item.id)}
+              />
+            )
+          }}
           horizontal
           contentContainerStyle={styles.suggestionsList}
         />

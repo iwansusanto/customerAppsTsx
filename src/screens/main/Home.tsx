@@ -180,17 +180,20 @@ class Home extends React.Component<Props, State> {
           contentContainerStyle={styles.categories}
           data={this.props.category.categories}
           keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => (
-            <CategoryItem
-              title={item.name}
-              picture={item.image_url}
-              onPress={() =>
-                this.props.navigation.navigate("Food", {
-                  suggestId: item.suggest_id
-                })
-              }
-            />
-          )}
+          renderItem={({ item }) => {
+            return (
+              <CategoryItem
+                title={item.name}
+                picture={item.image_url}
+                onPress={() =>
+                  this.props.navigation.navigate("Food", {
+                    suggestId: item.suggest_id,
+                    header: item.name
+                  })
+                }
+              />
+            )
+          }}
           horizontal
         />
       </View>

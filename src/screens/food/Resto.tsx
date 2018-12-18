@@ -19,19 +19,21 @@ class Resto extends React.Component<Props, any> {
         <FlatList
           data={this.props.search.merchant_data}
           keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => (
-            <RestoItem
-              title={item.name}
-              address={item.address}
-              distance={""}
-              picture={item.image_url}
-              onPress={() =>
-                this.props.navigation.navigate("RestoDetail", {
-                  merchantId: item.id
-                })
-              }
-            />
-          )}
+          renderItem={({ item }) => {
+            return (
+              <RestoItem
+                title={item.name}
+                address={item.address}
+                distance={""}
+                picture={item.image_url}
+                onPress={() =>
+                  this.props.navigation.navigate("RestoDetail", {
+                    merchantId: item.id
+                  })
+                }
+              />
+            )
+          }}
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
         />

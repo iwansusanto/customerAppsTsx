@@ -163,14 +163,20 @@ const Navigator = createStackNavigator(
     Food: { screen: Food },
     FoodSearch: {
       screen: FoodSearch,
-      navigationOptions: {
-        title: "Food",
-        headerTitle: <Image source={LOGO} />,
-        headerRight: (
-          <TouchableOpacity style={{ marginRight: 20 }}>
-            <Image source={ICON_HEART} />
-          </TouchableOpacity>
-        )
+      navigationOptions: ({
+        navigation
+      }: {
+        navigation: NavigationScreenProp<any, any>
+      }) => {
+        const { state } = navigation
+        return {
+          title: `${state.params.header || ""}`,
+          headerRight: (
+            <TouchableOpacity style={{ marginRight: 20 }}>
+              <Image source={ICON_HEART} />
+            </TouchableOpacity>
+          )
+        }
       }
     },
     RestoDetail: {
