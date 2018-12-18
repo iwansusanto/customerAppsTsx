@@ -53,7 +53,9 @@ class Food extends React.Component<Props, any> {
 
   search = (id: number) => () => {
     this.props.search.search(id)
-    this.props.navigation.navigate("FoodSearch")
+    this.props.navigation.navigate("FoodSearch", {
+      header: this.props.navigation.state.params.header
+    })
   }
 
   searchBySuggestion = (parentId: number) => () => {
