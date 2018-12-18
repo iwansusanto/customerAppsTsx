@@ -33,9 +33,10 @@ interface Props {
 
 interface State {
   menus: any
+  isLoading: boolean
 }
-var addressnew = '';
-var opens = '';
+var addressnew = ""
+var opens = ""
 const LoadingMenu = () => (
   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <ActivityIndicator />
@@ -49,7 +50,8 @@ class RestoDetail extends Component<Props, State> {
   state = {
     menus: {
       "Fetching Menu": LoadingMenu
-    }
+    },
+    isLoading: true
   }
 
   public async componentWillMount() {
@@ -62,22 +64,22 @@ class RestoDetail extends Component<Props, State> {
           <RestoFood navigation={this.props.navigation} data={item.data} />
         ))
     )
-    addressnew = this.props.search.resto.merchant.address;
-    var String_1 = this.props.search.resto.merchant.open;
-    var String_2 = this.props.search.resto.merchant.close;
-    opens = String_1.concat(" - " , String_2);
+    addressnew = this.props.search.resto.merchant.address
+    var String_1 = this.props.search.resto.merchant.open
+    var String_2 = this.props.search.resto.merchant.close
+    opens = String_1.concat(" - ", String_2)
     // opens = "09 AM - 09 PM";
- 
-    console.log('alamat ini harusnya muncul');
-    console.log(this.props.search.resto.merchant);
-    console.log(addressnew);
-    console.log(opens);
+
+    console.log("alamat ini harusnya muncul")
+    console.log(this.props.search.resto.merchant)
+    console.log(addressnew)
+    console.log(opens)
     if (Object.keys(menus).length === 0) {
       menus["Menu Unvailable"] = () => (
         <RestoFood navigation={this.props.navigation} data={[]} />
       )
     }
-    await this.setState({ menus })
+    await this.setState({ menus, isLoading: false })
 
     const { setParams } = this.props.navigation
     setParams({ title: this.props.search.resto.merchant.name })
@@ -86,15 +88,17 @@ class RestoDetail extends Component<Props, State> {
   }
 
   public render() {
-    console.log('ini benerrrr');
-    console.log(addressnew);
-    console.log(opens);
     const Tabs = createTabNavigator(this.state.menus, {
       tabBarComponent: ({ navigation }) => (
         <TopTab
           navigation={navigation}
-          address={addressnew}
+          address={this.props.search.resto.merchant ? this.props.search.resto.merchant.address : ''}
           open={opens}
+          isOpen={
+            this.props.search.resto.merchant &&
+            this.props.search.resto.merchant.is_merchant_open === 1
+          }
+          isLoading={this.state.isLoading}
         />
       ),
       tabBarPosition: "top",
@@ -176,7 +180,9 @@ class RestoDetail extends Component<Props, State> {
         }}
       >
         <Image source={IC_MENU} style={{ position: "absolute", top: -10 }} />
-        <TouchableOpacity onPress={() => this.props.navigation.navigate("OrderReview")}>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("OrderReview")}
+        >
           <Image source={ICON_CART} />
         </TouchableOpacity>
         <View style={{ marginLeft: 20, justifyContent: "center", flex: 1 }}>

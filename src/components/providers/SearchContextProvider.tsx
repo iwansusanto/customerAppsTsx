@@ -80,6 +80,7 @@ export default class SearchContextProvider extends Component<{}, SearchState> {
 
   searchRestoDetail = async (menuId: number) => {
     if (this.state.currentRestoId !== menuId) {
+      console.log('reset resto data')
       this.setState({
         resto: {} as SearchRestoResponse,
         currentRestoId: menuId

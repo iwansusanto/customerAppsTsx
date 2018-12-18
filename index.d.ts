@@ -104,6 +104,7 @@ interface Merchant {
   lng: number
   image: string
   sort: number
+  is_merchant_open: number
   category_id: number
   city_id: number
   close: string
