@@ -16,19 +16,22 @@ const DUMMY_FOOD = require("../../assets/dummy_food.png")
 interface Props extends TouchableOpacityProps {
   image: string
   name: string
+  price: string
 }
 
-export default (props: Props) => (
-  <TouchableOpacity style={styles.container} {...props}>
-    <Image style={styles.image as ImageStyle} source={{ uri: props.image }} />
-    <View style={styles.detailContainer}>
-      <Text style={styles.name}>{props.name}</Text>
-      <Text style={styles.price}>Rp. 20.000</Text>
-      <Text style={styles.restoName}>Mc Donalds</Text>
-      <Text style={styles.restoAddress}>Skycrawler tower</Text>
-    </View>
-  </TouchableOpacity>
-)
+export default (props: Props) => {
+  return (
+    <TouchableOpacity style={styles.container} {...props}>
+      <Image style={styles.image as ImageStyle} source={{ uri: props.image }} />
+      <View style={styles.detailContainer}>
+        <Text style={styles.name}>{props.name}</Text>
+        <Text style={styles.price}>{`QR. `+props.price}</Text>
+        <Text style={styles.restoName}>Mc Donalds</Text>
+        <Text style={styles.restoAddress}>Skycrawler tower</Text>
+      </View>
+    </TouchableOpacity>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {

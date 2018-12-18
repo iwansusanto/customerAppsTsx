@@ -20,17 +20,20 @@ class Dishes extends React.Component<Props> {
           keyExtractor={item => item.id.toString()}
           contentContainerStyle={styles.list}
           style={styles.listContainer}
-          renderItem={({ item }) => (
-            <DishItem
-              name={item.name}
-              image={item.images[0]}
-              onPress={() =>
-                this.props.navigation.navigate("RestoDetail", {
-                  merchantId: item.merchant_id
-                })
-              }
-            />
-          )}
+          renderItem={({ item }) => {
+            return (
+              <DishItem
+                name={item.name}
+                image={item.images[0]}
+                price={item.price}
+                onPress={() =>
+                  this.props.navigation.navigate("RestoDetail", {
+                    merchantId: item.merchant_id
+                  })
+                }
+              />
+            )
+          }}
         />
       </View>
     )
