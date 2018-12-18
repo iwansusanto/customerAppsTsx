@@ -157,7 +157,7 @@ class Login extends React.Component<Props, State> {
                     onChangeText={text => this.setState({ password: text })}
                   />
                   <Text style={styles.forgot} onPress={this.handleForgetPasswordPressed}>
-                    {/* FORGOT PASSWORD */}
+                    FORGOT PASSWORD
                   </Text>
                 </View>
                 <FixedButton
