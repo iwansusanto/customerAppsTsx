@@ -532,17 +532,19 @@ class OrderReview extends React.Component<Props, State> {
           <FlatList
             data={this.props.cart.cart.product_data}
             style={{ width: metrics.DEVICE_WIDTH }}
-            renderItem={({ item }) => (
-              <OrderReviewItem
-                name={item.name}
-                price={item.price}
-                additional={item.additional}
-                quantity={item.quantity}
-                id={item.id}
-                updateCartItem={this.updateCartItem}
-                deleteCartItem={this.deleteCartItem(item.id)}
-              />
-            )}
+            renderItem={({ item }) => {
+              return (
+                <OrderReviewItem
+                  name={item.name}
+                  price={item.price}
+                  additional={item.additional}
+                  quantity={item.quantity}
+                  id={item.id}
+                  updateCartItem={this.updateCartItem}
+                  deleteCartItem={this.deleteCartItem(item.id)}
+                />
+              )
+            }}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ paddingLeft: 10 }}
