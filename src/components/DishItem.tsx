@@ -24,8 +24,8 @@ export default (props: Props) => (
     <View style={styles.detailContainer}>
       <Text style={styles.name}>{props.name}</Text>
       <Text style={styles.price}>Rp. 20.000</Text>
-      <Text style={styles.restoName}>Mc Donalds</Text>
-      <Text style={styles.restoAddress}>Skycrawler tower</Text>
+      {/* <Text style={styles.restoName}>Mc Donalds</Text>
+      <Text style={styles.restoAddress}>Skycrawler tower</Text> */}
     </View>
   </TouchableOpacity>
 )

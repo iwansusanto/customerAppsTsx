@@ -225,7 +225,7 @@ class OrderReview extends React.Component<Props, State> {
 
   getMerchantAddress = async () => {
     try {
-      const { data } = await api.client.get<MerchantDetailResponse>("/merchants/1")
+      const { data } = await api.client.get<MerchantDetailResponse>("/merchants/"+this.props.cart.cart.merchant_id)
       console.log('merchant data')
       console.log(data)
 
@@ -557,7 +557,7 @@ class OrderReview extends React.Component<Props, State> {
               <Text>Shipping</Text>
               <Text>
                 {this.state.shippingPrice === -1
-                  ? "Silahkan pilih alamat pengiriman"
+                  ? "QR0"
                   : `QR${this.state.shippingPrice}`}
               </Text>
             </View>
