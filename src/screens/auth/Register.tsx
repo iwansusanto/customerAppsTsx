@@ -185,7 +185,7 @@ export default class Register extends React.Component<Props, State> {
       })
     } else {
       // TODO: show register failed
-      Alert.alert("Failed", "Your registration has failed, please try again")
+      Alert.alert("Failed", "Your email is already registered")
     }
   }
 
@@ -203,6 +203,7 @@ export default class Register extends React.Component<Props, State> {
   }
 
   render() {
+    console.log('muncul registrasi');
     const { email, password, phone, name } = this.state
     return (
       <UserContext.Consumer>

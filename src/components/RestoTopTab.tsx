@@ -19,6 +19,8 @@ interface Props {
   navigation: NavigationScreenProp<any, any>
   address: string
   open: string
+  isOpen: boolean
+  isLoading: boolean
 }
 
 interface State {
@@ -36,13 +38,30 @@ export default class RestoTopTab extends React.Component<Props, State> {
 
   render() {
     const { navigation } = this.state
-    console.log("haaaaa")
-    console.log(this.state)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
         <Text style={styles.subtitle}>{this.props.address}</Text>
-        <Text style={styles.hours}>{this.props.open}</Text>
+        {!this.props.isLoading && (
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}
+          >
+            <Text style={styles.hours}>{this.props.open}</Text>
+            <Text
+              style={[
+                styles.status,
+                { color: this.props.isOpen ? "lime" : "red" }
+              ]}
+            >
+              {this.props.isOpen ? "● OPEN" : "● CLOSED"}
+            </Text>
+          </View>
+        )}
         {/* <Text style={styles.tags}>rice • bread • fastfood</Text> */}
         <View style={styles.tabContainer}>
           <FlatList
@@ -71,7 +90,6 @@ export default class RestoTopTab extends React.Component<Props, State> {
             contentContainerStyle={styles.listContent}
           />
         </View>
-        <Image source={LABEL} style={styles.status as ImageStyle} />
       </View>
     )
   }
@@ -133,9 +151,9 @@ const styles = StyleSheet.create({
   },
 
   hours: {
+    flex: 1,
     color: "white",
     fontSize: 18,
-    alignSelf: "flex-start",
     marginLeft: 20,
     marginTop: 10
   },
@@ -150,9 +168,8 @@ const styles = StyleSheet.create({
   },
 
   status: {
-    position: "absolute",
-    right: 20,
-    top: 40
+    marginRight: 20,
+    marginTop: 10
   },
 
   inactiveLabel: {
