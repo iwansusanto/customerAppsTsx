@@ -26,6 +26,15 @@ export default class TobTab extends React.Component<Props, State> {
 
   render() {
     const { navigation } = this.state
+    if(this.props.navigation.state.params.header !== 'Food') {
+      let newVal = {routes: [
+                    {key: "Resto", routeName: "Store", params:{header: "Food"}},
+                    {key: "Dishes", routeName: "Favorite", params:{header: "Food"}}]
+                  }
+      let array =  {...this.state.navigation.state, ...newVal}
+      this.state.navigation.state = array
+    }   
+
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -40,7 +49,7 @@ export default class TobTab extends React.Component<Props, State> {
             renderItem={({ item }: { item: any }) => (
               <TouchableOpacity
                 style={styles.labelContainer}
-                onPress={() => this.props.navigation.navigate(item.routeName)}
+                onPress={() => this.props.navigation.navigate(item.key)}
               >
                 {navigation.state.routes[navigation.state.index].routeName ===
                 item.routeName ? (
