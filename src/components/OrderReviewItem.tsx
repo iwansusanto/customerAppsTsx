@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native"
+import { View, StyleSheet, Image, TouchableOpacity, ImageStyle } from "react-native"
 
 import Text from "./CustomText"
 import metrics from "../config/metrics"
@@ -8,6 +8,7 @@ const DUMMY_FOOD = require("../../assets/dummy_food.png")
 const ICON_DELETE = require("../../assets/ic_delete.png")
 
 interface Props {
+  image: string
   name: string
   price: string
   quantity: number
@@ -20,7 +21,7 @@ interface Props {
 export default (props: Props) => (
   <View style={styles.container}>
     <View style={{ flexDirection: "row" }}>
-      <Image source={DUMMY_FOOD} />
+      <Image resizeMode={'cover'} style={{ width: '30%', height: 50 }} source={{ uri: props.image }} />
       <View style={{ marginLeft: 20, justifyContent: "center" }}>
         <Text style={styles.foodTitle}>{props.name}</Text>
         {props.additional.map(item => (
@@ -70,6 +71,10 @@ const styles = StyleSheet.create({
     width: metrics.DEVICE_WIDTH * 0.7,
     padding: 20,
     marginHorizontal: 10
+  },
+
+  picture: {
+    flex: 1
   },
 
   foodTitle: {

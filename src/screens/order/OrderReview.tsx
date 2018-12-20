@@ -534,6 +534,7 @@ class OrderReview extends React.Component<Props, State> {
             style={{ width: metrics.DEVICE_WIDTH }}
             renderItem={({ item }) => (
               <OrderReviewItem
+                image={item.image}
                 name={item.name}
                 price={item.price}
                 additional={item.additional}
