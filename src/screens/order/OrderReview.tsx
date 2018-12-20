@@ -332,6 +332,7 @@ class OrderReview extends React.Component<Props, State> {
 
   render() {
     this.getMerchantAddress()
+    console.log('CART', this.props)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
