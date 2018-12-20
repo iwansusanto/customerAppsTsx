@@ -534,6 +534,7 @@ class OrderReview extends React.Component<Props, State> {
             data={this.props.cart.cart.product_data}
             style={{ width: metrics.DEVICE_WIDTH }}
             renderItem={({ item }) => {
+              console.log('ITEM LIST', item)
               return (
                 <OrderReviewItem
                   name={item.name}

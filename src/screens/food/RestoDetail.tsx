@@ -71,10 +71,10 @@ class RestoDetail extends Component<Props, State> {
     opens = String_1.concat(" - ", String_2)
     // opens = "09 AM - 09 PM";
 
-    console.log("alamat ini harusnya muncul")
-    console.log(this.props.search.resto.merchant)
-    console.log(addressnew)
-    console.log(opens)
+    // console.log("alamat ini harusnya muncul")
+    // console.log(this.props.search.resto.merchant)
+    // console.log(addressnew)
+    // console.log(opens)
     if (Object.keys(menus).length === 0) {
       menus["Menu Unvailable"] = () => (
         <RestoFood navigation={this.props.navigation} data={[]} />
@@ -107,7 +107,7 @@ class RestoDetail extends Component<Props, State> {
       animationEnabled: true
     })
 
-    console.log(this.props.cart)
+    console.log('cart resto detail',this.props.cart)
     return (
       <View style={{ flex: 1 }}>
         {this.props.cart.cart.product_data.length > 0 && (
