@@ -14,7 +14,7 @@ export default class Language extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <Text>
-        Mshwar Company ("we," "our" or "Mshwar") is committed to protecting the privacy of all visitors to our website Mshwarapp.com and all visitors who access our website or services through any mobile application (together, "Website"). Please read the following privacy policy which explains how we use and protect your information.
+        Mshwar Company
         </Text>
       </ScrollView>
     )
