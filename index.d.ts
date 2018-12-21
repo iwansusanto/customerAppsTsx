@@ -259,6 +259,7 @@ interface CartItem {
   name: string
   price: string
   quantity: number
+  image: string
   notes: string
 }
 
