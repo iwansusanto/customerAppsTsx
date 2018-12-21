@@ -17,6 +17,8 @@ interface Props extends TouchableOpacityProps {
   image: string
   name: string
   price: string
+  merchant: string
+  address: string
 }
 
 export default (props: Props) => {
@@ -26,8 +28,8 @@ export default (props: Props) => {
       <View style={styles.detailContainer}>
         <Text style={styles.name}>{props.name}</Text>
         <Text style={styles.price}>{`QR. `+props.price}</Text>
-        {/* <Text style={styles.restoName}>Mc Donalds</Text> */}
-        {/* <Text style={styles.restoAddress}>Skycrawler tower</Text> */}
+        <Text style={styles.restoName}>{props.merchant}</Text>
+        <Text style={styles.restoAddress}>{props.address}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -44,12 +46,14 @@ const styles = StyleSheet.create({
   },
 
   detailContainer: {
-    marginLeft: 20
+    marginLeft: 20,
+    flex: 8,
   },
 
   image: {
     height: 70,
-    width: 70
+    width: 70,
+    flex: 2,
   },
 
   name: {

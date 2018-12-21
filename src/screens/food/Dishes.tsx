@@ -26,6 +26,8 @@ class Dishes extends React.Component<Props> {
                 name={item.name}
                 image={item.images[0]}
                 price={item.price}
+                merchant={item.merchant.name}
+                address={item.merchant.address}
                 onPress={() =>
                   this.props.navigation.navigate("RestoDetail", {
                     merchantId: item.merchant_id
