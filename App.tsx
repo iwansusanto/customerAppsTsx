@@ -48,6 +48,7 @@ import EditProfile from "./src/screens/account/EditProfile"
 // Misc screens
 import PrivacyPolicy from "./src/screens/misc/PrivacyPolicy"
 import Terms from "./src/screens/misc/Terms"
+import Language from './src/screens/misc/Language' 
 
 // Contains constant values used for the app
 import metrics from "./src/config/metrics"
@@ -247,7 +248,11 @@ const Navigator = createStackNavigator(
       screen: PrivacyPolicy,
       navigationOptions: { gesturesEnabled: false }
     },
-    Terms: { screen: Terms, navigationOptions: { gesturesEnabled: false } }
+    Terms: { screen: Terms, navigationOptions: { gesturesEnabled: false } },
+    Language: {
+      screen: Language,
+      navigationOptions:{gesturesEnabled: false}
+    }
   },
   {
     // Configuration for header to use Primary Color defined in metrics
