@@ -4,13 +4,14 @@ import { View, StyleSheet, Image, TouchableOpacity } from "react-native"
 import Text from "./CustomText"
 import metrics from "../config/metrics"
 
-const DUMMY_FOOD = require("../../assets/dummy_food.png")
+// const DUMMY_FOOD = require("../../assets/dummy_food.png")
 const ICON_DELETE = require("../../assets/ic_delete.png")
 
 interface Props {
   name: string
   price: string
   quantity: number
+  image: string
   additional: CartAdditional[]
   id: number
   updateCartItem: (id: number, quantity: number) => () => void
@@ -21,7 +22,7 @@ export default (props: Props) => (
   <View style={styles.container}>
     <View style={{ flexDirection: "row" }}>
       <View style={{flex: 3}}>
-        <Image source={DUMMY_FOOD} />
+        <Image style={{height: 70, width: 70}} source={{ uri: props.image }} />
       </View>
       <View style={{ marginLeft: 20, justifyContent: "center", flex: 7 }}>
         <Text style={styles.foodTitle}>{props.name}</Text>

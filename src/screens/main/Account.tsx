@@ -81,12 +81,14 @@ class Account extends React.Component<Props, any> {
           </View>
               */}
           <View style={styles.menuContainer}>
-              {/*
-            <TouchableOpacity style={styles.menuItem}>
+              {
+            <TouchableOpacity style={styles.menuItem}
+            onPress={() => this.props.navigation.navigate("Language")}
+            >
               <Text style={styles.menuLabel}>Change language</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
-              */}
+              }
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => this.props.navigation.navigate("Terms")}

@@ -534,13 +534,14 @@ class OrderReview extends React.Component<Props, State> {
             data={this.props.cart.cart.product_data}
             style={{ width: metrics.DEVICE_WIDTH }}
             renderItem={({ item }) => {
-              console.log('ITEM LIST', item)
+              // console.log('ITEM LIST Order', item)
               return (
                 <OrderReviewItem
                   name={item.name}
                   price={item.price}
                   additional={item.additional}
                   quantity={item.quantity}
+                  image={item.image}
                   id={item.id}
                   updateCartItem={this.updateCartItem}
                   deleteCartItem={this.deleteCartItem(item.id)}
