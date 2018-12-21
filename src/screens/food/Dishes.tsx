@@ -21,11 +21,14 @@ class Dishes extends React.Component<Props> {
           contentContainerStyle={styles.list}
           style={styles.listContainer}
           renderItem={({ item }) => {
+            console.log('item', item)
             return (
               <DishItem
                 name={item.name}
                 image={item.images[0]}
                 price={item.price}
+                merchant={item.merchant.name}
+                address={item.merchant.address}
                 onPress={() =>
                   this.props.navigation.navigate("RestoDetail", {
                     merchantId: item.merchant_id
