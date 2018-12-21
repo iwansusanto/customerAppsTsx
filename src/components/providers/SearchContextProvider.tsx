@@ -34,20 +34,20 @@ export default class SearchContextProvider extends Component<{}, SearchState> {
     console.log("clear")
   }
 
-  search = async (type: number) => {
+  search = async (categoryId: number, type: string) => {
     if (
-      this.state.currentSearchId !== type ||
+      this.state.currentSearchId !== categoryId ||
       this.state.currentSearchType !== "type"
     ) {
       this.clear()
-      this.setState({ currentSearchId: type, currentSearchType: "type" })
+      this.setState({ currentSearchId: categoryId, currentSearchType: type })
     }
 
     try {
-      const { data } = await api.client.post<SearchResponse>("/v2/searchtype", {
-        type
+      const { data } = await api.client.post<SearchResponse>("/search", {
+        category_id: categoryId, type
       })
-      console.log(data)
+      console.log('Data from pick by categories : ', ' category : '+categoryId+' type : '+type)
       this.setState(data)
       return true
     } catch (err) {
