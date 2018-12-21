@@ -27,6 +27,7 @@ interface Props {
 
 class Account extends React.Component<Props, any> {
   render() {
+    console.log('language', this.props)
     return (
       <View style={styles.container} >
         <HeaderOverlay />

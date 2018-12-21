@@ -6,7 +6,7 @@ const withUserContext = <P extends object>(Component: React.ComponentType<P>) =>
   hoist(
     (props: any) => (
       <UserContext.Consumer>
-        {context => <Component {...props} user={context} />}
+        {context => <Component {...props} user={context}/>}
       </UserContext.Consumer>
     ),
     Component

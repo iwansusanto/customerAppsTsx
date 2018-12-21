@@ -9,6 +9,7 @@ import CustomButton from "../../components/CustomButton"
 // Configs
 import metrics from "../../config/metrics"
 
+
 // Assets
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_FB = require("../../../assets/ic_facebook.png")
@@ -17,6 +18,7 @@ const OVERLAY = require("../../../assets/overlay-login.png")
 // Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
+  user : UserContext
 }
 
 export default class Welcome extends React.Component<Props, any> {
@@ -50,6 +52,7 @@ export default class Welcome extends React.Component<Props, any> {
   }
 
   render() {
+    console.log('props welcome', this.props)
     return (
       <View style={styles.container}>
         <Image source={LOGO} style={styles.logo as ImageStyle} />
