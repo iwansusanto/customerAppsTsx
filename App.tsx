@@ -65,6 +65,7 @@ import UserContextProvider from "./src/components/providers/UserContextProvider"
 import InboxContextProvider from "./src/components/providers/InboxContextProvider"
 import CategoryContextProvider from "./src/components/providers/CategoryContextProvider"
 import SuggestionContextProvider from "./src/components/providers/SuggestionContextProvider"
+import PickCategoriesContextProvider from "./src/components/providers/PickCategoriesContextProvider"
 import SearchContextProvider from "./src/components/providers/SearchContextProvider"
 import CartContextProvider from "./src/components/providers/CartContextProvider"
 import OrderContextProvider from "./src/components/providers/OrderContextProvider"
@@ -76,15 +77,17 @@ export default class App extends React.Component<any, any> {
         <OrderContextProvider>
           <CartContextProvider>
             <SearchContextProvider>
-              <SuggestionContextProvider>
-                <CategoryContextProvider>
-                  <InboxContextProvider>
-                    <UserContextProvider>
-                      <Navigator />
-                    </UserContextProvider>
-                  </InboxContextProvider>
-                </CategoryContextProvider>
-              </SuggestionContextProvider>
+              <PickCategoriesContextProvider>
+                <SuggestionContextProvider>
+                  <CategoryContextProvider>
+                    <InboxContextProvider>
+                      <UserContextProvider>
+                        <Navigator />
+                      </UserContextProvider>
+                    </InboxContextProvider>
+                  </CategoryContextProvider>
+                </SuggestionContextProvider>
+              </PickCategoriesContextProvider>
             </SearchContextProvider>
           </CartContextProvider>
         </OrderContextProvider>

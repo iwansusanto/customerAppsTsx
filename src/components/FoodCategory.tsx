@@ -7,6 +7,7 @@ import {
   TouchableOpacityProps,
   Image,
   ImageStyle,
+  View,
   ImageSourcePropType
 } from "react-native"
 
@@ -17,15 +18,18 @@ import Text from "./CustomText"
 import metrics from "../config/metrics"
 
 interface Props extends TouchableOpacityProps {
-  icon: ImageSourcePropType
-  caption: string
+  label: string
+  image_url: string
+  name: string
 }
 
 export default (props: Props) => (
-  <TouchableOpacity style={styles.container} {...props}>
-    <Image source={props.icon} style={styles.icon as ImageStyle} />
-    <Text style={styles.caption}>{props.caption}</Text>
-  </TouchableOpacity>
+  <View style={{flex: 2}}>
+    <TouchableOpacity style={styles.container} {...props}>
+      <Image source={{uri: props.image_url}} style={styles.icon as ImageStyle} />
+      <Text style={styles.caption}>{props.name}</Text>
+    </TouchableOpacity>
+  </View>
 )
 
 const styles = StyleSheet.create({
@@ -48,6 +52,8 @@ const styles = StyleSheet.create({
 
   icon: {
     marginLeft: 5,
-    marginTop: 5
+    marginTop: 5,
+    width: 18,
+    height: 18
   }
 })

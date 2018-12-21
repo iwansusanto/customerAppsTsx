@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native"
+import { View, StyleSheet, Image, TouchableOpacity, FlatList, Alert } from "react-native"
 
 import Text from "../../components/CustomText"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
@@ -10,19 +10,16 @@ import FoodCategory from "../../components/FoodCategory"
 import FoodSuggestion from "../../components/FoodSuggestion"
 import withSuggestionContext from "../../components/consumers/withSuggestionContext"
 import withSearchContext from "../../components/consumers/withSearchContext"
+import withPickCategoriesContext from "../../components/consumers/withPickcategoriesContext"
 
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_HEART = require("../../../assets/ic_heart.png")
 
-const ICON_RATING = require("../../../assets/ic_rating.png")
-const ICON_NEARBY = require("../../../assets/ic_nearby.png")
-const ICON_NEW = require("../../../assets/ic_new.png")
-const ICON_TIMELAPSE = require("../../../assets/ic_timelapse.png")
-
 interface Props {
   navigation: NavigationScreenProp<any, any>
   suggestion: SuggestionContext
-  search: SearchContext
+  search: SearchContext,
+  pickcategories: PickCategoriesContext
 }
 
 class Food extends React.Component<Props, any> {
@@ -49,10 +46,11 @@ class Food extends React.Component<Props, any> {
   componentWillMount() {
     const suggestId = this.props.navigation.getParam("suggestId")
     this.props.suggestion.getSuggestions(suggestId)
+    this.props.pickcategories.searchPickCategories(suggestId)
   }
 
-  search = (id: number) => () => {
-    this.props.search.search(id)
+  search = (categoriId: number, type: string) => () => {
+    this.props.search.search(categoriId, type)
     this.props.navigation.navigate("FoodSearch", {
       header: this.props.navigation.state.params.header
     })
@@ -80,24 +78,22 @@ class Food extends React.Component<Props, any> {
         <View style={styles.categoryContainer}>
           <Text style={styles.subtitle}>Pick by categories</Text>
           <View style={styles.categoryListContainer}>
-            <View style={styles.categoryListRow}>
-              <FoodCategory
-                onPress={this.search(1)}
-                icon={ICON_RATING}
-                caption={"Rating"}
-              />
-              <FoodCategory
-                onPress={this.search(2)}
-                icon={ICON_NEARBY}
-                caption={"Nearby"}
-              />
-              <FoodCategory onPress={this.search(3)} icon={ICON_NEW} caption={"New"} />
-              <FoodCategory
-                onPress={this.search(4)}
-                icon={ICON_TIMELAPSE}
-                caption={"24 Hours"}
-              />
-            </View>
+            <FlatList
+              data={this.props.pickcategories.pickcategories}
+              keyExtractor={item => item.id.toString()}
+              numColumns={4}
+              renderItem={({ item }) => {
+                return (
+                  <FoodCategory
+                    label={item.label}
+                    image_url={item.image_url}
+                    name={item.name}
+                    onPress={this.search(item.root_category, item.label)}
+                  />
+                )
+              }}
+              columnWrapperStyle={styles.categoryListRow}
+            />
           </View>
         </View>
         <Text style={styles.suggestionCaption}>Suggestion for you</Text>
@@ -193,4 +189,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withSuggestionContext(withSearchContext(Food))
+export default withPickCategoriesContext(withSuggestionContext(withSearchContext(Food)))

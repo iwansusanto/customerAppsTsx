@@ -179,7 +179,7 @@ interface SearchResponse {
 interface SearchContext extends SearchResponse {
   resto: SearchRestoResponse
   result: SearchResponse
-  search: (type: number) => Promise<boolean>
+  search: (categoryId: number, type: string) => Promise<boolean>
   searchBySuggestion: (parentId: number) => Promise<boolean>
   searchRestoDetail: (menuId: number) => Promise<boolean>
   searchByName: (name: string) => Promise<boolean>
@@ -246,6 +246,26 @@ interface SearchRestoResponse {
   success: boolean
   merchant: Merchant
   menu_data: MenuData[]
+}
+
+interface PickCategories {
+  id: number
+  category_id: number
+  label: string
+  name: string
+  image_url: string
+  root_category: number
+  status:number
+}
+
+interface PickCategoriesContext {
+  pickcategories: PickCategories[]
+  searchPickCategories: Function
+}
+
+interface PickCategoriesResponse {
+  type: PickCategories[]
+  data: []
 }
 
 interface CartAdditional {

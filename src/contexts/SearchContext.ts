@@ -8,7 +8,7 @@ let data: SearchContext = {
   merchant_data: [],
   resto: {} as SearchRestoResponse,
   result: {} as SearchResponse,
-  search: (type: number) => Promise.resolve(false),
+  search: (categoryId: number, type: string) => Promise.resolve(false),
   searchByName: (name: string) => Promise.resolve(false),
   searchRestoDetail: (menuId: number) => Promise.resolve(false),
   searchBySuggestion: (categoryId: number) => Promise.resolve(false)
