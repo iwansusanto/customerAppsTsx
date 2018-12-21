@@ -47,12 +47,14 @@ const styles = StyleSheet.create({
   },
 
   detailContainer: {
-    marginLeft: 20
+    marginLeft: 20,
+    flex: 8,
   },
 
   image: {
     height: 70,
-    width: 70
+    width: 70,
+    flex: 2,
   },
 
   name: {
