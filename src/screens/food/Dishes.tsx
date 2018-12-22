@@ -21,6 +21,7 @@ class Dishes extends React.Component<Props> {
           contentContainerStyle={styles.list}
           style={styles.listContainer}
           renderItem={({ item }) => {
+            console.log('item', item)
             return (
               <DishItem
                 name={item.name}

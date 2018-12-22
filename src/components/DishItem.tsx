@@ -22,6 +22,7 @@ interface Props extends TouchableOpacityProps {
 }
 
 export default (props: Props) => {
+  console.log('hebat', props)
   return (
     <TouchableOpacity style={styles.container} {...props}>
       <Image style={styles.image as ImageStyle} source={{ uri: props.image }} />
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
 
   restoAddress: {
     fontSize: 14,
-    fontWeight: "300"
+    fontWeight: "300",
+    marginRight: 30
   }
 })
