@@ -22,15 +22,10 @@ interface Props {
 export default (props: Props) => (
   <View style={styles.container}>
     <View style={{ flexDirection: "row" }}>
-<<<<<<< HEAD
       <View style={{flex: 3}}>
         <Image style={{height: 70, width: 70}} source={{ uri: props.image }} />
       </View>
       <View style={{ marginLeft: 20, justifyContent: "center", flex: 7 }}>
-=======
-      <Image resizeMode={'cover'} style={{ width: '30%', height: 50 }} source={{ uri: props.image }} />
-      <View style={{ marginLeft: 20, justifyContent: "center" }}>
->>>>>>> master
         <Text style={styles.foodTitle}>{props.name}</Text>
         {props.additional.map(item => (
           <Text style={{ marginTop: 5 }}>{item.name}</Text>
