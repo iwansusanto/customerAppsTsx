@@ -14,9 +14,10 @@ const ChangeRestoImage = require("../../assets/change_restaurant.png")
 interface Props {
   visible: boolean
   onRequestClose: () => void
+  addToCart: () => void
 }
 
-const ChangeRestoAlert = ({ visible, onRequestClose }: Props) => (
+const ChangeRestoAlert = ({ visible, onRequestClose, addToCart }: Props) => (
   <Modal
     visible={visible}
     onRequestClose={onRequestClose}
@@ -94,6 +95,7 @@ const ChangeRestoAlert = ({ visible, onRequestClose }: Props) => (
                   // borderLeftWidth: StyleSheet.hairlineWidth,
                   // borderLefttColor: "white"
                 }}
+                onPress={addToCart}
               >
                 <Text style={{ color: "white", fontWeight: "bold" }}>YES</Text>
               </TouchableOpacity>
