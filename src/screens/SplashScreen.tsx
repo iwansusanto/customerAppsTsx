@@ -23,7 +23,7 @@ class SplashScreen extends Component<Props, any> {
 
       if (data !== null) {
         await this.props.user.changeUser(data)
-        console.log(this.props.user)
+        console.log('hello', this.props.user)
         this.props.navigation.replace("Home")
       } else {
         this.props.navigation.replace("Welcome")
@@ -34,6 +34,7 @@ class SplashScreen extends Component<Props, any> {
   }
 
   render() {
+    console.log('tes token')
     return (
       <View style={styles.container}>
         <Image source={LOGO} />

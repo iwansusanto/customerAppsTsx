@@ -8,11 +8,13 @@ export default class UserContextProvider extends Component<{}, LoginResponse> {
   state = {
     success: false,
     token: '',
+    language: 'en',
     message: '',
     customer: {} as User
   }
 
   changeUser = async (data: LoginResponse) => {
+    console.log('coba change', data)
     await AsyncStorage.setItem("user", JSON.stringify(data))
     api.changeToken(data.token)
     await this.setState(data)
