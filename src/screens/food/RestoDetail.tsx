@@ -18,7 +18,6 @@ import metrics from "../../config/metrics"
 import SearchContextProvider from "../../components/providers/SearchContextProvider"
 import withSearchContext from "../../components/consumers/withSearchContext"
 import CustomText from "../../components/CustomText"
-import ChangeRestoAlert from "../../components/ChangeRestoAlert"
 import BottomSheet from "../../components/BottomSheet"
 import Text from "../../components/CustomText"
 import CartItem from "../../components/CartItem"
@@ -36,7 +35,6 @@ interface Props {
 interface State {
   menus: any
   isLoading: boolean
-  isAlertOpen: boolean
 }
 var addressnew = ""
 var opens = ""
@@ -55,7 +53,6 @@ class RestoDetail extends Component<Props, State> {
       "Fetching Menu": LoadingMenu
     },
     isLoading: true,
-    isAlertOpen: false
   }
 
   public async componentWillMount() {
@@ -130,10 +127,6 @@ class RestoDetail extends Component<Props, State> {
           <HeaderOverlay />
           <Tabs />
         </View>
-        <ChangeRestoAlert
-          visible={this.state.isAlertOpen}
-          onRequestClose={() => this.setState({ isAlertOpen: false })}
-        />
       </View>
     )
   }

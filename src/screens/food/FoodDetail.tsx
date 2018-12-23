@@ -11,6 +11,7 @@ import {
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 
+import ChangeRestoAlert from "../../components/ChangeRestoAlert"
 import Text from "../../components/CustomText"
 import { NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "../../components/HeaderOverlay"
@@ -30,6 +31,7 @@ interface Props {
 interface State {
   selectedAdditional: boolean[]
   additionalPrice: number
+  isAlertOpen: boolean
 }
 
 class FoodDetail extends React.Component<Props, State> {
@@ -43,7 +45,8 @@ class FoodDetail extends React.Component<Props, State> {
 
   state = {
     selectedAdditional: [] as boolean[],
-    additionalPrice: 0
+    additionalPrice: 0,
+    isAlertOpen: false
   }
 
   async componentWillMount() {
@@ -54,7 +57,13 @@ class FoodDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const { id, title, additional, picture, price } = this.props.navigation.state.params
+    const {
+      id,
+      title,
+      additional,
+      picture,
+      price
+    } = this.props.navigation.state.params
     const { selectedAdditional } = this.state
     console.log(selectedAdditional)
     return (
@@ -64,7 +73,10 @@ class FoodDetail extends React.Component<Props, State> {
           <View style={styles.container}>
             <Text style={styles.subtitle}>{title}</Text>
             <View style={styles.detailContainer}>
-              <Image style={styles.picture as ImageStyle} source={{ uri: picture }} />
+              <Image
+                style={styles.picture as ImageStyle}
+                source={{ uri: picture }}
+              />
               {additional !== null && (
                 <View style={styles.detail}>
                   <Text style={styles.title}>Add Extra Items</Text>
@@ -85,11 +97,19 @@ class FoodDetail extends React.Component<Props, State> {
             </View>
           </View>
         </KeyboardAwareScrollView>
-        <TouchableOpacity style={styles.addToCartButton} onPress={this.addToCart}>
+        <TouchableOpacity
+          style={styles.addToCartButton}
+          onPress={this.addToCart(false)}
+        >
           <Text style={styles.addToCartLabel}>Add to cart</Text>
           <Text style={styles.addToCartLabel}>{`QR ${Number(price) +
             Number(this.state.additionalPrice)}`}</Text>
         </TouchableOpacity>
+        <ChangeRestoAlert
+          visible={this.state.isAlertOpen}
+          onRequestClose={() => this.setState({ isAlertOpen: false })}
+          addToCart={this.addToCart(true)}
+        />
       </View>
     )
   }
@@ -106,7 +126,8 @@ class FoodDetail extends React.Component<Props, State> {
     })
   }
 
-  addToCart = async () => {
+  addToCart = (change: boolean) => async () => {
+    console.log("addToCartCall", change)
     const { id, additional, merchantId } = this.props.navigation.state.params
     const { selectedAdditional } = this.state
 
@@ -119,11 +140,23 @@ class FoodDetail extends React.Component<Props, State> {
 
     const additionalValues = additionalIds.length > 0 ? additionalIds : null
 
-    await this.props.cart.addToCart(1, id, additionalValues, "")
+    const res = await this.props.cart.addToCart(
+      1,
+      id,
+      additionalValues,
+      "",
+      change
+    )
+    console.log("res", res)
+    if (!res) {
+      this.setState({ isAlertOpen: true })
+      return
+    }
+
     this.props.cart.getCart()
-    console.log(merchantId);
-    // this.props.navigation.navigate("RestoDetail", { merchantId: 1 })
+    console.log(merchantId)
     this.props.navigation.navigate("RestoDetail", { merchantId: merchantId })
+    this.setState({ isAlertOpen: false })
   }
 }
 

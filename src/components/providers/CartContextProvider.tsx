@@ -50,18 +50,19 @@ export default class CartContextProvider extends Component<{}, CartResponse> {
     quantity: number,
     id: number,
     additional: number[] | null,
-    notes: string
+    notes: string,
+    change: boolean
   ) => {
     try {
-      const { data } = await api.client.post<AddToCartResponse>("/cart", {
+      const { data } = await api.client.post<AddToCartResponse>(`/cart${change ? '?change=1' : ''}`, {
         quantity,
         id,
         additional,
         notes
       })
-      console.log(data)
+      console.log('addToCart', data.success)
 
-      return true
+      return data.success
     } catch (err) {
       console.log(err.response.data)
       return false

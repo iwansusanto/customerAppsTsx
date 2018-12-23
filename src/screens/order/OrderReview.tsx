@@ -533,6 +533,7 @@ class OrderReview extends React.Component<Props, State> {
           <FlatList
             data={this.props.cart.cart.product_data}
             style={{ width: metrics.DEVICE_WIDTH }}
+<<<<<<< HEAD
             renderItem={({ item }) => {
               // console.log('ITEM LIST Order', item)
               return (
@@ -548,6 +549,20 @@ class OrderReview extends React.Component<Props, State> {
                 />
               )
             }}
+=======
+            renderItem={({ item }) => (
+              <OrderReviewItem
+                image={item.image}
+                name={item.name}
+                price={item.price}
+                additional={item.additional}
+                quantity={item.quantity}
+                id={item.id}
+                updateCartItem={this.updateCartItem}
+                deleteCartItem={this.deleteCartItem(item.id)}
+              />
+            )}
+>>>>>>> master
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ paddingLeft: 10 }}
