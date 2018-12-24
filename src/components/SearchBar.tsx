@@ -1,10 +1,11 @@
 // Search bar components, which used by many screen in the app
 
 import React from "react"
-import { StyleSheet, TextInputProps } from "react-native"
+import { StyleSheet, TextInputProps, AsyncStorage } from "react-native"
 
 // Custom component used in this component
 import CustomTextInput from "./CustomTextInput"
+import strings from "../components/language"
 
 // Configs
 import metrics from "../config/metrics"

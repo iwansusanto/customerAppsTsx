@@ -6,7 +6,8 @@ import {
   TouchableOpacityProps,
   Image,
   FlatList,
-  ImageStyle
+  ImageStyle,
+  AsyncStorage
 } from "react-native"
 
 import Text from "../../components/CustomText"
@@ -14,6 +15,8 @@ import Countries from "../../../assets/CountryCodes.json"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import metrics from "../../config/metrics"
 import SearchBar from "../../components/SearchBar"
+import strings from "../../components/language"
+
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
@@ -32,7 +35,7 @@ interface State {
 
 export default class CountrySelect extends React.Component<Props, State> {
   static navigationOptions: NavigationStackScreenOptions = {
-    title: "Select your country"
+    title: strings.registerCountryTitle
   }
 
   state = {
@@ -44,6 +47,17 @@ export default class CountrySelect extends React.Component<Props, State> {
     let callback = this.props.navigation.getParam("onSelect")
     this.props.navigation.goBack()
     callback(item.code, item.dial_code)
+  }
+
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING select", languageStore)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
   }
 
   filter(query: string) {

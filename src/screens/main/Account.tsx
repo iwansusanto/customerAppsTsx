@@ -5,7 +5,8 @@ import {
   Image,
   TouchableOpacity,
   Button,
-  ScrollView
+  ScrollView,
+  AsyncStorage
 } from "react-native"
 
 import Text from "../../components/CustomText"
@@ -14,6 +15,8 @@ import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import CustomButton from "../../components/CustomButton"
 import withUserContext from "../../components/consumers/withUserContext"
+import strings from "../../components/language"
+
 
 const ICON_FB = require("../../../assets/ic_facebook.png")
 const ICON_POINT = require("../../../assets/point.png")
@@ -26,14 +29,25 @@ interface Props {
 }
 
 class Account extends React.Component<Props, any> {
+
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+  }
   render() {
     console.log('language', this.props)
     return (
       <View style={styles.container} >
         <HeaderOverlay />
         <View style={[styles.container, { alignItems: "center" }]}>
-          <Text style={styles.title}>Account</Text>
-          <Text style={styles.subtitle}>View your information</Text>
+          <Text style={styles.title}>{strings.accountTitle}</Text>
+          <Text style={styles.subtitle}>{strings.accountInfo}</Text>
           <View style={styles.profileContainer}>
             <View style={styles.detailContainer}>
               {/* 
@@ -85,7 +99,7 @@ class Account extends React.Component<Props, any> {
             <TouchableOpacity style={styles.menuItem}
             onPress={() => this.props.navigation.navigate("Language")}
             >
-              <Text style={styles.menuLabel}>Change language</Text>
+              <Text style={styles.menuLabel}>{strings.accountChangeLanguage}</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
               }
@@ -93,14 +107,14 @@ class Account extends React.Component<Props, any> {
               style={styles.menuItem}
               onPress={() => this.props.navigation.navigate("Terms")}
             >
-              <Text style={styles.menuLabel}>Terms of Service</Text>
+              <Text style={styles.menuLabel}>{strings.accountTos}</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => this.props.navigation.navigate("PrivacyPolicy")}
             >
-              <Text style={styles.menuLabel}>Privacy Policy</Text>
+              <Text style={styles.menuLabel}>{strings.accountPrivacyPolicy}</Text>
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
               {/*
@@ -112,7 +126,7 @@ class Account extends React.Component<Props, any> {
           </View>
           <View style={styles.logoutButtonContainer}>
             <Button
-              title={"Logout"}
+              title={strings.accountLogout}
               onPress={() => {
                 this.props.user.changeUser(null)
                 this.props.navigation.replace("Welcome")

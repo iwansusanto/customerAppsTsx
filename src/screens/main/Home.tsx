@@ -10,7 +10,8 @@ import {
   ScrollView,
   FlatList,
   ImageStyle,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  AsyncStorage
 } from "react-native"
 import { NavigationScreenProp, NavigationTabScreenOptions } from "react-navigation"
 import MapView, { Region, PROVIDER_GOOGLE } from "react-native-maps"
@@ -19,6 +20,8 @@ import Geocoder from "react-native-geocoder"
 // Custom component used in the screen
 import HeaderOverlay from "../../components/HeaderOverlay"
 import SearchBar from "../../components/SearchBar"
+import strings from "../../components/language"
+
 
 // Configs
 import metrics from "../../config/metrics"
@@ -52,7 +55,7 @@ class Home extends React.Component<Props, State> {
   // Tab bar configs
   static navigationOptions: NavigationTabScreenOptions = {
     // Tab title
-    title: "Home",
+    title: strings.homeTab,
     // Tab icon according to the focused state of the tab
     tabBarIcon: ({ focused }) => {
       switch (focused) {
@@ -127,6 +130,7 @@ class Home extends React.Component<Props, State> {
 
   componentWillMount() {
     DeviceEventEmitter.addListener("shouldCartUpdate", () => this.props.cart.getCart())
+    this._onSetLanguage()
   }
 
   async componentDidMount() {
@@ -137,6 +141,14 @@ class Home extends React.Component<Props, State> {
     DeviceEventEmitter.removeListener("shouldCartUpdate", () => this.props.cart.getCart())
   }
 
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING home", languageStore)
+    return language
+  }
+
+
   render() {
     return (
       <View style={styles.container}>
@@ -144,7 +156,7 @@ class Home extends React.Component<Props, State> {
         <StatusBar barStyle={"light-content"} />
         <Image source={LOGO} style={{ marginTop: 50 }} />
         <View style={styles.customerDetail}>
-          <Text style={styles.greeting}>Hi {this.props.user.customer.name}!</Text>
+          <Text style={styles.greeting}>{strings.homeHi} {this.props.user.customer.name}!</Text>
           <View>
             <View style={styles.pointContainer}>
               <View style={styles.iconPointContainer}>
@@ -153,7 +165,7 @@ class Home extends React.Component<Props, State> {
               </View>
               <View>
                 <Text style={styles.point}>{this.props.user.customer.total_point}</Text>
-                <Text style={styles.lblPoint}>POINTS</Text>
+                <Text style={styles.lblPoint}>{strings.homePoints}</Text>
               </View>
             </View>
           </View>
@@ -174,7 +186,7 @@ class Home extends React.Component<Props, State> {
             <Text style={styles.address}>{this.state.address}</Text>
           </View>
         </View>
-        <Text style={styles.searchCaption}>Search by vendors, foods, or items</Text>
+        <Text style={styles.searchCaption}>{strings.homeSearch}</Text>
         <SearchBar onFocus={() => this.props.navigation.navigate("MainSearch")} />
         <FlatList
           contentContainerStyle={styles.categories}

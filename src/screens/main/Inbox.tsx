@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image, FlatList } from "react-native"
+import { View, StyleSheet, Image, FlatList, AsyncStorage } from "react-native"
 
 import Text from "../../components/CustomText"
 import { NavigationTabScreenOptions } from "react-navigation"
@@ -7,6 +7,8 @@ import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import InboxItem from "../../components/InboxItem"
 import withInboxContext from "../../components/consumers/withInboxContext";
+import strings from "../../components/language"
+
 
 const ICON_ACTIVE = require("../../../assets/ic_mail_active.png")
 const ICON_INACTIVE = require("../../../assets/ic_mail_inactive.png")
@@ -52,12 +54,23 @@ class Inbox extends React.Component<Props> {
     }
   }
 
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.title}>Inbox</Text>
-        <Text style={styles.subtitle}>Keep notified and get best deals</Text>
+        <Text style={styles.title}>{strings.inboxTitle}</Text>
+        <Text style={styles.subtitle}>{strings.inboxInfo}</Text>
         <FlatList
           data={this.props.inbox.inboxs}
           keyExtractor={item => item.id.toString()}

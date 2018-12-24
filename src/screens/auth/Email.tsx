@@ -7,7 +7,8 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Alert,
-  ImageStyle
+  ImageStyle,
+  AsyncStorage
 } from "react-native"
 
 import Text from "../../components/CustomText"
@@ -18,6 +19,8 @@ import api from "../../api"
 
 import { NavigationScreenProp } from "react-navigation"
 import UserContext from "../../contexts/UserContext"
+import strings from "../../components/language"
+
 
 const OVERLAY = require("../../../assets/overlay-login.png")
 const LOGO = require("../../../assets/logo-higres.png")
@@ -46,6 +49,17 @@ export default class Email extends React.Component<Props, State> {
     this.setState({ email: value })
   }
 
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+  }
+
   async handleSendEmailButtonPressed(): Promise<void> {
     try {
       const { data } = await api.client.post("/reset_password", {
@@ -71,11 +85,11 @@ export default class Email extends React.Component<Props, State> {
               <View style={styles.container}>
                 <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
                 <Image source={LOGO} style={styles.logo as ImageStyle} />
-                <Text style={styles.subtitle}>RESET YOUR PASSWORD</Text>
-                <Text style={styles.caption}>ENTER YOUR EMAIL ADDRESS</Text>
+                <Text style={styles.subtitle}>{strings.resetPassTitle}</Text>
+                <Text style={styles.caption}>{strings.resetPassInfo}</Text>
                 <CustomTextInput
                   icon={ICON_MAIL}
-                  placeholder={"Email"}
+                  placeholder={strings.loginEmail}
                   keyboardType={"email-address"}
                   style={styles.form}
                   onChangeText={this.handleEmailInputChange}
@@ -86,7 +100,7 @@ export default class Email extends React.Component<Props, State> {
                       ? metrics.SECONDARY_COLOR
                       : metrics.INACTIVE_COLOR
                   }
-                  label={"SEND EMAIL"}
+                  label={strings.resetPassSend}
                   onPress={this.handleSendEmailButtonPressed}
                 />
               </View>

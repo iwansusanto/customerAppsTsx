@@ -1,14 +1,18 @@
 import React from "react"
-import { View, StyleSheet, Image, ImageStyle } from "react-native"
-import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+import { View, StyleSheet, Image, ImageStyle, AsyncStorage } from "react-native"
+import {
+  NavigationStackScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 
 // Custom component used in the screen
 import Text from "../../components/CustomText"
 import CustomButton from "../../components/CustomButton"
+import strings from "../../components/language"
 
 // Configs
 import metrics from "../../config/metrics"
-
+import { lang } from "moment"
 
 // Assets
 const LOGO = require("../../../assets/logo-higres.png")
@@ -18,7 +22,7 @@ const OVERLAY = require("../../../assets/overlay-login.png")
 // Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
-  user : UserContext
+  user: UserContext
 }
 
 export default class Welcome extends React.Component<Props, any> {
@@ -36,7 +40,9 @@ export default class Welcome extends React.Component<Props, any> {
 
     // Function binding to this class
     this.handleLoginButtonPressed = this.handleLoginButtonPressed.bind(this)
-    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(this)
+    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(
+      this
+    )
   }
 
   // Login button press handler
@@ -51,8 +57,19 @@ export default class Welcome extends React.Component<Props, any> {
     this.props.navigation.navigate("Register")
   }
 
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+  }
+
   render() {
-    console.log('props welcome', this.props)
+    console.log("props welcome", strings.loginGreetings)
     return (
       <View style={styles.container}>
         <Image source={LOGO} style={styles.logo as ImageStyle} />
@@ -61,16 +78,16 @@ export default class Welcome extends React.Component<Props, any> {
           style={styles.overlay as ImageStyle}
           resizeMode={"contain"}
         />
-        <Text style={styles.title}>WELCOME TO MSHWAR APP</Text>
-        <Text style={styles.caption}>WE TAKE YOUR ORDER RESPONSIBLY</Text>
+        <Text style={styles.title}>{strings.loginGreetings}</Text>
+        <Text style={styles.caption}>{strings.tagLine}</Text>
         <View style={styles.defaultAuthButtonContainer}>
           <CustomButton
-            label={"LOGIN"}
+            label={strings.login}
             style={styles.defaultAuthButton}
             onPress={this.handleLoginButtonPressed}
           />
           <CustomButton
-            label={"REGISTER"}
+            label={strings.register}
             style={styles.defaultAuthButton}
             onPress={this.handleRegisterButtonPressed}
           />
@@ -82,8 +99,8 @@ export default class Welcome extends React.Component<Props, any> {
           icon={ICON_FB}
         /> */}
         <View style={styles.tosContainer}>
-          <Text style={styles.caption}>By registering I agree to the</Text>
-          <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
+          <Text style={styles.caption}>{strings.byRegister}</Text>
+          <Text style={styles.tos}>{strings.byTos}</Text>
         </View>
       </View>
     )

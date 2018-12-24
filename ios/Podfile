@@ -33,6 +33,7 @@ target 'mshwarapp' do
   #pod 'GLog', :podspec => "#{rn_path}/third-party-podspecs/GLog.podspec"
   pod 'Folly', :podspec => "#{rn_path}/third-party-podspecs/Folly.podspec"
 
+
   # react-native-maps dependencies
   pod 'react-native-maps', path: rn_maps_path
   pod 'react-native-google-maps', path: rn_maps_path  # Unomment this line if you want to support GoogleMaps on iOS
@@ -40,6 +41,8 @@ target 'mshwarapp' do
   pod 'Google-Maps-iOS-Utils' # Uncomment this line if you want to support GoogleMaps on iOS
   pod 'GooglePlaces'
   pod 'GooglePlacePicker'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
 end
 
 post_install do |installer|
