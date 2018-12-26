@@ -15,10 +15,9 @@ class API {
       if(config.method === 'post' || config.method === 'get') {
         // config.data = {...config.data, lang: 'ar'}
         const storage = await AsyncStorage.getItem('language')
-        console.log('tes oke',storage)
         client.defaults.headers.common['lang'] = storage
       }
-      // console.log('config interceptor :', config)
+      console.log('config interceptor :', config)
       return config
     }, function(error) {
       // console.log('ERROR interceptor :', error)
