@@ -20,7 +20,7 @@ interface State {
 
 export default class Orders extends React.Component<any, State> {
   static navigationOptions: NavigationTabScreenOptions = {
-    title: "Orders",
+    title: strings.ordersTab,
     tabBarIcon: ({ focused }) => {
       switch (focused) {
         case true:
@@ -66,12 +66,13 @@ export default class Orders extends React.Component<any, State> {
   }
 
   render() {
+    console.log('data', this.state.data)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
         <Text style={styles.title}>{strings.ordersTitle}</Text>
         <Text style={styles.subtitle}>
-          {this.state.data === null ? strings.ordersEmpty : strings.ordersList}
+          {this.state.data.length === 0 ? strings.ordersEmpty : strings.ordersList}
         </Text>
         <FlatList
           data={this.state.data}

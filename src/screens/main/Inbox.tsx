@@ -19,7 +19,7 @@ interface Props {
 
 class Inbox extends React.Component<Props> {
   static navigationOptions: NavigationTabScreenOptions = {
-    title: "Inbox",
+    title: strings.inboxTab,
     tabBarIcon: ({ focused }) => {
       switch (focused) {
         case true:
