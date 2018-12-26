@@ -11,10 +11,15 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Animated,
-  Dimensions
+  Dimensions,
+  AsyncStorage
 } from "react-native"
-import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+import {
+  NavigationStackScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+import strings from "../../components/language"
 
 // Custom component used in the screen
 import Text from "../../components/CustomText"
@@ -36,10 +41,10 @@ const ICON_KEY = require("../../../assets/ic_key.png")
 const ICON_HELP = require("../../../assets/ic-help.png")
 const ICON_BACK = require("../../../assets/ic_back.png")
 
-const window = Dimensions.get('window');
+const window = Dimensions.get("window")
 
-const IMAGE_HEIGHT = window.width / 2;
-const IMAGE_HEIGHT_SMALL = window.width /7;
+const IMAGE_HEIGHT = window.width / 2
+const IMAGE_HEIGHT_SMALL = window.width / 7
 
 // Props typing
 interface Props {
@@ -53,10 +58,10 @@ interface State {
   name: string
   phone: string
   countryCode: string
-  countryPhoneCode: string,
-  animation         : any,
-  animationPosition : any,
-  keyboardShowed    : boolean
+  countryPhoneCode: string
+  animation: any
+  animationPosition: any
+  keyboardShowed: boolean
 }
 
 export default class Register extends React.Component<Props, State> {
@@ -98,9 +103,9 @@ export default class Register extends React.Component<Props, State> {
     name: "",
     countryCode: "QA",
     countryPhoneCode: "+974",
-    animation         : new Animated.Value(0),
-    animationPosition : new Animated.Value(0),
-    keyboardShowed    : false
+    animation: new Animated.Value(0),
+    animationPosition: new Animated.Value(0),
+    keyboardShowed: false
   }
 
   // Constructor
@@ -108,22 +113,31 @@ export default class Register extends React.Component<Props, State> {
     super(props)
 
     // Function binding to this class
-    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(this)
+    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(
+      this
+    )
     // this.keyboardHeight = this.state.animation
   }
 
   keyboardHeight = () => {
     new Animated.Value(0)
   }
+  _onSetLanguage = async () => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING REG", languageStore)
+    return language
+  }
 
-  componentWillMount () {
-    Keyboard.addListener('keyboardWillShow', this.keyboardWillShow)
-    Keyboard.addListener('keyboardWillHide', this.keyboardWillHide)
+  componentWillMount() {
+    Keyboard.addListener("keyboardWillShow", this.keyboardWillShow)
+    Keyboard.addListener("keyboardWillHide", this.keyboardWillHide)
+    this._onSetLanguage()
   }
 
   componentWillUnmount() {
-    Keyboard.addListener('keyboardWillShow', this.keyboardWillShow).remove()
-    Keyboard.addListener('keyboardWillHide', this.keyboardWillHide).remove()
+    Keyboard.addListener("keyboardWillShow", this.keyboardWillShow).remove()
+    Keyboard.addListener("keyboardWillHide", this.keyboardWillHide).remove()
   }
   // keyboardHeigh: () => void
 
@@ -131,36 +145,33 @@ export default class Register extends React.Component<Props, State> {
     // console.log('height', event);
     // debugger;
     this.setState({ keyboardShowed: !this.state.keyboardShowed })
-    if(event.startCoordinates.screenY < (event.endCoordinates.height * 3)){
+    if (event.startCoordinates.screenY < event.endCoordinates.height * 3) {
       Animated.parallel([
         Animated.timing(this.state.animation, {
           duration: event.duration,
-          toValue: 0,
+          toValue: 0
         }),
         Animated.timing(this.state.animationPosition, {
           duration: event.duration,
-          toValue: window.height - (event.endCoordinates.screenY+250),
+          toValue: window.height - (event.endCoordinates.screenY + 250)
         })
-      ]).start();
+      ]).start()
     }
-  };
-
+  }
 
   keyboardWillHide = (event: any) => {
     this.setState({ keyboardShowed: !this.state.keyboardShowed })
     Animated.parallel([
       Animated.timing(this.state.animation, {
         duration: event.duration,
-        toValue: 0,
+        toValue: 0
       }),
       Animated.timing(this.state.animationPosition, {
         duration: event.duration,
-        toValue: 0,
-      }),
-    ]).start();
-  };
-
-  
+        toValue: 0
+      })
+    ]).start()
+  }
 
   // Register button press handler
   handleRegisterButtonPressed = (register: Function) => async () => {
@@ -203,91 +214,103 @@ export default class Register extends React.Component<Props, State> {
   }
 
   render() {
-    console.log('muncul registrasi');
+    console.log("muncul registrasi")
     const { email, password, phone, name } = this.state
     return (
       <UserContext.Consumer>
         {context => (
-          <Animated.View style={[styles.container, { paddingBottom: this.state.animation }]}>
+          <Animated.View
+            style={[styles.container, { paddingBottom: this.state.animation }]}
+          >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View style={styles.container}>
-              <Animated.View style={[styles.container, { bottom: this.state.animationPosition }]}>
-                <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
-                <Image source={LOGO} style={styles.logo as ImageStyle} />
-                <Text style={styles.title}>MAKE A NEW ACCOUNT</Text>
-                <Text style={styles.caption}>FILL YOUR INFO AND GET STARTED</Text>
-                <View style={styles.formContainer}>
-                  <CustomTextInput
-                    icon={ICON_USER}
-                    placeholder={"Name"}
-                    onChangeText={text => this.setState({ name: text })}
+                <Animated.View
+                  style={[
+                    styles.container,
+                    { bottom: this.state.animationPosition }
+                  ]}
+                >
+                  <Image
+                    source={OVERLAY}
+                    style={styles.overlay as ImageStyle}
                   />
-                  <View style={{ flexDirection: "row" }}>
-                    <TouchableOpacity
-                      style={{
-                        width: metrics.DEVICE_WIDTH * 0.17,
-                        height: 45,
-                        backgroundColor: "white",
-                        borderRadius: 5,
-                        marginVertical: 5,
-                        marginRight: metrics.DEVICE_WIDTH * 0.03,
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                      onPress={() =>
-                        this.props.navigation.navigate("CountrySelect", {
-                          onSelect: this.setCountry
-                        })
-                      }
-                    >
-                      <Image
-                        source={{
-                          uri: `https://www.countryflags.io/${
-                            this.state.countryCode
-                          }/flat/64.png`
-                        }}
-                        style={{ width: 40, height: 40 }}
-                      />
-                    </TouchableOpacity>
+                  <Image source={LOGO} style={styles.logo as ImageStyle} />
+                  <Text style={styles.title}>{strings.registerTitle}</Text>
+                  <Text style={styles.caption}>{strings.registerInfo}</Text>
+                  <View style={styles.formContainer}>
                     <CustomTextInput
-                      style={{ width: metrics.DEVICE_WIDTH * 0.6 }}
-                      icon={ICON_PHONE}
-                      placeholder={"Phone Number"}
-                      keyboardType={"number-pad"}
-                      onChangeText={text => this.setState({ phone: text })}
+                      icon={ICON_USER}
+                      placeholder={strings.registerName}
+                      onChangeText={text => this.setState({ name: text })}
+                    />
+                    <View style={{ flexDirection: "row" }}>
+                      <TouchableOpacity
+                        style={{
+                          width: metrics.DEVICE_WIDTH * 0.17,
+                          height: 45,
+                          backgroundColor: "white",
+                          borderRadius: 5,
+                          marginVertical: 5,
+                          marginRight: metrics.DEVICE_WIDTH * 0.03,
+                          alignItems: "center",
+                          justifyContent: "center"
+                        }}
+                        onPress={() =>
+                          this.props.navigation.navigate("CountrySelect", {
+                            onSelect: this.setCountry
+                          })
+                        }
+                      >
+                        <Image
+                          source={{
+                            uri: `https://www.countryflags.io/${
+                              this.state.countryCode
+                            }/flat/64.png`
+                          }}
+                          style={{ width: 40, height: 40 }}
+                        />
+                      </TouchableOpacity>
+                      <CustomTextInput
+                        style={{ width: metrics.DEVICE_WIDTH * 0.6 }}
+                        icon={ICON_PHONE}
+                        placeholder={strings.registerPhone}
+                        keyboardType={"number-pad"}
+                        onChangeText={text => this.setState({ phone: text })}
+                      />
+                    </View>
+                    <CustomTextInput
+                      icon={ICON_MAIL}
+                      placeholder={strings.registerEmail}
+                      keyboardType={"email-address"}
+                      autoCapitalize="none"
+                      onChangeText={text => this.setState({ email: text })}
+                    />
+                    <CustomTextInput
+                      icon={ICON_KEY}
+                      placeholder={strings.registerPassword}
+                      secureTextEntry={true}
+                      onChangeText={text => this.setState({ password: text })}
                     />
                   </View>
-                  <CustomTextInput
-                    icon={ICON_MAIL}
-                    placeholder={"Email"}
-                    keyboardType={"email-address"}
-                    autoCapitalize="none"
-                    onChangeText={text => this.setState({ email: text })}
+                  <View style={styles.tosContainer}>
+                    <Text style={styles.caption}>{strings.byRegister}</Text>
+                    <Text style={styles.tos}>
+                    {strings.byTos}
+                    </Text>
+                  </View>
+                  <FixedButton
+                    isLoading={this.state.isLoading}
+                    label={strings.register}
+                    backgroundColor={
+                      email.length > 0 &&
+                      password.length > 0 &&
+                      phone.length > 0 &&
+                      name.length > 0
+                        ? metrics.SECONDARY_COLOR
+                        : metrics.INACTIVE_COLOR
+                    }
+                    onPress={this.handleRegisterButtonPressed(context.register)}
                   />
-                  <CustomTextInput
-                    icon={ICON_KEY}
-                    placeholder={"Password"}
-                    secureTextEntry={true}
-                    onChangeText={text => this.setState({ password: text })}
-                  />
-                </View>
-                <View style={styles.tosContainer}>
-                  <Text style={styles.caption}>By registering I agree to the</Text>
-                  <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
-                </View>
-                <FixedButton
-                  isLoading={this.state.isLoading}
-                  label={"REGISTER"}
-                  backgroundColor={
-                    email.length > 0 &&
-                    password.length > 0 &&
-                    phone.length > 0 &&
-                    name.length > 0
-                      ? metrics.SECONDARY_COLOR
-                      : metrics.INACTIVE_COLOR
-                  }
-                  onPress={this.handleRegisterButtonPressed(context.register)}
-                />
                 </Animated.View>
               </View>
             </TouchableWithoutFeedback>

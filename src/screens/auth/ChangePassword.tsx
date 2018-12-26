@@ -6,7 +6,8 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
-  ImageStyle
+  ImageStyle,
+  AsyncStorage
 } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
@@ -14,6 +15,8 @@ import { NavigationStackScreenOptions, NavigationScreenProp } from "react-naviga
 import Text from "../../components/CustomText"
 import CustomTextInput from "../../components/CustomTextInput"
 import FixedButton from "../../components/FixedButton"
+import strings from "../../components/language"
+
 
 // Configs
 import metrics from "../../config/metrics"
@@ -55,6 +58,16 @@ export default class ChangePassword extends React.Component {
       )
     }
   }
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+  }
 
   render() {
     return (
@@ -62,20 +75,20 @@ export default class ChangePassword extends React.Component {
         <View style={styles.container}>
           <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
           <Image source={LOGO} style={styles.logo as ImageStyle} />
-          <Text style={styles.title}>CHANGE PASSWORD</Text>
+          <Text style={styles.title}>{strings.forgotPassTitle}</Text>
           <View style={styles.formContainer}>
             <CustomTextInput
               icon={ICON_KEY}
-              placeholder={"New password"}
+              placeholder={strings.forgotPassNew}
               secureTextEntry={true}
             />
             <CustomTextInput
               icon={ICON_KEY}
-              placeholder={"Verify password"}
+              placeholder={strings.forgotPassVerify}
               secureTextEntry={true}
             />
           </View>
-          <FixedButton backgroundColor={metrics.SECONDARY_COLOR} label={"CHANGE"} />
+          <FixedButton backgroundColor={metrics.SECONDARY_COLOR} label={strings.forgotPassChange} />
         </View>
       </TouchableWithoutFeedback>
     )

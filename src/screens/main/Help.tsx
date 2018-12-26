@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image, ScrollView } from "react-native"
+import { View, StyleSheet, Image, ScrollView, AsyncStorage } from "react-native"
 
 import Text from "../../components/CustomText"
 import HeaderOverlay from "../../components/HeaderOverlay"
@@ -7,6 +7,8 @@ import { NavigationTabScreenOptions } from "react-navigation"
 import metrics from "../../config/metrics"
 import SearchBar from "../../components/SearchBar"
 import HelpItem from "../../components/HelpItem"
+import strings from "../../components/language"
+
 
 const ICON_ACTIVE = require("../../../assets/ic_help_active.png")
 const ICON_INACTIVE = require("../../../assets/ic_help_inactive.png")
@@ -23,7 +25,7 @@ export default class Help extends React.Component<any, State> {
   // Tab bar configs
   static navigationOptions: NavigationTabScreenOptions = {
     // Tab title
-    title: "Help",
+    title: strings.helpTab,
     // Tab icon according to the focused state of the tab
     tabBarIcon: ({ focused }) => {
       switch (focused) {
@@ -46,6 +48,18 @@ export default class Help extends React.Component<any, State> {
       }
     }
   }
+
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+  }
+
 
   render() {
     return (

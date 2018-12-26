@@ -1,3 +1,4 @@
+
 interface User {
   id: number
   name: string
@@ -15,7 +16,8 @@ interface LoginResponse {
   success: boolean
   message: string
   token: string
-  customer: User
+  customer: User,
+  language: string
 }
 
 interface UserContext extends LoginResponse {
@@ -23,6 +25,7 @@ interface UserContext extends LoginResponse {
   login: Function
   otp: Function
   register: Function
+  changeLanguage: Function
 }
 
 interface RegisterResponse {

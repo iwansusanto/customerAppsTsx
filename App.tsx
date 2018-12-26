@@ -1,5 +1,5 @@
 import React from "react"
-import { TouchableOpacity } from "react-native"
+import { TouchableOpacity, AsyncStorage } from "react-native"
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -7,6 +7,8 @@ import {
   NavigationScreenProp
 } from "react-navigation"
 import { MenuProvider } from "react-native-popup-menu"
+import strings from "./src/components/language"
+
 
 // Temporary name for entry point
 import AppW from "./src/screens/App"
@@ -71,6 +73,19 @@ import CartContextProvider from "./src/components/providers/CartContextProvider"
 import OrderContextProvider from "./src/components/providers/OrderContextProvider"
 
 export default class App extends React.Component<any, any> {
+  constructor(props){
+    super(props)
+  }
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+  }
   render() {
     return (
       <MenuProvider>
@@ -105,7 +120,7 @@ const Main = createBottomTabNavigator(
     Account: {
       screen: Account,
       navigationOptions: {
-        title: "Account",
+        title: strings.accountTab,
         tabBarIcon: ({ focused }: { focused: boolean }) => {
           switch (focused) {
             case true:

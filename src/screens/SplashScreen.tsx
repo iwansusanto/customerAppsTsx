@@ -18,12 +18,13 @@ interface Props {
 class SplashScreen extends Component<Props, any> {
   async componentDidMount() {
     const dataJSONString = await AsyncStorage.getItem("user")
-    if (dataJSONString !== null) {
+    const dataLanguage = await AsyncStorage.getItem('language')
+    if (dataJSONString !== null && dataLanguage !== null) {
       const data = JSON.parse(dataJSONString)
 
       if (data !== null) {
         await this.props.user.changeUser(data)
-        console.log(this.props.user)
+        console.log('hello', this.props.user)
         this.props.navigation.replace("Home")
       } else {
         this.props.navigation.replace("Welcome")
@@ -34,6 +35,7 @@ class SplashScreen extends Component<Props, any> {
   }
 
   render() {
+    console.log('tes token')
     return (
       <View style={styles.container}>
         <Image source={LOGO} />
