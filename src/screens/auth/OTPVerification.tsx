@@ -7,7 +7,8 @@ import {
   Keyboard,
   TextInput,
   ImageStyle,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  AsyncStorage
 } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
@@ -15,6 +16,8 @@ import { NavigationStackScreenOptions, NavigationScreenProp } from "react-naviga
 import Text from "../../components/CustomText"
 import SingleNumberInput from "../../components/SingleNumberInput"
 import FixedButton from "../../components/FixedButton"
+import strings from "../../components/language"
+
 
 import UserContext from "../../contexts/UserContext"
 
@@ -60,6 +63,17 @@ export default class OTPVerification extends React.Component<Props, State> {
     }
   }
 
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+  }
+
   handleOtpType = (text: string) => {
     this.setState({ otp: text })
   }
@@ -96,8 +110,8 @@ export default class OTPVerification extends React.Component<Props, State> {
               <View style={styles.container}>
                 <Image source={LOGO} style={styles.logo as ImageStyle} />
                 <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
-                <Text style={styles.caption}>Email verification has been sent</Text>
-                <Text style={[styles.caption, { marginTop: 5 }]}>to your email</Text>
+                <Text style={styles.caption}>{strings.otpTitle}</Text>
+                <Text style={[styles.caption, { marginTop: 5 }]}>{strings.otpInfo}</Text>
                 <TextInput
                   style={{ height: 0 }}
                   ref={this.hiddenInputRef}
@@ -107,7 +121,7 @@ export default class OTPVerification extends React.Component<Props, State> {
                   maxLength={4}
                 />
                 {/* <Text style={styles.email}>{this.props.navigation.getParam("email")}</Text> */}
-                <Text style={styles.code}>ENTER CODE</Text>
+                <Text style={styles.code}>{strings.otpEnterCode}</Text>
                 <View style={styles.codeInputContainer}>
                   <SingleNumberInput
                     value={this.state.otp[0]}
@@ -130,7 +144,7 @@ export default class OTPVerification extends React.Component<Props, State> {
               <Text style={styles.changeNumber}>CHANGE NUMBER</Text> */}
                 <FixedButton
                   isLoading={this.state.isLoading}
-                  label={"LOGIN"}
+                  label={strings.login}
                   backgroundColor={
                     this.state.otp.length === 4
                       ? metrics.SECONDARY_COLOR
@@ -139,8 +153,8 @@ export default class OTPVerification extends React.Component<Props, State> {
                   onPress={this.handleLoginButtonPressed(context.otp)}
                 />
                 <View style={styles.tosContainer}>
-                  <Text style={styles.caption}>By registering I agree to the</Text>
-                  <Text style={styles.tos}>Terms of Service and Privacy Policy</Text>
+                  <Text style={styles.caption}>{strings.byRegister}</Text>
+                  <Text style={styles.tos}>{strings.byTos}</Text>
                 </View>
               </View>
             </TouchableWithoutFeedback>

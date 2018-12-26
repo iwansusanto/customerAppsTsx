@@ -25,6 +25,7 @@ interface UserContext extends LoginResponse {
   login: Function
   otp: Function
   register: Function
+  changeLanguage: Function
 }
 
 interface RegisterResponse {
@@ -303,7 +304,8 @@ interface CartContext {
     quantity: number,
     id: number,
     additional: number[] | null,
-    notes: string
+    notes: string,
+    change: boolean
   ) => Promise<boolean>
   deleteCart: (id: number) => Promise<boolean>
   updateCart: (quantity: number, id: number) => Promise<boolean>

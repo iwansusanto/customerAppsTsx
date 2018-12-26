@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image, FlatList } from "react-native"
+import { View, StyleSheet, Image, FlatList, AsyncStorage } from "react-native"
 import moment from "moment"
 
 import Text from "../../components/CustomText"
@@ -8,6 +8,7 @@ import metrics from "../../config/metrics"
 import OrderItem from "../../components/OrderItem"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import api from "../../api"
+import strings from "../../components/language"
 
 const ICON_ACTIVE = require("../../../assets/ic_order_active.png")
 const ICON_INACTIVE = require("../../../assets/ic_order_inactive.png")
@@ -19,7 +20,7 @@ interface State {
 
 export default class Orders extends React.Component<any, State> {
   static navigationOptions: NavigationTabScreenOptions = {
-    title: "Orders",
+    title: strings.ordersTab,
     tabBarIcon: ({ focused }) => {
       switch (focused) {
         case true:
@@ -53,13 +54,26 @@ export default class Orders extends React.Component<any, State> {
     console.log(data)
     this.setState({ data: data, isDataLoading: false })
   }
+  _onSetLanguage = async () => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+  }
 
   render() {
+    console.log('data', this.state.data)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.title}>Orders</Text>
-        <Text style={styles.subtitle}>You haven't order anything</Text>
+        <Text style={styles.title}>{strings.ordersTitle}</Text>
+        <Text style={styles.subtitle}>
+          {this.state.data.length === 0 ? strings.ordersEmpty : strings.ordersList}
+        </Text>
         <FlatList
           data={this.state.data}
           renderItem={({ item }: { item: any }) => {
@@ -105,5 +119,5 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     color: "white",
     marginTop: 20
-  },
+  }
 })

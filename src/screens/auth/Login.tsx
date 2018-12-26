@@ -8,7 +8,8 @@ import {
   Keyboard,
   ImageStyle,
   KeyboardAvoidingView,
-  Alert
+  Alert,
+  AsyncStorage
 } from "react-native"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 
@@ -19,6 +20,8 @@ import CustomTextInput from "../../components/CustomTextInput"
 import FixedButton from "../../components/FixedButton"
 
 import UserContext from "../../contexts/UserContext"
+import strings from "../../components/language"
+
 
 // Configs
 import metrics from "../../config/metrics"
@@ -88,6 +91,17 @@ class Login extends React.Component<Props, State> {
     this.handleForgetPasswordPressed = this.handleForgetPasswordPressed.bind(this)
   }
 
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+  }
+
   // Login button press handler
   handleLoginButtonPressed = (login: Function) => async () => {
     if (this.state.isLoading) return
@@ -136,33 +150,33 @@ class Login extends React.Component<Props, State> {
                 />
                 <View style={styles.welcomeMessageContainer}>
                   <Text style={[styles.welcomeMessage, { fontSize: 18 }]}>
-                    ENTER YOUR ACCOUNT
+                    {strings.loginTitle}
                   </Text>
                   <Text style={[styles.welcomeMessage, { fontSize: 16 }]}>
-                    LET US DO THE REST
+                    {strings.loginTagline}
                   </Text>
                 </View>
                 <View style={styles.formContainer}>
                   <CustomTextInput
                     icon={ICON_MAIL}
-                    placeholder={"Email"}
+                    placeholder={strings.loginEmail}
                     keyboardType={"email-address"}
                     autoCapitalize="none"
                     onChangeText={text => this.setState({ email: text })}
                   />
                   <CustomTextInput
                     icon={ICON_KEY}
-                    placeholder={"Password"}
+                    placeholder={strings.loginPassword}
                     secureTextEntry={true}
                     onChangeText={text => this.setState({ password: text })}
                   />
                   <Text style={styles.forgot} onPress={this.handleForgetPasswordPressed}>
-                    FORGOT PASSWORD
+                    {strings.loginForgotPass}
                   </Text>
                 </View>
                 <FixedButton
                   isLoading={this.state.isLoading}
-                  label={"LOGIN"}
+                  label={strings.login}
                   backgroundColor={
                     this.state.email.length > 0 && this.state.password.length > 0
                       ? metrics.SECONDARY_COLOR

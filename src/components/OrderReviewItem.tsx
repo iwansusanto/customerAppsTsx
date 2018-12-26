@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native"
+import { View, StyleSheet, Image, TouchableOpacity, ImageStyle } from "react-native"
 
 import Text from "./CustomText"
 import metrics from "../config/metrics"
@@ -8,6 +8,7 @@ import metrics from "../config/metrics"
 const ICON_DELETE = require("../../assets/ic_delete.png")
 
 interface Props {
+  image: string
   name: string
   price: string
   quantity: number
@@ -73,6 +74,10 @@ const styles = StyleSheet.create({
     width: metrics.DEVICE_WIDTH * 0.7,
     padding: 20,
     marginHorizontal: 10
+  },
+
+  picture: {
+    flex: 1
   },
 
   foodTitle: {

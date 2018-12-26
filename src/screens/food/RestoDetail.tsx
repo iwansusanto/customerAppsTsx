@@ -52,7 +52,7 @@ class RestoDetail extends Component<Props, State> {
     menus: {
       "Fetching Menu": LoadingMenu
     },
-    isLoading: true
+    isLoading: true,
   }
 
   public async componentWillMount() {
@@ -93,7 +93,11 @@ class RestoDetail extends Component<Props, State> {
       tabBarComponent: ({ navigation }) => (
         <TopTab
           navigation={navigation}
-          address={this.props.search.resto.merchant ? this.props.search.resto.merchant.address : ''}
+          address={
+            this.props.search.resto.merchant
+              ? this.props.search.resto.merchant.address
+              : ""
+          }
           open={opens}
           isOpen={
             this.props.search.resto.merchant &&
