@@ -12,13 +12,13 @@ class API {
 
     client.interceptors.request.use(function(config) {
       if(config.method === 'post') {
-        config.data = {...config.data, lang: 'ar'}  
-        client.defaults.headers.common['Lang'] = 'ar'
+        // config.data = {...config.data, lang: 'ar'}  
+        client.defaults.headers.common['lang'] = 'ar'
       }
-      console.log('config interceptor :', config)
+      // console.log('config interceptor :', config)
       return config
     }, function(error) {
-      console.log('ERROR interceptor :', error)
+      // console.log('ERROR interceptor :', error)
       return Promise.reject(error);
     })
 
@@ -28,10 +28,6 @@ class API {
   changeToken(token: string) {
     console.log('token', token)
     this.client.defaults.headers.common['Token'] = token
-  }
-  changeLanguage(language: string) {
-    console.log('language', language)
-    this.client.defaults.headers.common['Language'] = language
   }
 
 }
