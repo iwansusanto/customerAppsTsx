@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios"
 import { lang } from "moment";
+import { AsyncStorage } from "react-native";
 
 class API {
   client: AxiosInstance
@@ -10,10 +11,12 @@ class API {
       headers: { "Content-Type": "application/json" }
     })
 
-    client.interceptors.request.use(function(config) {
-      if(config.method === 'post') {
-        // config.data = {...config.data, lang: 'ar'}  
-        client.defaults.headers.common['lang'] = 'ar'
+    client.interceptors.request.use(async function(config) {
+      if(config.method === 'post' || config.method === 'get') {
+        // config.data = {...config.data, lang: 'ar'}
+        const storage = await AsyncStorage.getItem('language')
+        console.log('tes oke',storage)
+        client.defaults.headers.common['lang'] = storage
       }
       // console.log('config interceptor :', config)
       return config
