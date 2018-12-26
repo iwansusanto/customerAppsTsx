@@ -80,7 +80,7 @@ export default class Language extends React.Component<any, languageState> {
   componentDidMount() {
     this.state.radioItems.map(item => {
       if (item.selected == true) {
-        this.setState({ selectedItem: item.label })
+        this.setState({ selectedItem: item.lang })
       }
     })
   }
@@ -100,14 +100,16 @@ export default class Language extends React.Component<any, languageState> {
       this.setState({ selectedItem: this.state.radioItems[index].lang })
     })
 
+
     const data = await this.state.selectedItem
     await AsyncStorage.setItem("language", data)
+    await this.props.navigation.navigate('SplashScreen')
 
-    console.log("PROPS", data)
+    console.log("PROPS", data, index)
   }
 
   render() {
-    console.log("state lang", this.state.radioItems[1].label)
+    console.log("state lang", this.state.radioItems[1].selected)
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>

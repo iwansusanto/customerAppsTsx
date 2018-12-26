@@ -18,7 +18,8 @@ interface Props {
 class SplashScreen extends Component<Props, any> {
   async componentDidMount() {
     const dataJSONString = await AsyncStorage.getItem("user")
-    if (dataJSONString !== null) {
+    const dataLanguage = await AsyncStorage.getItem('language')
+    if (dataJSONString !== null && dataLanguage !== null) {
       const data = JSON.parse(dataJSONString)
 
       if (data !== null) {
