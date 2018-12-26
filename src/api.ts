@@ -29,6 +29,13 @@ class API {
     console.log('token', token)
     this.client.defaults.headers.common['Token'] = token
   }
+<<<<<<< HEAD
+  changeLanguage(language: string) {
+    console.log('language', language)
+    this.client.defaults.headers.common['Language'] = language
+  }
+=======
+>>>>>>> 9cdc674024aae1f09dc91f199956dec9de38d341
 
 }
 
