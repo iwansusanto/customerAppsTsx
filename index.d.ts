@@ -25,6 +25,7 @@ interface UserContext extends LoginResponse {
   login: Function
   otp: Function
   register: Function
+  changeLanguage: Function
 }
 
 interface RegisterResponse {

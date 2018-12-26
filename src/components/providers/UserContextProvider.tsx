@@ -90,6 +90,13 @@ export default class UserContextProvider extends Component<{}, LoginResponse> {
     }
   }
 
+  changeLanguage = async(data: LoginResponse) => {
+    const lang = await AsyncStorage.getItem("language")
+    await this.setState({
+      language: lang
+    })
+  }
+
   public render() {
     return (
       <UserContext.Provider
@@ -98,7 +105,8 @@ export default class UserContextProvider extends Component<{}, LoginResponse> {
           changeUser: this.changeUser,
           login: this.login,
           otp: this.otp,
-          register: this.register
+          register: this.register,
+          changeLanguage: this.changeLanguage
         }}
       >
         {this.props.children}

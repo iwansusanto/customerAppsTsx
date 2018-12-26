@@ -10,8 +10,8 @@ import {
   AsyncStorage
 } from "react-native"
 import Icon from "react-native-vector-icons/MaterialIcons"
-
-import { NavigationStackScreenOptions } from "react-navigation"
+import withUserContext from "../../components/consumers/withUserContext"
+import { NavigationScreenProp, NavigationStackScreenOptions } from "react-navigation"
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -38,11 +38,16 @@ interface languageState {
   selectedItem: string
 }
 
-export default class Language extends React.Component<any, languageState> {
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+  user: UserContext
+}
+
+class Language extends React.Component<Props, languageState> {
   static navigationOptions: NavigationStackScreenOptions = {
     title: "Language Setting"
   }
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       radioItems: [
@@ -66,34 +71,38 @@ export default class Language extends React.Component<any, languageState> {
           lang: "ar"
         }
       ],
-      selectedItem: ""
+      selectedItem: "en"
     }
   }
 
-  componentWillMount = async () => {
-    const languageStorage = await AsyncStorage.getItem("language")
-
-    console.log("language store", languageStorage)
-    return languageStorage
+  shouldComponentUpdate(nextProps, nextState) {
+    if(this.props.user.language !== this.state.selectedItem || this.props.user.language !== nextProps.user.language) {
+      this.state.radioItems.map((item, key) => {
+        if(nextProps.user.language === item.lang) {
+          this.state.radioItems[key].selected = true
+          this.setState({
+            selectedItem: item.lang
+          })
+        } else {
+          this.state.radioItems[key].selected = false
+        }
+      })
+      return true
+    }
+      
+    return false
   }
 
-  componentDidMount() {
-    this.state.radioItems.map(item => {
-      if (item.selected == true) {
-        this.setState({ selectedItem: item.label })
-      }
-    })
+  async componentDidMount() {
+    const languageStorage = await AsyncStorage.getItem("language")
+    await this.props.user.changeLanguage(languageStorage)
   }
 
   async changeActiveRadioButton(index) {
+    console.log('changeActiveRadioButton:', index)
     await this.state.radioItems.map(item => {
       item.selected = false
     })
-
-    // this.state.radioItems[index].selected = true;
-    // this.setState({ radioItems: this.state.radioItems }, () => {
-    //   this.setState({ selectedItem: this.state.radioItems[index].label });
-    // })
 
     this.state.radioItems[index].selected = true
     await this.setState({ radioItems: this.state.radioItems }, () => {
@@ -102,12 +111,11 @@ export default class Language extends React.Component<any, languageState> {
 
     const data = await this.state.selectedItem
     await AsyncStorage.setItem("language", data)
-
-    console.log("PROPS", data)
+    await this.props.user.changeLanguage(this.state.radioItems[index].lang)
   }
 
   render() {
-    console.log("state lang", this.state.radioItems[1].label)
+    console.log('State :', this.state)
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
@@ -156,81 +164,83 @@ export default class Language extends React.Component<any, languageState> {
                     marginTop: 12
                   }}
                 >
-                  {this.state.radioItems.map((item, key) => (
-                    <TouchableOpacity
-                      onPress={this.changeActiveRadioButton.bind(this, key)}
-                      activeOpacity={0.8}
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                      key={key}
-                    >
-                      <View
+                  {this.state.radioItems.map((item, key) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={this.changeActiveRadioButton.bind(this, key)}
+                        activeOpacity={0.8}
                         style={{
-                          width: 341,
                           flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center"
+                          alignItems: "center",
+                          justifyContent: "center"
                         }}
+                        key={key}
                       >
                         <View
                           style={{
-                            width: "20%",
-                            alignSelf: "center",
-                            alignItems: "center",
-                            justifyContent: "center"
-                          }}
-                        >
-                          {item.selected ? (
-                            <Icon
-                              type={"MaterialIcons"}
-                              name={"check"}
-                              style={{ fontSize: 20, color: "#660099ff" }}
-                            />
-                          ) : null}
-                        </View>
-                        <View
-                          style={{
-                            width: "65%",
+                            width: 341,
                             flexDirection: "row",
-                            borderBottomWidth: 1,
-                            borderBottomColor: "rgba(151, 151, 151, 0.12)",
-                            marginRight: "15%",
-                            alignItems: "center",
-                            justifyContent: "flex-start",
-                            paddingVertical: 12
+                            justifyContent: "center",
+                            alignItems: "center"
                           }}
                         >
-                          <View style={{ width: "20%" }}>
-                            <Image
-                              source={item.imagePath}
-                              style={{
-                                width: item.width,
-                                height: item.height
-                              }}
-                              sizeMode={"contain"}
-                            />
+                          <View
+                            style={{
+                              width: "20%",
+                              alignSelf: "center",
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }}
+                          >
+                            {item.selected ? (
+                              <Icon
+                                type={"MaterialIcons"}
+                                name={"check"}
+                                style={{ fontSize: 20, color: "#660099ff" }}
+                              />
+                            ) : null}
                           </View>
-                          <View style={{ width: "65%", alignSelf: "center" }}>
-                            <Text
-                              style={[
-                                {
-                                  fontSize: 16,
-                                  marginLeft: 10,
-                                  fontWeight: "bold"
-                                },
-                                { color: item.color }
-                              ]}
-                            >
-                              {item.label}
-                            </Text>
+                          <View
+                            style={{
+                              width: "65%",
+                              flexDirection: "row",
+                              borderBottomWidth: 1,
+                              borderBottomColor: "rgba(151, 151, 151, 0.12)",
+                              marginRight: "15%",
+                              alignItems: "center",
+                              justifyContent: "flex-start",
+                              paddingVertical: 12
+                            }}
+                          >
+                            <View style={{ width: "20%" }}>
+                              <Image
+                                source={item.imagePath}
+                                style={{
+                                  width: item.width,
+                                  height: item.height
+                                }}
+                                sizeMode={"contain"}
+                              />
+                            </View>
+                            <View style={{ width: "65%", alignSelf: "center" }}>
+                              <Text
+                                style={[
+                                  {
+                                    fontSize: 16,
+                                    marginLeft: 10,
+                                    fontWeight: "bold"
+                                  },
+                                  { color: item.color }
+                                ]}
+                              >
+                                {item.label}
+                              </Text>
+                            </View>
                           </View>
                         </View>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
+                      </TouchableOpacity>
+                    )
+                  })}
                 </View>
               </View>
             </View>
@@ -248,3 +258,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   }
 })
+
+
+export default withUserContext(Language)
