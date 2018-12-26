@@ -109,13 +109,14 @@ class Language extends React.Component<Props, languageState> {
       this.setState({ selectedItem: this.state.radioItems[index].lang })
     })
 
+
     const data = await this.state.selectedItem
     await AsyncStorage.setItem("language", data)
     await this.props.user.changeLanguage(this.state.radioItems[index].lang)
+    await this.props.navigation.navigate('SplashScreen')
   }
 
   render() {
-    console.log('State :', this.state)
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
