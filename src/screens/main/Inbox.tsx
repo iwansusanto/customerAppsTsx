@@ -2,12 +2,13 @@ import React from "react"
 import { View, StyleSheet, Image, FlatList, AsyncStorage } from "react-native"
 
 import Text from "../../components/CustomText"
-import { NavigationTabScreenOptions } from "react-navigation"
+import { NavigationTabScreenOptions, NavigationScreenProp, NavigationStackScreenOptions } from "react-navigation"
 import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import InboxItem from "../../components/InboxItem"
 import withInboxContext from "../../components/consumers/withInboxContext";
 import strings from "../../components/language"
+import withUserContext from "../../components/consumers/withUserContext";
 
 
 const ICON_ACTIVE = require("../../../assets/ic_mail_active.png")
@@ -15,29 +16,79 @@ const ICON_INACTIVE = require("../../../assets/ic_mail_inactive.png")
 
 interface Props {
   inbox: InboxContext
+  user: UserContext
 }
 
-class Inbox extends React.Component<Props> {
-  static navigationOptions: NavigationTabScreenOptions = {
-    title: strings.inboxTab,
-    tabBarIcon: ({ focused }) => {
-      switch (focused) {
-        case true:
-          return (
-            <Image
-              source={ICON_ACTIVE}
-              resizeMode={"contain"}
-              style={metrics.TAB_BAR_ICON_STYLE}
-            />
-          )
-        case false:
-          return (
-            <Image
-              source={ICON_INACTIVE}
-              resizeMode={"contain"}
-              style={metrics.TAB_BAR_ICON_STYLE}
-            />
-          )
+interface State {
+  title: string
+}
+
+class Inbox extends React.Component<Props, State> {
+  
+  // static navigationOptions: NavigationTabScreenOptions = {
+  //   // title: strings.inboxTab,
+  //   tabBarLabel: () => {
+  //     console.log('props.user',Props)
+  //     return (
+  //       <Text>{this.props.user}</Text>
+  //     )
+  //   },
+  //   tabBarIcon: ({ focused }) => {
+  //     switch (focused) {
+  //       case true:
+  //         return (
+  //           <Image
+  //             source={ICON_ACTIVE}
+  //             resizeMode={"contain"}
+  //             style={metrics.TAB_BAR_ICON_STYLE}
+  //           />
+  //         )
+  //       case false:
+  //         return (
+  //           <Image
+  //             source={ICON_INACTIVE}
+  //             resizeMode={"contain"}
+  //             style={metrics.TAB_BAR_ICON_STYLE}
+  //           />
+  //         )
+  //     }
+  //   }
+  // }
+  static navigationOptions = ({
+    // Navigation variable to be able to call navigation-related functions in the header
+    navigation
+  }: {
+    // Navigation variable type
+    navigation: NavigationScreenProp<any, any>
+  }): NavigationTabScreenOptions => {
+    // Destructuring functions inside navigation object for easy use
+    const { navigate, goBack } = navigation
+    return {
+      // title: navigation.state.params.header,
+      tabBarLabel: (props) => {
+        return (
+          <Text>{strings.inboxTab}</Text>
+        )
+      },
+      tabBarIcon: ({ focused }) => {
+        switch (focused) {
+          case true:
+            return (
+              <Image
+                source={ICON_ACTIVE}
+                resizeMode={"contain"}
+                style={metrics.TAB_BAR_ICON_STYLE}
+              />
+            )
+          case false:
+            return (
+              <Image
+                source={ICON_INACTIVE}
+                resizeMode={"contain"}
+                style={metrics.TAB_BAR_ICON_STYLE}
+              />
+            )
+        }
       }
     }
   }
@@ -110,4 +161,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withInboxContext(Inbox)
+export default withUserContext(withInboxContext(Inbox))
