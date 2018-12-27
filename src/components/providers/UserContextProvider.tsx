@@ -92,9 +92,10 @@ export default class UserContextProvider extends Component<{}, LoginResponse> {
 
   changeLanguage = async(data: LoginResponse) => {
     const lang = await AsyncStorage.getItem("language")
-    await this.setState({
-      language: lang
-    })
+    const dataUser = await AsyncStorage.getItem("user")
+    let updateUser = await {...JSON.parse(dataUser), language: lang}
+    await AsyncStorage.setItem("user", JSON.stringify(updateUser))
+    await this.setState({language: lang})
   }
 
   public render() {
