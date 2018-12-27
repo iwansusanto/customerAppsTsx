@@ -23,7 +23,7 @@ export default class SuggestionContextProvider extends Component<{}, State> {
       const { data } = await api.client.post<CategoryResponse>("/v2/suggestion", {
         parent_id: suggestId
       })
-      console.log(suggestId, data)
+      // console.log(suggestId, data)
       this.setState({ suggestions: data.data, currentId: suggestId })
     } catch (err) {
       console.log(err.response.data)

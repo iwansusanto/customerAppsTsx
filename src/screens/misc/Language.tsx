@@ -12,15 +12,6 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons"
 import withUserContext from "../../components/consumers/withUserContext"
 import { NavigationScreenProp, NavigationStackScreenOptions } from "react-navigation"
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen"
-import {
-  percentageWidth as w,
-  percentageHeight as h,
-  isIphoneX
-} from "../../components/Layout"
 
 // const TOS_HTML = require("../../../assets/privacy.html")
 interface radioItems {
