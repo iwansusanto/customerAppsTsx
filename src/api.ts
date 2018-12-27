@@ -13,12 +13,14 @@ class API {
 
     client.interceptors.request.use(async function(config) {
       if(config.method === 'post' || config.method === 'get') {
-        // config.data = {...config.data, lang: 'ar'}
-        const storage = await AsyncStorage.getItem('language')
-        client.defaults.headers.common['lang'] = storage
+        const lang = await AsyncStorage.getItem('language')
+        // client.defaults.headers.common['lang'] = lang
+        // config.data = {...config.data, lang}
+        config.headers = {...config.headers, lang}
       }
       console.log('config interceptor :', config)
-      return config
+      
+      return Promise.resolve(config)
     }, function(error) {
       // console.log('ERROR interceptor :', error)
       return Promise.reject(error);

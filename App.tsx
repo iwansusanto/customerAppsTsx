@@ -79,7 +79,6 @@ export default class App extends React.Component<any, any> {
   _onSetLanguage = async() => {
     const languageStore = await AsyncStorage.getItem("language")
     const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
     return language
   }
 
