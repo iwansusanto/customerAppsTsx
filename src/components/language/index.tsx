@@ -111,7 +111,7 @@ let strings = new LocalizedStrings({
     accountTos: 'Terms of Service',
     accountPrivacyPolicy: 'Privacy Policy',
     accountLogout: 'Logout',
-    accountChangeLanguage: 'Change language'
+    accountChangeLanguage: 'Change language',
 
 
 
@@ -172,7 +172,7 @@ let strings = new LocalizedStrings({
     accountTos: 'شروط الخدمة',
     accountPrivacyPolicy: 'سياسة الخصوصية',
     accountLogout: 'تسجيل خروج',
-    accountChangeLanguage: 'غير اللغة'
+    accountChangeLanguage: 'غير اللغة',
 
 
 
