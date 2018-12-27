@@ -1,5 +1,5 @@
 import React from "react"
-import { TouchableOpacity, AsyncStorage } from "react-native"
+import { TouchableOpacity, AsyncStorage, Text } from "react-native"
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -61,6 +61,8 @@ const LOGO = require("./assets/logo-higres.png")
 const ICON_HEART = require("./assets/ic_heart.png")
 const ICON_ACCOUNT_ACTIVE = require("./assets/ic_account_active.png")
 const ICON_ACCOUNT_INACTIVE = require("./assets/ic_account_inactive.png")
+const ICON_MAIL_ACTIVE = require("./assets/ic_mail_active.png")
+const ICON_MAIL_INACTIVE = require("./assets/ic_mail_inactive.png")
 
 // Provider
 import UserContextProvider from "./src/components/providers/UserContextProvider"
@@ -115,29 +117,68 @@ const Main = createBottomTabNavigator(
     Home: { screen: Home },
     Orders: { screen: Orders },
     Help: { screen: Help },
-    Inbox: { screen: Inbox },
+    Inbox: { 
+      screen: Inbox,
+      navigationOptions: ({
+        navigation
+      }: {
+        navigation: NavigationScreenProp<any, any>
+      }) => {
+        const { state } = navigation
+        return  {
+          tabBarLabel: state.params.inbox,
+          tabBarIcon: ({ focused }) => {
+            switch (focused) {
+              case true:
+                return (
+                  <Image
+                    source={ICON_MAIL_ACTIVE}
+                    resizeMode={"contain"}
+                    style={metrics.TAB_BAR_ICON_STYLE}
+                  />
+                )
+              case false:
+                return (
+                  <Image
+                    source={ICON_MAIL_INACTIVE}
+                    resizeMode={"contain"}
+                    style={metrics.TAB_BAR_ICON_STYLE}
+                  />
+                )
+            }
+          }
+        }
+      }
+     },
     Account: {
       screen: Account,
-      navigationOptions: {
-        title: strings.accountTab,
-        tabBarIcon: ({ focused }: { focused: boolean }) => {
-          switch (focused) {
-            case true:
-              return (
-                <Image
-                  source={ICON_ACCOUNT_ACTIVE}
-                  style={metrics.TAB_BAR_ICON_STYLE}
-                  resizeMode={"contain"}
-                />
-              )
-            case false:
-              return (
-                <Image
-                  source={ICON_ACCOUNT_INACTIVE}
-                  style={metrics.TAB_BAR_ICON_STYLE}
-                  resizeMode={"contain"}
-                />
-              )
+      navigationOptions: ({
+        navigation
+      }: {
+        navigation: NavigationScreenProp<any, any>
+      }) => {
+        const { state } = navigation
+        return  {
+          tabBarLabel: state.params.account,
+          tabBarIcon: ({ focused }) => {
+            switch (focused) {
+              case true:
+                return (
+                  <Image
+                    source={ICON_ACCOUNT_ACTIVE}
+                    style={metrics.TAB_BAR_ICON_STYLE}
+                    resizeMode={"contain"}
+                  />
+                )
+              case false:
+                return (
+                  <Image
+                    source={ICON_ACCOUNT_INACTIVE}
+                    style={metrics.TAB_BAR_ICON_STYLE}
+                    resizeMode={"contain"}
+                  />
+                )
+            }
           }
         }
       }
