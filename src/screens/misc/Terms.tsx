@@ -1,24 +1,43 @@
 import React from "react"
-import { ScrollView, StyleSheet, WebView, View, ActivityIndicator } from "react-native"
+import { ScrollView, StyleSheet, WebView, AsyncStorage, View, ActivityIndicator } from "react-native"
 
 import Text from "../../components/CustomText"
-import { NavigationStackScreenOptions } from "react-navigation"
+import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+import strings from "../../components/language"
 import metrics from "../../config/metrics";
 
+
 const TOS_HTML = require("../../../assets/tos.html")
+
+interface Props {
+  navigation: NavigationScreenProp<any, any>
+}
 
 interface State {
   loading: boolean
 }
 
-export default class Terms extends React.Component<any, State> {
-  
+
+export default class Terms extends React.Component<Props, State> {
+
   state = {
     loading: true
   }
+  
+  static navigationOptions =(): NavigationStackScreenOptions => ({
+    title: strings.accountTos
+  })
 
-  static navigationOptions: NavigationStackScreenOptions = {
-    title: "Mshwar Terms and Conditions"
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+  componentWillMount = () => {
+    this._onSetLanguage()
+    this.props.navigation.setParams({})
   }
 
   render() {
