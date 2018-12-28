@@ -6,7 +6,7 @@ import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import InboxItem from "../../components/InboxItem"
 import withInboxContext from "../../components/consumers/withInboxContext";
-import strings from "../../components/language"
+import Lang from '../../components/Lang'
 
 interface Props {
   inbox: InboxContext
@@ -34,21 +34,12 @@ class Inbox extends React.Component<Props, State> {
     }
   }
 
-  _onSetLanguage = async() => {
-    const languageStore = await AsyncStorage.getItem("language")
-    return await strings.setLanguage(languageStore)
-  }
-
-  componentWillMount = () => {
-    this._onSetLanguage()
-  }
-
   render() {
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.title}>{strings.inboxTitle}</Text>
-        <Text style={styles.subtitle}>{strings.inboxInfo}</Text>
+        <Lang styleLang={styles.title} language='inboxTitle'></Lang>
+        <Lang styleLang={styles.subtitle} language='inboxInfo'></Lang>
         <FlatList
           data={this.props.inbox.inboxs}
           keyExtractor={item => item.id.toString()}

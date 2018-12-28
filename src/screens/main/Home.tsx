@@ -20,8 +20,8 @@ import Geocoder from "react-native-geocoder"
 // Custom component used in the screen
 import HeaderOverlay from "../../components/HeaderOverlay"
 import SearchBar from "../../components/SearchBar"
-import strings from "../../components/language"
-import LanguageComponent from '../../components/LanguageComponent'
+import strings from "../../components/language/index"
+import Lang from '../../components/Lang'
 
 
 // Configs
@@ -105,7 +105,6 @@ class Home extends React.Component<Props, State> {
 
   componentWillMount() {
     DeviceEventEmitter.addListener("shouldCartUpdate", () => this.props.cart.getCart())
-    this._onSetLanguage()
   }
 
   async componentDidMount() {
@@ -116,12 +115,6 @@ class Home extends React.Component<Props, State> {
     DeviceEventEmitter.removeListener("shouldCartUpdate", () => this.props.cart.getCart())
   }
 
-  _onSetLanguage = async() => {
-    const languageStore = await AsyncStorage.getItem("language")
-    return await strings.setLanguage(languageStore)
-  }
-
-
   render() {
     return (
       <View style={styles.container}>
@@ -129,7 +122,7 @@ class Home extends React.Component<Props, State> {
         <StatusBar barStyle={"light-content"} />
         <Image source={LOGO} style={{ marginTop: 50 }} />
         <View style={styles.customerDetail}>
-          <Text style={styles.greeting}>{strings.homeHi} {this.props.user.customer.name}!</Text>
+          <Lang styleLang={styles.greeting} language='homeHi'>{this.props.user.customer.name}!</Lang>
           <View>
             <View style={styles.pointContainer}>
               <View style={styles.iconPointContainer}>
@@ -138,7 +131,7 @@ class Home extends React.Component<Props, State> {
               </View>
               <View>
                 <Text style={styles.point}>{this.props.user.customer.total_point}</Text>
-                <Text style={styles.lblPoint}>{strings.homePoints}</Text>
+                <Lang styleLang={styles.lblPoint} language='homePoints'></Lang>
               </View>
             </View>
           </View>
@@ -159,9 +152,8 @@ class Home extends React.Component<Props, State> {
             <Text style={styles.address}>{this.state.address}</Text>
           </View>
         </View>
-        <Text style={styles.searchCaption}>{strings.homeSearch}</Text>
+        <Lang styleLang={styles.searchCaption} language='homeSearch'></Lang>
         <SearchBar onFocus={() => this.props.navigation.navigate("MainSearch")} />
-        <LanguageComponent language='login'></LanguageComponent>
         <FlatList
           contentContainerStyle={styles.categories}
           data={this.props.category.categories}
