@@ -21,6 +21,7 @@ import Geocoder from "react-native-geocoder"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import SearchBar from "../../components/SearchBar"
 import strings from "../../components/language"
+import LanguageComponent from '../../components/LanguageComponent'
 
 
 // Configs
@@ -160,6 +161,7 @@ class Home extends React.Component<Props, State> {
         </View>
         <Text style={styles.searchCaption}>{strings.homeSearch}</Text>
         <SearchBar onFocus={() => this.props.navigation.navigate("MainSearch")} />
+        <LanguageComponent language='login'></LanguageComponent>
         <FlatList
           contentContainerStyle={styles.categories}
           data={this.props.category.categories}
