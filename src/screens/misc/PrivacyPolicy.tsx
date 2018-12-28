@@ -23,9 +23,9 @@ export default class PrivacyPolicy extends React.Component<Props, State> {
     loading: true
   }
 
-  static navigationOptions: NavigationStackScreenOptions = {
+  static navigationOptions = () : NavigationStackScreenOptions => ({
     title: strings.accountPrivacyPolicy
-  }  
+  })
 
   _onSetLanguage = async() => {
     const languageStore = await AsyncStorage.getItem("language")
