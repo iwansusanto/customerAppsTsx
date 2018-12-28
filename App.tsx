@@ -9,7 +9,6 @@ import {
 import { MenuProvider } from "react-native-popup-menu"
 import strings from "./src/components/language"
 
-
 // Temporary name for entry point
 import AppW from "./src/screens/App"
 
@@ -50,7 +49,7 @@ import EditProfile from "./src/screens/account/EditProfile"
 // Misc screens
 import PrivacyPolicy from "./src/screens/misc/PrivacyPolicy"
 import Terms from "./src/screens/misc/Terms"
-import Language from './src/screens/misc/Language' 
+import Language from "./src/screens/misc/Language"
 
 // Contains constant values used for the app
 import metrics from "./src/config/metrics"
@@ -63,6 +62,12 @@ const ICON_ACCOUNT_ACTIVE = require("./assets/ic_account_active.png")
 const ICON_ACCOUNT_INACTIVE = require("./assets/ic_account_inactive.png")
 const ICON_MAIL_ACTIVE = require("./assets/ic_mail_active.png")
 const ICON_MAIL_INACTIVE = require("./assets/ic_mail_inactive.png")
+const ICON_HELP_ACTIVE = require("./assets/ic_help_active.png")
+const ICON_HELP_INACTIVE = require("./assets/ic_help_inactive.png")
+const ICON_ORDER_ACTIVE = require("./assets/ic_order_active.png")
+const ICON_ORDER_INACTIVE = require("./assets/ic_order_inactive.png")
+const ICON_HOME_ACTIVE = require("./assets/ic_home_active.png")
+const ICON_HOME_INACTIVE = require("./assets/ic_home_inactive.png")
 
 // Provider
 import UserContextProvider from "./src/components/providers/UserContextProvider"
@@ -75,10 +80,10 @@ import CartContextProvider from "./src/components/providers/CartContextProvider"
 import OrderContextProvider from "./src/components/providers/OrderContextProvider"
 
 export default class App extends React.Component<any, any> {
-  constructor(props){
+  constructor(props) {
     super(props)
   }
-  _onSetLanguage = async() => {
+  _onSetLanguage = async () => {
     const languageStore = await AsyncStorage.getItem("language")
     const language = await strings.setLanguage(languageStore)
     return language
@@ -114,10 +119,105 @@ export default class App extends React.Component<any, any> {
 
 const Main = createBottomTabNavigator(
   {
-    Home: { screen: Home },
-    Orders: { screen: Orders },
-    Help: { screen: Help },
-    Inbox: { 
+    Home: { screen: Home,
+      navigationOptions: ({
+        navigation
+      }: {
+        navigation: NavigationScreenProp<any, any>
+      }) => {
+        const { state } = navigation
+        return {
+          tabBarLabel: state.params.home,
+          tabBarIcon: ({ focused }) => {
+            switch (focused) {
+              case true:
+                return (
+                  <Image
+                    source={ICON_HOME_ACTIVE}
+                    resizeMode={"contain"}
+                    style={metrics.TAB_BAR_ICON_STYLE}
+                  />
+                )
+              case false:
+                return (
+                  <Image
+                    source={ICON_HOME_INACTIVE}
+                    resizeMode={"contain"}
+                    style={metrics.TAB_BAR_ICON_STYLE}
+                  />
+                )
+            }
+          }
+        }
+      }
+    },
+    Orders: { screen: Orders,
+      navigationOptions: ({
+        navigation
+      }: {
+        navigation: NavigationScreenProp<any, any>
+      }) => {
+        const { state } = navigation
+        return {
+          tabBarLabel: state.params.order,
+          tabBarIcon: ({ focused }) => {
+            switch (focused) {
+              case true:
+                return (
+                  <Image
+                    source={ICON_ORDER_ACTIVE}
+                    resizeMode={"contain"}
+                    style={metrics.TAB_BAR_ICON_STYLE}
+                  />
+                )
+              case false:
+                return (
+                  <Image
+                    source={ICON_ORDER_INACTIVE}
+                    resizeMode={"contain"}
+                    style={metrics.TAB_BAR_ICON_STYLE}
+                  />
+                )
+            }
+          }
+        }
+      }
+    
+    },
+    Help: {
+      screen: Help,
+      navigationOptions: ({
+        navigation
+      }: {
+        navigation: NavigationScreenProp<any, any>
+      }) => {
+        const { state } = navigation
+        return {
+          tabBarLabel: state.params.help,
+          tabBarIcon: ({ focused }) => {
+            switch (focused) {
+              case true:
+                return (
+                  <Image
+                    source={ICON_HELP_ACTIVE}
+                    resizeMode={"contain"}
+                    style={metrics.TAB_BAR_ICON_STYLE}
+                  />
+                )
+              case false:
+                return (
+                  <Image
+                    source={ICON_HELP_INACTIVE}
+                    resizeMode={"contain"}
+                    style={metrics.TAB_BAR_ICON_STYLE}
+                  />
+                )
+            }
+          }
+        }
+      }
+    },
+    Inbox: {
       screen: Inbox,
       navigationOptions: ({
         navigation
@@ -125,7 +225,7 @@ const Main = createBottomTabNavigator(
         navigation: NavigationScreenProp<any, any>
       }) => {
         const { state } = navigation
-        return  {
+        return {
           tabBarLabel: state.params.inbox,
           tabBarIcon: ({ focused }) => {
             switch (focused) {
@@ -149,7 +249,7 @@ const Main = createBottomTabNavigator(
           }
         }
       }
-     },
+    },
     Account: {
       screen: Account,
       navigationOptions: ({
@@ -158,7 +258,7 @@ const Main = createBottomTabNavigator(
         navigation: NavigationScreenProp<any, any>
       }) => {
         const { state } = navigation
-        return  {
+        return {
           tabBarLabel: state.params.account,
           tabBarIcon: ({ focused }) => {
             switch (focused) {
@@ -309,7 +409,7 @@ const Navigator = createStackNavigator(
     Terms: { screen: Terms, navigationOptions: { gesturesEnabled: false } },
     Language: {
       screen: Language,
-      navigationOptions:{gesturesEnabled: false}
+      navigationOptions: { gesturesEnabled: false }
     }
   },
   {

@@ -10,38 +10,12 @@ import HeaderOverlay from "../../components/HeaderOverlay"
 import api from "../../api"
 import strings from "../../components/language"
 
-const ICON_ACTIVE = require("../../../assets/ic_order_active.png")
-const ICON_INACTIVE = require("../../../assets/ic_order_inactive.png")
-
 interface State {
   isDataLoading: boolean
   data: Array<any>
 }
 
 export default class Orders extends React.Component<any, State> {
-  static navigationOptions: NavigationTabScreenOptions = {
-    title: strings.ordersTab,
-    tabBarIcon: ({ focused }) => {
-      switch (focused) {
-        case true:
-          return (
-            <Image
-              source={ICON_ACTIVE}
-              resizeMode={"contain"}
-              style={metrics.TAB_BAR_ICON_STYLE}
-            />
-          )
-        case false:
-          return (
-            <Image
-              source={ICON_INACTIVE}
-              resizeMode={"contain"}
-              style={metrics.TAB_BAR_ICON_STYLE}
-            />
-          )
-      }
-    }
-  }
 
   state = {
     isDataLoading: true,
@@ -56,9 +30,7 @@ export default class Orders extends React.Component<any, State> {
   }
   _onSetLanguage = async () => {
     const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
-    return language
+    return await strings.setLanguage(languageStore)
   }
 
   componentWillMount = () => {

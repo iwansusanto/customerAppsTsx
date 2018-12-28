@@ -41,6 +41,9 @@ class SplashScreen extends Component<Props, any> {
         await this.props.navigation.replace("Home", {
           inbox: strings.inboxTab,
           account: strings.accountTab,
+          help: strings.helpTab,
+          order: strings.ordersTab,
+          home: strings.homeTab
         })
       } else {
         await this.props.navigation.replace("Welcome")

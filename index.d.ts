@@ -49,6 +49,10 @@ interface InboxContext {
   getInbox: Function
 }
 
+interface HelpContext {
+  help: string
+}
+
 interface InboxResponse {
   success: boolean
   message: string
