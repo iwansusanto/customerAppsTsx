@@ -52,32 +52,6 @@ interface State {
 }
 
 class Home extends React.Component<Props, State> {
-  // Tab bar configs
-  static navigationOptions: NavigationTabScreenOptions = {
-    // Tab title
-    title: strings.homeTab,
-    // Tab icon according to the focused state of the tab
-    tabBarIcon: ({ focused }) => {
-      switch (focused) {
-        case true:
-          return (
-            <Image
-              source={ICON_ACTIVE}
-              resizeMode={"contain"}
-              style={metrics.TAB_BAR_ICON_STYLE}
-            />
-          )
-        case false:
-          return (
-            <Image
-              source={ICON_INACTIVE}
-              resizeMode={"contain"}
-              style={metrics.TAB_BAR_ICON_STYLE}
-            />
-          )
-      }
-    }
-  }
 
   private mapRef = createRef<MapView>()
 
@@ -143,9 +117,7 @@ class Home extends React.Component<Props, State> {
 
   _onSetLanguage = async() => {
     const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING home", languageStore)
-    return language
+    return await strings.setLanguage(languageStore)
   }
 
 

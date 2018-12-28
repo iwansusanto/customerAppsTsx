@@ -4,7 +4,7 @@ import { StyleSheet, View, Image, AsyncStorage } from "react-native"
 import { NavigationScreenProp } from "react-navigation"
 import metrics from "../config/metrics"
 import withUserContext from "../components/consumers/withUserContext"
-import api from '../api'
+import strings from "../components/language"
 
 const LOGO = require("../../assets/logo-higres.png")
 
@@ -16,6 +16,19 @@ interface Props {
 }
 
 class SplashScreen extends Component<Props, any> {
+  constructor(props) {
+    super(props)
+  }
+  
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    return await strings.setLanguage(languageStore)
+  }
+
+  componentWillMount() {
+    this._onSetLanguage()
+  }
+
   async componentDidMount() {
     const dataJSONString = await AsyncStorage.getItem("user")
     const dataLanguage = await AsyncStorage.getItem('language')
@@ -24,13 +37,19 @@ class SplashScreen extends Component<Props, any> {
 
       if (data !== null) {
         await this.props.user.changeUser(data)
-        console.log('hello', this.props.user)
-        this.props.navigation.replace("Home")
+        await console.log('hello', strings.inboxTab)
+        await this.props.navigation.replace("Home", {
+          inbox: strings.inboxTab,
+          account: strings.accountTab,
+          help: strings.helpTab,
+          order: strings.ordersTab,
+          home: strings.homeTab
+        })
       } else {
-        this.props.navigation.replace("Welcome")
+        await this.props.navigation.replace("Welcome")
       }
     } else {
-      this.props.navigation.replace("Welcome")
+      await this.props.navigation.replace("Welcome")
     }
   }
 

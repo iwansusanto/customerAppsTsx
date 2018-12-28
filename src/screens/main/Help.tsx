@@ -10,50 +10,24 @@ import HelpItem from "../../components/HelpItem"
 import strings from "../../components/language"
 
 
-const ICON_ACTIVE = require("../../../assets/ic_help_active.png")
-const ICON_INACTIVE = require("../../../assets/ic_help_inactive.png")
 
 interface State {
   activeItem: string
 }
 
+
 export default class Help extends React.Component<any, State> {
   state = {
     activeItem: "Mshwar Food"
   }
-
-  // Tab bar configs
-  static navigationOptions: NavigationTabScreenOptions = {
-    // Tab title
-    title: strings.helpTab,
-    // Tab icon according to the focused state of the tab
-    tabBarIcon: ({ focused }) => {
-      switch (focused) {
-        case true:
-          return (
-            <Image
-              source={ICON_ACTIVE}
-              resizeMode={"contain"}
-              style={metrics.TAB_BAR_ICON_STYLE}
-            />
-          )
-        case false:
-          return (
-            <Image
-              source={ICON_INACTIVE}
-              resizeMode={"contain"}
-              style={metrics.TAB_BAR_ICON_STYLE}
-            />
-          )
-      }
-    }
+  constructor(props) {
+    super(props)
   }
+
 
   _onSetLanguage = async() => {
     const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
-    return language
+    return await strings.setLanguage(languageStore)
   }
 
   componentWillMount = () => {
@@ -100,6 +74,7 @@ export default class Help extends React.Component<any, State> {
     )
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {

@@ -2,44 +2,24 @@ import React from "react"
 import { View, StyleSheet, Image, FlatList, AsyncStorage } from "react-native"
 
 import Text from "../../components/CustomText"
-import { NavigationTabScreenOptions } from "react-navigation"
 import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import InboxItem from "../../components/InboxItem"
 import withInboxContext from "../../components/consumers/withInboxContext";
 import strings from "../../components/language"
 
-
-const ICON_ACTIVE = require("../../../assets/ic_mail_active.png")
-const ICON_INACTIVE = require("../../../assets/ic_mail_inactive.png")
-
 interface Props {
   inbox: InboxContext
 }
 
-class Inbox extends React.Component<Props> {
-  static navigationOptions: NavigationTabScreenOptions = {
-    title: strings.inboxTab,
-    tabBarIcon: ({ focused }) => {
-      switch (focused) {
-        case true:
-          return (
-            <Image
-              source={ICON_ACTIVE}
-              resizeMode={"contain"}
-              style={metrics.TAB_BAR_ICON_STYLE}
-            />
-          )
-        case false:
-          return (
-            <Image
-              source={ICON_INACTIVE}
-              resizeMode={"contain"}
-              style={metrics.TAB_BAR_ICON_STYLE}
-            />
-          )
-      }
-    }
+interface State {
+  title: string
+}
+
+class Inbox extends React.Component<Props, State> {
+  
+  constructor(props) {
+    super(props)
   }
 
   async componentDidMount() {
@@ -56,9 +36,7 @@ class Inbox extends React.Component<Props> {
 
   _onSetLanguage = async() => {
     const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
-    return language
+    return await strings.setLanguage(languageStore)
   }
 
   componentWillMount = () => {
