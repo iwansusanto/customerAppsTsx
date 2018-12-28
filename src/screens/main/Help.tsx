@@ -14,6 +14,7 @@ import {
   CollapseBody,
   AccordionList
 } from "accordion-collapse-react-native"
+import Icon from "react-native-vector-icons/MaterialIcons"
 
 interface arrayOf {
   [index: number]: { title: string; content: string }
@@ -53,20 +54,27 @@ export default class Help extends React.Component<any, State> {
         style={{
           borderBottomColor: "rgb(74,74,74)",
           borderBottomWidth: 0.2,
-          paddingVertical: 15,
+          paddingVertical: 10,
           marginHorizontal: 15
         }}
       >
-        <Text
-          style={[
-            { marginLeft: 15, marginTop: 5 },
-            strings.getLanguage() === "ar"
+        <View style={{flex: 1, flexDirection:'row', justifyContent: 'space-between'}}>
+          <Text
+            style={[
+              { marginLeft: 15, marginTop: 5 },
+              strings.getLanguage() === "ar"
               ? { textAlign: "right", marginRight: 15 }
               : { textAlign: "left" }
-          ]}
-        >
-          {item.title}
-        </Text>
+            ]}
+          >
+            {item.title}
+          </Text>
+            <Icon
+              type={"MaterialIcons"}
+              name={"arrow_drop_down"}
+              style={{ color: "#0099CC" }}
+            />
+        </View>
       </View>
     )
   }

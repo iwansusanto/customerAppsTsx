@@ -127,7 +127,7 @@ const Main = createBottomTabNavigator(
       }) => {
         const { state } = navigation
         return {
-          tabBarLabel: state.params.home,
+          tabBarLabel: state.params.home === null? strings.homeTab : state.params.home,
           tabBarIcon: ({ focused }) => {
             switch (focused) {
               case true:
@@ -159,7 +159,7 @@ const Main = createBottomTabNavigator(
       }) => {
         const { state } = navigation
         return {
-          tabBarLabel: state.params.order,
+          tabBarLabel: state.params.order === null ? strings.ordersTab : state.params.order,
           tabBarIcon: ({ focused }) => {
             switch (focused) {
               case true:
@@ -193,7 +193,7 @@ const Main = createBottomTabNavigator(
       }) => {
         const { state } = navigation
         return {
-          tabBarLabel: state.params.help,
+          tabBarLabel: state.params.help === null ? strings.helpTab : state.params.help,
           tabBarIcon: ({ focused }) => {
             switch (focused) {
               case true:
@@ -226,7 +226,7 @@ const Main = createBottomTabNavigator(
       }) => {
         const { state } = navigation
         return {
-          tabBarLabel: state.params.inbox,
+          tabBarLabel: state.params.inbox === null ? strings.inboxTab : state.params.inbox,
           tabBarIcon: ({ focused }) => {
             switch (focused) {
               case true:
@@ -259,7 +259,7 @@ const Main = createBottomTabNavigator(
       }) => {
         const { state } = navigation
         return {
-          tabBarLabel: state.params.account,
+          tabBarLabel: state.params.account === null ? strings.accountTab : state.params.account,
           tabBarIcon: ({ focused }) => {
             switch (focused) {
               case true:
