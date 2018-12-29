@@ -8,24 +8,38 @@ import metrics from "../../config/metrics"
 import SearchBar from "../../components/SearchBar"
 import HelpItem from "../../components/HelpItem"
 import strings from "../../components/language"
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+  AccordionList
+} from "accordion-collapse-react-native"
+import Icon from "react-native-vector-icons/MaterialIcons"
 
-
+interface arrayOf {
+  [index: number]: { title: string; content: string }
+}
 
 interface State {
   activeItem: string
+  data: arrayOf
 }
-
 
 export default class Help extends React.Component<any, State> {
   state = {
-    activeItem: "Mshwar Food"
+    activeItem: "Mshwar Food",
+    data: [
+      { title: strings.food, content: strings.helpTabFood },
+      { title: strings.mart, content: strings.helpTabMart },
+      { title: strings.groceries, content: strings.helpTabGroceris },
+      { title: strings.tech, content: strings.helpTabTech }
+    ]
   }
   constructor(props) {
     super(props)
   }
 
-
-  _onSetLanguage = async() => {
+  _onSetLanguage = async () => {
     const languageStore = await AsyncStorage.getItem("language")
     return await strings.setLanguage(languageStore)
   }
@@ -34,6 +48,86 @@ export default class Help extends React.Component<any, State> {
     this._onSetLanguage()
   }
 
+  _header = item => {
+    return (
+      <View
+        style={{
+          borderBottomColor: "rgb(74,74,74)",
+          borderBottomWidth: 0.2,
+          paddingVertical: 10,
+          marginHorizontal: 15
+        }}
+      >
+        {strings.getLanguage() === "ar" ? (
+          <View
+            style={{
+              justifyContent: "space-between",
+              flexDirection: "row",
+              flex: 1
+            }}
+          >
+            <Icon
+              type={"MaterialIcons"}
+              name={"arrow-drop-down"}
+              style={{ color: "#0099CC" }}
+              size={25}
+            />
+            <Text
+              style={[
+                { marginLeft: 15, marginTop: 5 },
+                strings.getLanguage() === "ar"
+                  ? { textAlign: "right", marginRight: 15 }
+                  : { textAlign: "left" }
+              ]}
+            >
+              {item.title}
+            </Text>
+          </View>
+        ) : (
+          <View
+            style={{
+              justifyContent: "space-between",
+              flexDirection: "row",
+              flex: 1
+            }}
+          >
+            <Text
+              style={[
+                { marginLeft: 15, marginTop: 5 },
+                strings.getLanguage() === "ar"
+                  ? { textAlign: "right", marginRight: 15 }
+                  : { textAlign: "left" }
+              ]}
+            >
+              {item.title}
+            </Text>
+            <Icon
+              type={"MaterialIcons"}
+              name={"arrow-drop-down"}
+              style={{ color: "#0099CC" }}
+              size={25}
+            />
+          </View>
+        )}
+      </View>
+    )
+  }
+
+  _body = item => {
+    return (
+      <View>
+        <Text
+          style={{
+            marginVertical: 15,
+            marginHorizontal: 15,
+            textAlign: "justify"
+          }}
+        >
+          {item.content}
+        </Text>
+      </View>
+    )
+  }
 
   render() {
     return (
@@ -43,38 +137,95 @@ export default class Help extends React.Component<any, State> {
         <Text style={styles.subtitle}>May us help you</Text>
         {/* <SearchBar /> */}
         <ScrollView style={styles.helpContainer}>
-          <HelpItem
-            content={HELP_ITEM}
-            title={"Mshwar Food"}
-            isContentVisible={this.state.activeItem === "Mshwar Food"}
+          {/* <Text
+            style={[
+              { marginLeft: 15, marginTop: 5 },
+              strings.getLanguage() === "ar"
+                ? { textAlign: "right", marginRight: 15 }
+                : { textAlign: "left" }
+            ]}
+          >
+            {strings.food}
+          </Text>
+          <Text
+            style={{
+              marginVertical: 15,
+              marginHorizontal: 15,
+              textAlign: "justify"
+            }}
+          >
+            {strings.helpTabFood}
+          </Text>
+          <Text
+            style={[
+              { marginLeft: 15, marginTop: 5 },
+              strings.getLanguage() === "ar"
+                ? { textAlign: "right", marginRight: 15 }
+                : { textAlign: "left" }
+            ]}
+          >
+            {strings.mart}
+          </Text>
+          <Text
+            style={{
+              marginVertical: 15,
+              marginHorizontal: 15,
+              textAlign: "justify"
+            }}
+          >
+            {strings.helpTabMart}
+          </Text>
+          <Text
+            style={[
+              { marginLeft: 15, marginTop: 5 },
+              strings.getLanguage() === "ar"
+                ? { textAlign: "right", marginRight: 15 }
+                : { textAlign: "left" }
+            ]}
+          >
+            {strings.groceries}
+          </Text>
+          <Text
+            style={{
+              marginVertical: 15,
+              marginHorizontal: 15,
+              textAlign: "justify"
+            }}
+          >
+            {strings.helpTabGroceris}
+          </Text>
+          <Text
+            style={[
+              { marginLeft: 15, marginTop: 5 },
+              strings.getLanguage() === "ar"
+                ? { textAlign: "right", marginRight: 15 }
+                : { textAlign: "left" }
+            ]}
+          >
+            {strings.tech}
+          </Text>
+          <Text
+            style={{
+              marginVertical: 15,
+              marginHorizontal: 15,
+              textAlign: "justify"
+            }}
+          >
+            {strings.helpTabTech}
+          </Text> */}
+
+          <AccordionList
+            list={this.state.data}
+            header={this._header}
+            body={this._body}
           />
-          {/*
-          <HelpItem
-            content={HELP_ITEM}
-            title={"Mshwar Mart"}
-            isContentVisible={this.state.activeItem === "Mshwar Mart"}
-            onPress={() => this.setState({ activeItem: "Mshwar Mart" })}
-          />
-          <HelpItem
-            content={HELP_ITEM}
-            title={"Account"}
-            isContentVisible={this.state.activeItem === "Account"}
-            onPress={() => this.setState({ activeItem: "Account" })}
-          />
-          <HelpItem
-            content={HELP_ITEM}
-            title={"Other"}
-            isContentVisible={this.state.activeItem === "Other"}
-            onPress={() => this.setState({ activeItem: "Other" })}
-          />
-          */}
+
           <View style={{ height: 50 }} />
         </ScrollView>
       </View>
     )
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -105,13 +256,14 @@ const styles = StyleSheet.create({
     width: metrics.DEVICE_WIDTH * 0.9,
     borderRadius: 20,
     marginTop: 20,
-    paddingTop: 10,
+    paddingTop: 20,
     paddingBottom: 100
   }
 })
 
 const HELP_ITEM = [
-  "Selecting the cookware for your kitchen implies a few certain points you should consider: budget, cooking and eating habits, your family size, etc. One of the most essential points in choosing cookware is the material it is made of. Often, such an important detail is simply overlooked or is considered to be minor. In fact, proper understanding of differences between cookware materials will assist you in making the best choice and further on, will help maintain your cookware in a good shape.",
-  "Stainless steel cookware is very common thank to its moderate price and a number of qualities, such as good tensile strength, excellent corrosion resistance and non-reaction with alkaline or acidic materials. Using stainless steel cookware allows using less oil and it better preserves the nutritious value of food. The drawback is that stainless steel does not conduct heat well, so the cookware requires a thick aluminum or copper core in the bottom and, sometimes, the sides to conduct heat more evenly and make the cookware more responsive to heat. Stainless steel cookware care is quite simple as it can be washed in a dishwasher and scraped with nylon pads. Special stainless steel cleaners will help bring the shine back.",
-  "Non-stick cookware is a blessing when cooking and reheating sticky kinds of food. This coated surface also means you will need less oil or fat while frying on it. But you have to be careful while using and washing non-stick cookware."
+  { title: strings.food, content: strings.helpTabFood },
+  { title: strings.mart, content: strings.helpTabMart },
+  { title: strings.groceries, content: strings.helpTabGroceris },
+  { title: strings.tech, content: strings.helpTabTech }
 ]

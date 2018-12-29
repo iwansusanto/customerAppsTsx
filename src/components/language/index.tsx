@@ -54,7 +54,16 @@ let strings = new LocalizedStrings({
     accountTos: 'Terms of Service',
     accountPrivacyPolicy: 'Privacy Policy',
     accountLogout: 'Logout',
-    accountChangeLanguage: 'Change language'
+    accountChangeLanguage: 'Change language',
+    helpTabFood: "We are an online food ordering app based in Qatar. Feed your hunger and craving by ordering from either the popular food chains like Burger King, Nando’s, Domino’s, Pizza Hut, KFC, or from other local restaurants in your area. We have them all. Choose from more than hundreds of restaurants or cafes and a wide range of cuisines like Arabic, Indian, Indian, Mexican, Chinese, Thai, and more. Beat your hunger with piping hot food delivered at your doorstep round the clock. Be it a juicy burger, creamy butter chicken, warm naan, cheesy pizza, fragrant biryani or a refreshing fresh juice. Anytime, anywhere, we deliver it all and deliver it fast!",
+    helpTabMart: "Mshwar Mart allows you to order items from local marketplaces. Items are ranging from fashion items, beauty, and health, to home appliances. Delivery time slots are customizable, and there are no additional charges from the marketplace sellers.  You can choose two different payment methods: cash on delivery (COD) or credit card.",
+    helpTabGroceris: "Mshwar Groceries enables you to shop for groceries online from your favorite supermarkets or stores. Mshwar delivers groceries to your doorstep at a time of your convenience, or as early as one hour. Mshwar Groceries delivery hours are based on selected supermarkets’ and stores’ operational hours, most generally between 10 am and 10 pm. The good news is you can place your order at any time of the day!",
+    helpTabTech: "Shop new mobile phones, tablets, gaming consoles, gadget accessories, and any other tech products from Mshwar Tech. You can select your favorite stores and have the product delivered right to you — the same pricing as the store and no need to worry about the quality and authenticity as every product comes with a guarantee certificate. Cash and credit payment methods are available upon every purchase.",
+    food: 'Food',
+    mart: 'Mart',
+    groceries: 'Groceries',
+    tech: 'Tech'
+
 
 
   },
@@ -112,6 +121,15 @@ let strings = new LocalizedStrings({
     accountPrivacyPolicy: 'Privacy Policy',
     accountLogout: 'Logout',
     accountChangeLanguage: 'Change language',
+    helpTabFood: "We are an online food ordering app based in Qatar. Feed your hunger and craving by ordering from either the popular food chains like Burger King, Nando’s, Domino’s, Pizza Hut, KFC, or from other local restaurants in your area. We have them all. Choose from more than hundreds of restaurants or cafes and a wide range of cuisines like Arabic, Indian, Indian, Mexican, Chinese, Thai, and more. Beat your hunger with piping hot food delivered at your doorstep round the clock. Be it a juicy burger, creamy butter chicken, warm naan, cheesy pizza, fragrant biryani or a refreshing fresh juice. Anytime, anywhere, we deliver it all and deliver it fast!",
+    helpTabMart: "Mshwar Mart allows you to order items from local marketplaces. Items are ranging from fashion items, beauty, and health, to home appliances. Delivery time slots are customizable, and there are no additional charges from the marketplace sellers.  You can choose two different payment methods: cash on delivery (COD) or credit card.",
+    helpTabGroceris: "Mshwar Groceries enables you to shop for groceries online from your favorite supermarkets or stores. Mshwar delivers groceries to your doorstep at a time of your convenience, or as early as one hour. Mshwar Groceries delivery hours are based on selected supermarkets’ and stores’ operational hours, most generally between 10 am and 10 pm. The good news is you can place your order at any time of the day!",
+    helpTabTech: "Shop new mobile phones, tablets, gaming consoles, gadget accessories, and any other tech products from Mshwar Tech. You can select your favorite stores and have the product delivered right to you — the same pricing as the store and no need to worry about the quality and authenticity as every product comes with a guarantee certificate. Cash and credit payment methods are available upon every purchase.",
+    food: 'Food',
+    mart: 'Mart',
+    groceries: 'Groceries',
+    tech: 'Tech'
+
 
 
 
@@ -173,6 +191,15 @@ let strings = new LocalizedStrings({
     accountPrivacyPolicy: 'سياسة الخصوصية',
     accountLogout: 'تسجيل خروج',
     accountChangeLanguage: 'غير اللغة',
+    helpTabFood: "نحن تطبيق طلب الطعام عبر الانترنت في قطر  اشبع جوعك ورغبتك بالطلب من سلسلة المطاعم الشهيرة مثل برجر كنج أو ناندو أو بيتزا هت أو كنتاكي أو من المطاعم المحلية الأخرى في منطقتك .لدينا كل منه اختر من بين أكثر من مئات المطاعم أو المقاهي ومجموعة واسعة من المأكولات مثل العربية والهندية والهندية والمكسيكية والصينية والتايلاندية وغيرها. تغلب على الجوع الخاص بك مع توصيل الأطعمة الساخنة على عتبة داركم على مدار الساعة. سواء كان ذلك برجر غض ، دجاج بالزبدة دسم ، نان دافئ ، بيتزا جبني ، برياني عطري أو عصير طازج منعش. في أي وقت ، في أي مكان ، نحن نقدم كل شيء وتسليمه بسرعة",
+    helpTabMart: "يسمح لك سوق مشوار بطلب العناصر من الأسواق المحلية .العناصر تتراوح بين الازياء والجمال والصحة إلى الاجهزة المنزلية .أوقات التسليم قابلة للتخصيص ولاتوجد رسوم إضافية من البائعين في السوق يمكنك اختيار طريقتين مختلفتين للدفع نقدا عند التسليم أو بطاقة ائتمان .",
+    helpTabGroceris: "تمكنك بقالة مشوار من التسوق لشراء مواد البقالة عبر الانترنت من محلات السوبر ماركت أو المتاجر المفضلة لديك تقدم مشوار البقالة إلى باب منزلك في وقت يناسبك أو في وقت مبكر من ساعه واحدة تستند ساعات تسليم بقالة مشوار إلى ساعات العمل المحددة للسوبرماركت والمتاجر بشكل عام بين الساعه 10 صباحا و 10 مساء والخبر السار هو انه يمكنك تقديم طلبك في اي وقت من اليوم !",
+    helpTabTech: 'تسوق عبر الهواتف المحمولة والأجهزة اللوحية ووحدات التحكم في الألعاب والملحقات والأجهزة وأي منتجات تقنية أخرى من "مشوار تك". يمكنك اختيار المتاجر المفضلة لديك وتسليم المنتج إليك - نفس سعر المتجر ولا داعي للقلق بشأن الجودة والموثوقية حيث يأتي كل منتج بشهادة ضمان. تتوفر طرق الدفع النقدي والائتماني عند كل عملية شراء',
+    food: 'طعام',
+    mart: 'سوق',
+    groceries: 'البقالة',
+    tech: 'التكنولوجيا'
+
 
 
 

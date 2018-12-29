@@ -122,7 +122,13 @@ class Login extends React.Component<Props, State> {
       //   email,
       //   password
       // })
-      this.props.navigation.replace("Home")
+      this.props.navigation.replace("Home", {
+        inbox: strings.inboxTab,
+        account: strings.accountTab,
+        help: strings.helpTab,
+        order: strings.ordersTab,
+        home: strings.homeTab
+      })
     } else {
       // TODO: show login failed
       Alert.alert("Failed", "Login failed, please try again")

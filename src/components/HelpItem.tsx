@@ -15,6 +15,7 @@ const ICON_ARROW = require("../../assets/ic_arrow_blue.png")
 interface Props extends TouchableOpacityProps {
   title: string
   content: Array<string>
+  // content: string
   isContentVisible: boolean
 }
 
@@ -36,7 +37,7 @@ export default class HelpItem extends React.Component<Props, State> {
       <View style={styles.container} {...this.props}>
         <View style={styles.titleContainer}>
           <Text>{this.props.title}</Text>
-          {/*
+{/*           
           <Image source={ICON_ARROW} />
           */}
         </View>

@@ -95,7 +95,13 @@ export default class OTPVerification extends React.Component<Props, State> {
     this.setState({ isLoading: false })
 
     if (result) {
-      this.props.navigation.replace("Home")
+      this.props.navigation.replace("Home", {
+        inbox: strings.inboxTab,
+        account: strings.accountTab,
+        help: strings.helpTab,
+        order: strings.ordersTab,
+        home: strings.homeTab
+      })
     } else {
       // TODO: show otp failed
     }
