@@ -58,23 +58,57 @@ export default class Help extends React.Component<any, State> {
           marginHorizontal: 15
         }}
       >
-        <View style={{flex: 1, flexDirection:'row', justifyContent: 'space-between'}}>
-          <Text
-            style={[
-              { marginLeft: 15, marginTop: 5 },
-              strings.getLanguage() === "ar"
-              ? { textAlign: "right", marginRight: 15 }
-              : { textAlign: "left" }
-            ]}
+        {strings.getLanguage() === "ar" ? (
+          <View
+            style={{
+              justifyContent: "space-between",
+              flexDirection: "row",
+              flex: 1
+            }}
           >
-            {item.title}
-          </Text>
             <Icon
               type={"MaterialIcons"}
-              name={"arrow_drop_down"}
+              name={"arrow-drop-down"}
               style={{ color: "#0099CC" }}
+              size={25}
             />
-        </View>
+            <Text
+              style={[
+                { marginLeft: 15, marginTop: 5 },
+                strings.getLanguage() === "ar"
+                  ? { textAlign: "right", marginRight: 15 }
+                  : { textAlign: "left" }
+              ]}
+            >
+              {item.title}
+            </Text>
+          </View>
+        ) : (
+          <View
+            style={{
+              justifyContent: "space-between",
+              flexDirection: "row",
+              flex: 1
+            }}
+          >
+            <Text
+              style={[
+                { marginLeft: 15, marginTop: 5 },
+                strings.getLanguage() === "ar"
+                  ? { textAlign: "right", marginRight: 15 }
+                  : { textAlign: "left" }
+              ]}
+            >
+              {item.title}
+            </Text>
+            <Icon
+              type={"MaterialIcons"}
+              name={"arrow-drop-down"}
+              style={{ color: "#0099CC" }}
+              size={25}
+            />
+          </View>
+        )}
       </View>
     )
   }
