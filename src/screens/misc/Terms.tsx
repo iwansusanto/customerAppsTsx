@@ -15,13 +15,15 @@ interface Props {
 
 interface State {
   loading: boolean
+  link: String
 }
 
 
 export default class Terms extends React.Component<Props, State> {
 
   state = {
-    loading: true
+    loading: true,
+    link: 'https://admin.mshwarapp.com/page/tos/en'
   }
   
   static navigationOptions =(): NavigationStackScreenOptions => ({
@@ -31,7 +33,9 @@ export default class Terms extends React.Component<Props, State> {
   _onSetLanguage = async() => {
     const languageStore = await AsyncStorage.getItem("language")
     const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
+    await this.setState({
+      link: `https://admin.mshwarapp.com/page/tos/${languageStore}`
+    })
     return language
   }
 
@@ -51,7 +55,8 @@ export default class Terms extends React.Component<Props, State> {
         <WebView 
           style={styles.container} 
           originWhitelist={['*']} 
-          source={TOS_HTML} 
+          // source={TOS_HTML} 
+          source={{uri: this.state.link}} 
           // source={{uri: 'https://mshwarapp.com/privacy-policy.html'}} 
           scalesPageToFit={false} 
           onLoad={() => this.setState({loading: false})}
