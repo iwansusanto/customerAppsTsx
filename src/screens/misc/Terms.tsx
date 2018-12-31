@@ -23,7 +23,7 @@ export default class Terms extends React.Component<Props, State> {
 
   state = {
     loading: true,
-    link: 'https://admin.mshwarapp.com/page/tos/en'
+    link: 'https://admin.mshwarapp.com/page/term/en'
   }
   
   static navigationOptions =(): NavigationStackScreenOptions => ({
@@ -34,7 +34,7 @@ export default class Terms extends React.Component<Props, State> {
     const languageStore = await AsyncStorage.getItem("language")
     const language = await strings.setLanguage(languageStore)
     await this.setState({
-      link: `https://admin.mshwarapp.com/page/tos/${languageStore}`
+      link: `https://admin.mshwarapp.com/page/term/${languageStore}`
     })
     return language
   }
