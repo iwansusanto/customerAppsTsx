@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, AsyncStorage } from 'react-native'
+import { AsyncStorage, TextInput } from 'react-native'
 import strings from './language/index'
 
 interface Props {
@@ -28,7 +28,7 @@ export default class Lang extends Component <Props,any> {
     const {language} = this.props
     let children = this.props.children || []
     return (
-        <Text style={this.props.styleLang} >{strings[language]} {children.join('')}</Text>
+        <TextInput style={this.props.styleLang} placeholder={strings[language]}></TextInput>
     )
   }
 }

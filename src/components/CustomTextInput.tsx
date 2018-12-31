@@ -13,6 +13,8 @@ import {
 
 // Configs
 import metrics from "../config/metrics"
+import LangInput from '../components/LangInput'
+
 
 // Props typing
 interface CustomTextInputProps extends TextInputProps {
@@ -30,7 +32,7 @@ export default (props: CustomTextInputProps) => {
           resizeMode={"contain"}
         />
       </View>
-      <TextInput {...otherProps} style={styles.textInput} />
+      <LangInput {...otherProps} styleLang={styles.textInput} language={props.placeholder}/>
     </View>
   )
 }

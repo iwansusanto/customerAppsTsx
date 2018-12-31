@@ -17,6 +17,8 @@ import Text from "../../components/CustomText"
 import SingleNumberInput from "../../components/SingleNumberInput"
 import FixedButton from "../../components/FixedButton"
 import strings from "../../components/language"
+import Lang from '../../components/Lang'
+
 
 
 import UserContext from "../../contexts/UserContext"
@@ -63,16 +65,6 @@ export default class OTPVerification extends React.Component<Props, State> {
     }
   }
 
-  _onSetLanguage = async() => {
-    const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
-    return language
-  }
-
-  componentWillMount = () => {
-    this._onSetLanguage()
-  }
 
   handleOtpType = (text: string) => {
     this.setState({ otp: text })
@@ -116,8 +108,8 @@ export default class OTPVerification extends React.Component<Props, State> {
               <View style={styles.container}>
                 <Image source={LOGO} style={styles.logo as ImageStyle} />
                 <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
-                <Text style={styles.caption}>{strings.otpTitle}</Text>
-                <Text style={[styles.caption, { marginTop: 5 }]}>{strings.otpInfo}</Text>
+                <Lang styleLang={styles.caption} language='otpTitle'></Lang>
+                <Lang styleLang={[styles.caption, { marginTop: 5 }]} language='otpInfo'></Lang>
                 <TextInput
                   style={{ height: 0 }}
                   ref={this.hiddenInputRef}
@@ -159,8 +151,8 @@ export default class OTPVerification extends React.Component<Props, State> {
                   onPress={this.handleLoginButtonPressed(context.otp)}
                 />
                 <View style={styles.tosContainer}>
-                  <Text style={styles.caption}>{strings.byRegister}</Text>
-                  <Text style={styles.tos}>{strings.byTos}</Text>
+                  <Lang styleLang={styles.caption} language='byRegister'></Lang>
+                  <Lang styleLang={styles.tos} language='byTos'></Lang>
                 </View>
               </View>
             </TouchableWithoutFeedback>
