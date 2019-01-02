@@ -15,7 +15,7 @@ import Text from "../../components/CustomText"
 import metrics from "../../config/metrics"
 import CustomTextInput from "../../components/CustomTextInput"
 import FixedButton from "../../components/FixedButton"
-import api from "../../api"
+import api from "../../utils/api"
 
 import { NavigationScreenProp } from "react-navigation"
 import UserContext from "../../contexts/UserContext"

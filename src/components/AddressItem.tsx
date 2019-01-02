@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image, ImageStyle } from "react-nat
 import metrics from "../config/metrics"
 
 import Text from "./CustomText"
-import api from "../api"
+import api from "../utils/api"
 
 const ICON_CHECK = require("../../assets/ic_check.png")
 const ICON_EDIT = require("../../assets/ic_edit.png")

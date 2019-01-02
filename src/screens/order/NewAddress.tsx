@@ -7,7 +7,7 @@ import CustomTextInput from "../../components/CustomTextInput"
 import CustomButton from "../../components/CustomButton"
 import FixedButton from "../../components/FixedButton"
 import metrics from "../../config/metrics"
-import api from "../../api"
+import api from "../../utils/api"
 
 const IC_LOCATION = require("../../../assets/ic_location.png")
 const IC_USER = require("../../../assets/ic_person.png")

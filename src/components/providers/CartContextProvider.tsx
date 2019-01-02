@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 
 import CartContext from "../../contexts/CartContext"
-import api from "../../api"
+import api from "../../utils/api"
 
 export default class CartContextProvider extends Component<{}, CartResponse> {
   state = {

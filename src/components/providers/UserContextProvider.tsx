@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { AsyncStorage } from "react-native"
 
 import UserContext from "../../contexts/UserContext"
-import api from "../../api"
+import api from "../../utils/api"
 
 export default class UserContextProvider extends Component<{}, LoginResponse> {
   state = {

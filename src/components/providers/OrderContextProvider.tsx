@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 
 import OrderContext from "../../contexts/OrderContext"
-import api from "../../api"
+import api from "../../utils/api"
 
 interface State {
   order: OrderResponse

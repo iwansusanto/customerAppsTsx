@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 
 import SearchContext from "../../contexts/SearchContext"
-import api from "../../api"
+import api from "../../utils/api"
 
 interface SearchState extends SearchResponse {
   resto: SearchRestoResponse

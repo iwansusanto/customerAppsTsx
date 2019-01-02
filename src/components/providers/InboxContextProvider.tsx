@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 
 import InboxContext from "../../contexts/InboxContext"
-import api from "../../api"
+import api from "../../utils/api"
 
 interface State {
   inboxs: Inbox[]

@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 
 import PickCategoriesContext from "../../contexts/PickCategoriesContext"
-import api from "../../api"
+import api from "../../utils/api"
 
 interface State {
   pickcategories: PickCategories[]

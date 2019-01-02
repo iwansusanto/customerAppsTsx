@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 
 import SuggestionContext from "../../contexts/SuggestionContext"
-import api from "../../api"
+import api from "../../utils/api"
 
 interface State {
   suggestions: Suggestion[]

@@ -15,7 +15,7 @@ import { NavigationStackScreenOptions, NavigationScreenProp } from "react-naviga
 import FixedButton from "../../components/FixedButton"
 import withOrderContext from "../../components/consumers/withOrderContext"
 
-import api from "../../api"
+import api from "../../utils/api"
 
 const OVERLAY = require("../../../assets/overlay-search-driver.png")
 const ICON_SEARCH = require("../../../assets/ic_search_driver.png")

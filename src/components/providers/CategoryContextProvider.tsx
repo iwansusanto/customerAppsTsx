@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 
 import CategoryContext from "../../contexts/CategoryContext"
-import api from "../../api"
+import api from "../../utils/api"
 
 interface State {
   categories: Category[]

@@ -7,7 +7,7 @@ import { NavigationTabScreenOptions } from "react-navigation"
 import metrics from "../../config/metrics"
 import OrderItem from "../../components/OrderItem"
 import HeaderOverlay from "../../components/HeaderOverlay"
-import api from "../../api"
+import api from "../../utils/api"
 import strings from "../../components/language"
 
 interface State {
