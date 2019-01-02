@@ -26,6 +26,11 @@ import strings from "../../components/language"
 // Configs
 import metrics from "../../config/metrics"
 
+// Actions
+import { bindActionCreators } from 'redux'
+import * as loginActions from '../../actions/loginActions'
+import { connect } from 'react-redux'
+
 // Assets
 const ICON_HELP = require("../../../assets/ic-help.png")
 const ICON_BACK = require("../../../assets/ic_back.png")
@@ -244,4 +249,11 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withUserContext(Login)
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      actions: bindActionCreators(loginActions, dispatch)
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Login)
