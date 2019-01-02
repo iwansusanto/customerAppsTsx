@@ -23,6 +23,7 @@ interface CustomTextInputProps extends TextInputProps {
 
 export default (props: CustomTextInputProps) => {
   const { style, ...otherProps } = props
+  console.log('coba props', props)
   return (
     <View style={[styles.container, style]}>
       <View style={styles.imageContainer}>
@@ -32,7 +33,8 @@ export default (props: CustomTextInputProps) => {
           resizeMode={"contain"}
         />
       </View>
-      <LangInput {...otherProps} styleLang={styles.textInput} language={props.placeholder}/>
+      <TextInput {...otherProps} style={styles.textInput} />
+      {/* <LangInput {...otherProps} styleLang={styles.textInput} language={props.placeholder}/> */}
     </View>
   )
 }

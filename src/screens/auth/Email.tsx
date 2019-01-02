@@ -80,7 +80,8 @@ export default class Email extends React.Component<Props, State> {
                 <Lang styleLang={styles.caption} language="resetPassInfo" />
                 <CustomTextInput
                   icon={ICON_MAIL}
-                  placeholder='strings.loginEmail'
+                  // placeholder='loginEmail'
+                  placeholder={strings.loginEmail}
                   keyboardType={"email-address"}
                   style={styles.form}
                   onChangeText={this.handleEmailInputChange}
@@ -91,7 +92,8 @@ export default class Email extends React.Component<Props, State> {
                       ? metrics.SECONDARY_COLOR
                       : metrics.INACTIVE_COLOR
                   }
-                  label='resetPassSend'
+                  // label='resetPassSend'
+                  label={strings.resetPassSend}
                   onPress={this.handleSendEmailButtonPressed}
                 />
               </View>

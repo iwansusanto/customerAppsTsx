@@ -71,12 +71,14 @@ export default class ChangePassword extends React.Component {
           <View style={styles.formContainer}>
             <CustomTextInput
               icon={ICON_KEY}
-              placeholder='forgotPassNew'
+              // placeholder='forgotPassNew'
+              placeholder={strings.forgotPassNew}
               secureTextEntry={true}
             />
             <CustomTextInput
               icon={ICON_KEY}
-              placeholder='forgotPassVerify'
+              // placeholder='forgotPassVerify'
+              placeholder={strings.forgotPassVerify}
               secureTextEntry={true}
             />
           </View>

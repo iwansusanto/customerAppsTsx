@@ -5,6 +5,8 @@ import Text from "../../components/CustomText"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import strings from "../../components/language"
 import metrics from "../../config/metrics";
+import Lang from "../../components/Lang"
+
 
 
 const TOS_HTML = require("../../../assets/tos.html")

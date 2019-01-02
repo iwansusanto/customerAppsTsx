@@ -34,6 +34,8 @@ import withOrderContext from "../../components/consumers/withOrderContext"
 import { Region } from "react-native-maps"
 import Geocoder from "react-native-geocoder"
 import withUserContext from "../../components/consumers/withUserContext"
+import Lang from "../../components/Lang"
+
 
 const ICON_MARKER = require("../../../assets/ic_marker_order.png")
 const ICON_TIME = require("../../../assets/ic_time.png")
@@ -347,7 +349,7 @@ class OrderReview extends React.Component<Props, State> {
         </View>
         <View style={styles.destinationItemContainer}>
           <Image source={ICON_TIME} />
-          <Text style={styles.destinationTime}>SEND NOW</Text>
+          <Lang styleLang={styles.destinationTime} language='orderSendNow'></Lang>
           <Text
             style={{ color: "white", fontWeight: "300", fontSize: 11, marginLeft: 20 }}
           >
@@ -368,7 +370,7 @@ class OrderReview extends React.Component<Props, State> {
                   source={this.state.destination === true ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
-              <Text style={styles.contentTitle}>Destination</Text>
+              <Lang styleLang={styles.contentTitle} language='orderDestination'></Lang>
               <View style={styles.destinationInputContainer}>
                 <TextInput
                   placeholder={"Address"}
@@ -378,7 +380,7 @@ class OrderReview extends React.Component<Props, State> {
                   value={this.state.address}
                 />
                 <TouchableOpacity onPress={() => this.handleAddressChange()}>
-                  <Text style={styles.changeAddressButton}>CHANGE</Text>
+                  <Lang styleLang={styles.changeAddressButton} language='orderChangeDestination'></Lang>
                 </TouchableOpacity>
               </View>
             </View>
@@ -394,7 +396,7 @@ class OrderReview extends React.Component<Props, State> {
                   }
                 />
               </TouchableOpacity>
-              <Text style={styles.contentTitle}>Send to Others</Text>
+              <Lang styleLang={styles.contentTitle} language='orderSendToOthers'></Lang>
               {this.state.destination === false && (
                 <>
                   <FlatList
@@ -423,7 +425,7 @@ class OrderReview extends React.Component<Props, State> {
                     style={styles.addButton}
                     onPress={() => this.addAddress()}
                   >
-                    <Text style={styles.addButtonLabel}>ADD</Text>
+                    <Lang styleLang={styles.addButtonLabel} language='orderAddSendToOthers'></Lang>
                   </TouchableOpacity>
                   <View style={styles.contentDivider} />
                 </>
@@ -437,7 +439,7 @@ class OrderReview extends React.Component<Props, State> {
           </View>
           <View style={styles.contentItemContainer}>
             <View>
-              <Text style={styles.contentTitle}>Send Now</Text>
+              <Lang styleLang={styles.contentTitle} language='orderScheduleSendNow'></Lang>
               <TouchableOpacity
                 style={styles.destionationButton}
                 onPress={this.selectSchedule(true)}
@@ -446,7 +448,7 @@ class OrderReview extends React.Component<Props, State> {
                   source={this.state.schedule === true ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
-              <Text style={styles.contentCaption}>Immediately send to your address</Text>
+              <Lang styleLang={styles.contentCaption} language='orderScheduleInfo'></Lang>
             </View>
             <View style={styles.contentDivider} />
             <View>
@@ -458,7 +460,7 @@ class OrderReview extends React.Component<Props, State> {
                   source={this.state.schedule === false ? RADIO_ACTIVE : RADIO_INACTIVE}
                 />
               </TouchableOpacity>
-              <Text style={styles.contentTitle}>Schedule Order</Text>
+              <Lang styleLang={styles.contentTitle} language='orderScheduleOrder'></Lang>
               {this.state.schedule === false && (
                 <>
               <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
@@ -523,9 +525,8 @@ class OrderReview extends React.Component<Props, State> {
                   </MenuOptions>
                 </Menu>
               </View>
-              <Text style={styles.contentCaption}>
-                Your order will be scheduled to spesific time
-              </Text>
+              <Lang styleLang={styles.contentCaption} language='orderScheduleOrderInfo'>
+              </Lang>
               </>
               )}
             </View>
@@ -553,39 +554,39 @@ class OrderReview extends React.Component<Props, State> {
             contentContainerStyle={{ paddingLeft: 10 }}
           />
           <View style={styles.contentItemContainer}>
-            <Text style={styles.contentTitle}>Price</Text>
+            <Lang styleLang={styles.contentTitle} language='orderPrice'></Lang>
             <View style={styles.priceItemContainer}>
-              <Text>Subtotal</Text>
+              <Lang language='orderSubTotal' styleLang={{}}></Lang>
               <Text>{this.props.cart.cart.total}</Text>
             </View>
             <View style={styles.priceItemContainer}>
-              <Text>Shipping</Text>
+              <Lang styleLang={{}} language='orderShipping'></Lang>
               <Text>
                 {this.state.shippingPrice === -1
-                  ? "QR0"
-                  : `QR${this.state.shippingPrice}`}
+                  ? "QR 0"
+                  : `QR ${this.state.shippingPrice}`}
               </Text>
             </View>
             <View style={styles.contentDivider} />
             <View style={styles.priceItemContainer}>
-              <Text>Total</Text>
-              <Text>{`QR${Number(this.props.cart.cart.total.substr(2)) +
+              <Lang styleLang={{}} language='orderTotal'></Lang>
+              <Text>{`QR ${Number(this.props.cart.cart.total.substr(2)) +
                 Math.max(this.state.shippingPrice, 0)}`}</Text>
             </View>
           </View>
           <View style={styles.contentItemContainer}>
-            <Text style={styles.contentTitle}>Payment</Text>
+            <Lang styleLang={styles.contentTitle} language='orderPayment'></Lang>
             <View style={[styles.priceItemContainer, { marginTop: 20 }]}>
               <View style={{ flexDirection: "row" }}>
                 <Image source={ICON_WALLET} />
-                <Text style={{ marginLeft: 10 }}>Cash</Text>
+                <Lang styleLang={{ marginLeft: 10 }} language='orderCash'></Lang>
               </View>
               <Image source={RADIO_ACTIVE} />
             </View>
           </View>
         </ScrollView>
         <FixedButton
-          label={"PROCEED"}
+          label='orderButton'
           backgroundColor={
             this.props.cart.cart.product_data.length > 0
               ? metrics.PRIMARY_COLOR

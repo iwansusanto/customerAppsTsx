@@ -8,6 +8,8 @@ import metrics from "../../config/metrics"
 import SearchBar from "../../components/SearchBar"
 import HelpItem from "../../components/HelpItem"
 import strings from "../../components/language"
+import Lang from '../../components/Lang'
+
 import {
   Collapse,
   CollapseHeader,
@@ -133,8 +135,8 @@ export default class Help extends React.Component<any, State> {
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.title}>Help Center</Text>
-        <Text style={styles.subtitle}>May us help you</Text>
+        <Lang styleLang={styles.title} language='helpTitle'></Lang>
+        <Lang styleLang={styles.subtitle} language='helpInfo'></Lang>
         {/* <SearchBar /> */}
         <ScrollView style={styles.helpContainer}>
           {/* <Text

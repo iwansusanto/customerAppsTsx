@@ -161,27 +161,30 @@ class Login extends React.Component<Props, State> {
                 <View style={styles.formContainer}>
                   <CustomTextInput
                     icon={ICON_MAIL}
-                    placeholder="loginEmail"
+                    // placeholder="loginEmail"
+                    placeholder={strings.loginEmail}
                     keyboardType={"email-address"}
                     autoCapitalize="none"
                     onChangeText={text => this.setState({ email: text })}
                   />
                   <CustomTextInput
                     icon={ICON_KEY}
-                    placeholder="loginPassword"
+                    // placeholder="loginPassword"
+                    placeholder={strings.loginPassword}
                     secureTextEntry={true}
                     onChangeText={text => this.setState({ password: text })}
                   />
-                  <Lang
-                    styleLang={styles.forgot}
-                    // not done yet
-                    // onPress={this.handleForgetPasswordPressed}
-                    language="loginForgotPass"
-                  />
+                  <TouchableOpacity onPress={this.handleForgetPasswordPressed}>
+                    <Lang
+                      styleLang={styles.forgot}
+                      // not done yet
+                      language="loginForgotPass"
+                    />
+                  </TouchableOpacity>
                 </View>
                 <FixedButton
                   isLoading={this.state.isLoading}
-                  label={strings.login}
+                  label="login"
                   backgroundColor={
                     this.state.email.length > 0 &&
                     this.state.password.length > 0

@@ -19,7 +19,7 @@ import {
   NavigationScreenProp
 } from "react-navigation"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
-// import strings from "../../components/language"
+import strings from "../../components/language"
 import Lang from "../../components/Lang"
 
 // Custom component used in the screen
@@ -234,7 +234,8 @@ export default class Register extends React.Component<Props, State> {
                   <View style={styles.formContainer}>
                     <CustomTextInput
                       icon={ICON_USER}
-                      placeholder='registerName'
+                      // placeholder='registerName'
+                      placeholder={strings.registerName}
                       onChangeText={text => this.setState({ name: text })}
                     />
                     <View style={{ flexDirection: "row" }}>
@@ -267,21 +268,24 @@ export default class Register extends React.Component<Props, State> {
                       <CustomTextInput
                         style={{ width: metrics.DEVICE_WIDTH * 0.6 }}
                         icon={ICON_PHONE}
-                        placeholder='registerPhone'
+                        // placeholder='registerPhone'
+                        placeholder={strings.registerPhone}
                         keyboardType={"number-pad"}
                         onChangeText={text => this.setState({ phone: text })}
                       />
                     </View>
                     <CustomTextInput
                       icon={ICON_MAIL}
-                      placeholder='registerEmail'
+                      // placeholder='registerEmail'
+                      placeholder={strings.registerEmail}
                       keyboardType={"email-address"}
                       autoCapitalize="none"
                       onChangeText={text => this.setState({ email: text })}
                     />
                     <CustomTextInput
                       icon={ICON_KEY}
-                      placeholder='registerPassword'
+                      // placeholder='registerPassword'
+                      placeholder={strings.registerPassword}
                       secureTextEntry={true}
                       onChangeText={text => this.setState({ password: text })}
                     />

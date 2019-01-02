@@ -142,7 +142,7 @@ export default class OTPVerification extends React.Component<Props, State> {
               <Text style={styles.changeNumber}>CHANGE NUMBER</Text> */}
                 <FixedButton
                   isLoading={this.state.isLoading}
-                  label={strings.login}
+                  label='login'
                   backgroundColor={
                     this.state.otp.length === 4
                       ? metrics.SECONDARY_COLOR

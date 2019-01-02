@@ -8,6 +8,8 @@ import metrics from "../../config/metrics"
 import SearchBar from "../../components/SearchBar"
 import SearchItem from "../../components/SearchItem"
 import withSearchContext from "../../components/consumers/withSearchContext"
+import Lang from '../../components/Lang'
+
 import { any } from "prop-types"
 
 const LOGO = require("../../../assets/logo-higres.png")
