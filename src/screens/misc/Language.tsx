@@ -12,6 +12,10 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons"
 import withUserContext from "../../components/consumers/withUserContext"
 import { NavigationScreenProp, NavigationStackScreenOptions } from "react-navigation"
+import Lang from "../../components/Lang"
+import strings from "../../components/language"
+
+
 
 // const TOS_HTML = require("../../../assets/privacy.html")
 interface radioItems {
@@ -19,7 +23,7 @@ interface radioItems {
   width: number
   height: number
   color: string
-  imagePath: string
+  imagePath: any
   selected: boolean
   lang: string
 }
@@ -36,7 +40,7 @@ interface Props {
 
 class Language extends React.Component<Props, languageState> {
   static navigationOptions: NavigationStackScreenOptions = {
-    title: "Language Setting"
+    title: strings.languageTitle
   }
   constructor(props: Props) {
     super(props)
@@ -89,6 +93,19 @@ class Language extends React.Component<Props, languageState> {
     await this.props.user.changeLanguage(languageStorage)
   }
 
+  componentWillMount = () => {
+    this._onSetLanguage()
+    this.props.navigation.setParams({})
+  }
+
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
+
   async changeActiveRadioButton(index) {
     console.log('changeActiveRadioButton:', index)
     await this.state.radioItems.map(item => {
@@ -126,15 +143,15 @@ class Language extends React.Component<Props, languageState> {
                 marginTop: 30
               }}
             >
-              <Text
-                style={{
+              <Lang
+                styleLang={{
                   color: "#ffffff",
                   fontSize: 18,
                   fontFamily: "Helvetica-Light"
                 }}
+                language='languageInfo'
               >
-                Pick the right language for you
-              </Text>
+              </Lang>
             </View>
 
             <View style={{ flex: 1 }}>
@@ -211,7 +228,7 @@ class Language extends React.Component<Props, languageState> {
                                   width: item.width,
                                   height: item.height
                                 }}
-                                sizeMode={"contain"}
+                                resizeMode={"contain"}
                               />
                             </View>
                             <View style={{ width: "65%", alignSelf: "center" }}>

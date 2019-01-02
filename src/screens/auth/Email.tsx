@@ -20,7 +20,7 @@ import api from "../../api"
 import { NavigationScreenProp } from "react-navigation"
 import UserContext from "../../contexts/UserContext"
 import strings from "../../components/language"
-
+import Lang from "../../components/Lang"
 
 const OVERLAY = require("../../../assets/overlay-login.png")
 const LOGO = require("../../../assets/logo-higres.png")
@@ -37,7 +37,9 @@ interface State {
 export default class Email extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.handleSendEmailButtonPressed = this.handleSendEmailButtonPressed.bind(this)
+    this.handleSendEmailButtonPressed = this.handleSendEmailButtonPressed.bind(
+      this
+    )
     this.handleEmailInputChange = this.handleEmailInputChange.bind(this)
   }
 
@@ -47,17 +49,6 @@ export default class Email extends React.Component<Props, State> {
 
   handleEmailInputChange(value: string): void {
     this.setState({ email: value })
-  }
-
-  _onSetLanguage = async() => {
-    const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
-    return language
-  }
-
-  componentWillMount = () => {
-    this._onSetLanguage()
   }
 
   async handleSendEmailButtonPressed(): Promise<void> {
@@ -85,10 +76,11 @@ export default class Email extends React.Component<Props, State> {
               <View style={styles.container}>
                 <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
                 <Image source={LOGO} style={styles.logo as ImageStyle} />
-                <Text style={styles.subtitle}>{strings.resetPassTitle}</Text>
-                <Text style={styles.caption}>{strings.resetPassInfo}</Text>
+                <Lang styleLang={styles.subtitle} language="resetPassTitle" />
+                <Lang styleLang={styles.caption} language="resetPassInfo" />
                 <CustomTextInput
                   icon={ICON_MAIL}
+                  // placeholder='loginEmail'
                   placeholder={strings.loginEmail}
                   keyboardType={"email-address"}
                   style={styles.form}
@@ -100,6 +92,7 @@ export default class Email extends React.Component<Props, State> {
                       ? metrics.SECONDARY_COLOR
                       : metrics.INACTIVE_COLOR
                   }
+                  // label='resetPassSend'
                   label={strings.resetPassSend}
                   onPress={this.handleSendEmailButtonPressed}
                 />

@@ -9,6 +9,7 @@ import OrderItem from "../../components/OrderItem"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import api from "../../api"
 import strings from "../../components/language"
+import Lang from "../../components/Lang"
 
 interface State {
   isDataLoading: boolean
@@ -16,7 +17,6 @@ interface State {
 }
 
 export default class Orders extends React.Component<any, State> {
-
   state = {
     isDataLoading: true,
     data: []
@@ -38,14 +38,15 @@ export default class Orders extends React.Component<any, State> {
   }
 
   render() {
-    console.log('data', this.state.data)
+    console.log("data", this.state.data)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.title}>{strings.ordersTitle}</Text>
-        <Text style={styles.subtitle}>
-          {this.state.data.length === 0 ? strings.ordersEmpty : strings.ordersList}
-        </Text>
+        <Lang styleLang={styles.title} language="ordersTitle" />
+        <Lang
+          styleLang={styles.subtitle}
+          language={this.state.data.length === 0 ? "ordersEmpty" : "ordersList"}
+        />
         <FlatList
           data={this.state.data}
           renderItem={({ item }: { item: any }) => {

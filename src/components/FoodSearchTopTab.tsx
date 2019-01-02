@@ -6,6 +6,8 @@ import metrics from "../config/metrics"
 import { NavigationScreenProp } from "react-navigation"
 import HeaderOverlay from "./HeaderOverlayTab"
 import SearchBar from "./SearchBar"
+import Lang from "./Lang"
+
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
@@ -38,7 +40,7 @@ export default class TobTab extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        <Text style={styles.subtitle}>Search what you're craving for</Text>
+        <Lang styleLang={styles.subtitle} language='foodSearch'></Lang>
         <SearchBar style={styles.search} onFocus={() => this.props.navigation.navigate("MainSearch")} />
         <View style={styles.tabContainer}>
           <FlatList

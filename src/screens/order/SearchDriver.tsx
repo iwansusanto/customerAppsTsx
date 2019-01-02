@@ -6,7 +6,8 @@ import {
   ImageStyle,
   TouchableOpacity,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from "react-native"
 
 import Text from "../../components/CustomText"
@@ -14,6 +15,9 @@ import metrics from "../../config/metrics"
 import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
 import FixedButton from "../../components/FixedButton"
 import withOrderContext from "../../components/consumers/withOrderContext"
+import Lang from "../../components/Lang"
+import strings from "../../components/language"
+
 
 import api from "../../api"
 
@@ -39,9 +43,23 @@ class SearchDriver extends React.Component<Props, State> {
     isCancelling: false
   }
 
-  static navigationOptions: NavigationStackScreenOptions = {
-    title: "Searching for Driver"
+  static navigationOptions = () : NavigationStackScreenOptions => ({
+    title: strings.searchDriverTitle
+  })
+
+  componentWillMount(){
+    this._onSetLanguage()
+    this.props.navigation.setParams({})
+
   }
+
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
 
   checkOrder = async () => {
     await this.props.order.getOrderDetail()
@@ -82,8 +100,8 @@ class SearchDriver extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
-        <Text style={[styles.caption, { marginTop: 20 }]}>Sit back User</Text>
-        <Text style={styles.caption}>We are searching the nearest driver from you</Text>
+        <Lang styleLang={[styles.caption, { marginTop: 20 }]} language='searchDriverInfo'></Lang>
+        <Lang styleLang={styles.caption} language='searchDriverTagline'></Lang>
         <Image source={ICON_SEARCH} style={{ marginTop: 50 }} />
         {!this.state.isCancelling ? (
           <TouchableOpacity
@@ -91,16 +109,16 @@ class SearchDriver extends React.Component<Props, State> {
             onPress={this.handleCancelButtonPressed}
           >
             <Image source={ICON_CANCEL} />
-            <Text
-              style={{
+            <Lang
+              styleLang={{
                 fontWeight: "bold",
                 fontSize: 16,
                 color: metrics.DANGER_COLOR,
                 marginTop: 20
               }}
+              language='searchDriverCancel'
             >
-              CANCEL
-            </Text>
+            </Lang>
           </TouchableOpacity>
         ) : (
           <View style={styles.cancelButtonContainer}>
@@ -108,7 +126,7 @@ class SearchDriver extends React.Component<Props, State> {
           </View>
         )}
         <FixedButton
-          label={"MAKE NEW ORDER"}
+          label='searchDriverMakeOrder'
           labelStyle={{ color: "white" }}
           backgroundColor={metrics.SECONDARY_COLOR}
           isLoading={this.state.isLoading}

@@ -14,6 +14,8 @@ import {
 // Custom component used in this component
 import Text from "./CustomText"
 import metrics from "../config/metrics";
+import Lang from '../components/Lang'
+
 
 // Props typing
 interface CustomButtonProps extends TouchableOpacityProps {
@@ -28,7 +30,7 @@ export default (props: CustomButtonProps) => {
   return (
     <TouchableOpacity style={[styles.container, style]} {...otherProps}>
       {props.icon ? <Image source={props.icon} style={styles.icon} /> : null}
-      <Text style={[styles.label, props.labelStyle]}>{props.label}</Text>
+      <Lang styleLang={[styles.label, props.labelStyle]} language={props.label}></Lang>
     </TouchableOpacity>
   )
 }

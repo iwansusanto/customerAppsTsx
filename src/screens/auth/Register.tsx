@@ -20,6 +20,7 @@ import {
 } from "react-navigation"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import strings from "../../components/language"
+import Lang from "../../components/Lang"
 
 // Custom component used in the screen
 import Text from "../../components/CustomText"
@@ -122,17 +123,10 @@ export default class Register extends React.Component<Props, State> {
   keyboardHeight = () => {
     new Animated.Value(0)
   }
-  _onSetLanguage = async () => {
-    const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING REG", languageStore)
-    return language
-  }
 
   componentWillMount() {
     Keyboard.addListener("keyboardWillShow", this.keyboardWillShow)
     Keyboard.addListener("keyboardWillHide", this.keyboardWillHide)
-    this._onSetLanguage()
   }
 
   componentWillUnmount() {
@@ -235,11 +229,12 @@ export default class Register extends React.Component<Props, State> {
                     style={styles.overlay as ImageStyle}
                   />
                   <Image source={LOGO} style={styles.logo as ImageStyle} />
-                  <Text style={styles.title}>{strings.registerTitle}</Text>
-                  <Text style={styles.caption}>{strings.registerInfo}</Text>
+                  <Lang styleLang={styles.title} language="registerTitle" />
+                  <Lang styleLang={styles.caption} language="registerInfo" />
                   <View style={styles.formContainer}>
                     <CustomTextInput
                       icon={ICON_USER}
+                      // placeholder='registerName'
                       placeholder={strings.registerName}
                       onChangeText={text => this.setState({ name: text })}
                     />
@@ -273,6 +268,7 @@ export default class Register extends React.Component<Props, State> {
                       <CustomTextInput
                         style={{ width: metrics.DEVICE_WIDTH * 0.6 }}
                         icon={ICON_PHONE}
+                        // placeholder='registerPhone'
                         placeholder={strings.registerPhone}
                         keyboardType={"number-pad"}
                         onChangeText={text => this.setState({ phone: text })}
@@ -280,6 +276,7 @@ export default class Register extends React.Component<Props, State> {
                     </View>
                     <CustomTextInput
                       icon={ICON_MAIL}
+                      // placeholder='registerEmail'
                       placeholder={strings.registerEmail}
                       keyboardType={"email-address"}
                       autoCapitalize="none"
@@ -287,20 +284,18 @@ export default class Register extends React.Component<Props, State> {
                     />
                     <CustomTextInput
                       icon={ICON_KEY}
+                      // placeholder='registerPassword'
                       placeholder={strings.registerPassword}
                       secureTextEntry={true}
                       onChangeText={text => this.setState({ password: text })}
                     />
                   </View>
                   <View style={styles.tosContainer}>
-                    <Text style={styles.caption}>{strings.byRegister}</Text>
-                    <Text style={styles.tos}>
-                    {strings.byTos}
-                    </Text>
+                    <Lang styleLang={styles.tos} language="byTos" />
                   </View>
                   <FixedButton
                     isLoading={this.state.isLoading}
-                    label={strings.register}
+                    label='register'
                     backgroundColor={
                       email.length > 0 &&
                       password.length > 0 &&
