@@ -6,6 +6,11 @@ import metrics from "../config/metrics"
 import withUserContext from "../components/consumers/withUserContext"
 import strings from "../components/language"
 
+// Actions
+import { bindActionCreators } from 'redux'
+import * as loginActions from '../actions/loginActions'
+import { connect } from 'react-redux'
+
 const LOGO = require("../../assets/logo-higres.png")
 
 interface Props {
@@ -36,15 +41,15 @@ class SplashScreen extends Component<Props, any> {
       const data = JSON.parse(dataJSONString)
 
       if (data !== null) {
-        await this.props.user.changeUser(data)
-        await console.log('hello', strings.inboxTab)
-        await this.props.navigation.replace("Home", {
-          inbox: strings.inboxTab,
-          account: strings.accountTab,
-          help: strings.helpTab,
-          order: strings.ordersTab,
-          home: strings.homeTab
-        })
+        this.props.user.changeUser(data)
+        console.log('hello', strings.inboxTab)
+        // await this.props.navigation.replace("Home", {
+        //   inbox: strings.inboxTab,
+        //   account: strings.accountTab,
+        //   help: strings.helpTab,
+        //   order: strings.ordersTab,
+        //   home: strings.homeTab
+        // })
       } else {
         await this.props.navigation.replace("Welcome")
       }
@@ -72,4 +77,17 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withUserContext(SplashScreen)
+const mapStateToProps = ({ login }) => {
+  const { users } = login;
+  return {
+    users
+  }       
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return  {
+    user: bindActionCreators(loginActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)

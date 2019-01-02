@@ -1,4 +1,4 @@
-import { LOGIN, LOGIN_SUCCESS, LOGIN_FAILED } from './types'
+import { LOGIN, LOGIN_SUCCESS, LOGIN_FAILED, CHANGE_USER } from './types'
 
 export const login = (params) => ({
     type: LOGIN,
@@ -13,4 +13,9 @@ export const loginSuccess = (data) => ({
 export const loginFailed = (error) => ({
     type: LOGIN_FAILED,
     payload: error
+})
+
+export const changeUser = (data) => ({
+    type: CHANGE_USER,
+    payload: data
 })
