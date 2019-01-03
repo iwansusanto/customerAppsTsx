@@ -43,6 +43,7 @@ class SplashScreen extends Component<Props, any> {
       if (data !== null) {
         this.props.user.changeUser(data)
         console.log('hello', strings.inboxTab)
+        this.props.navigation.navigate('Register')
         // await this.props.navigation.replace("Home", {
         //   inbox: strings.inboxTab,
         //   account: strings.accountTab,

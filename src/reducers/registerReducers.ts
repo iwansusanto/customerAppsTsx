@@ -3,11 +3,11 @@ import appState from '../config/intialState'
 import { setData, getData } from '../utils/storage'
 import { keys } from '../config/keys'
 
-const loginReducer =  (state = appState.login, action) => {
+const registerReducer =  (state = appState.register, action) => {
     switch (action.type){
         case types.CHANGE_USER:
             let users = action.payload
-            console.log('reducer login', action)
+            console.log('reducer register', action)
             return  { 
                 ...state, 
                 users }
@@ -16,4 +16,4 @@ const loginReducer =  (state = appState.login, action) => {
     }
 }
 
-export default loginReducer;
+export default registerReducer;

@@ -31,6 +31,11 @@ import UserContext from "../../contexts/UserContext"
 // Configs
 import metrics from "../../config/metrics"
 
+// Actions
+import { bindActionCreators } from 'redux'
+import * as registerActions from '../../actions/registerActions'
+import { connect } from 'react-redux'
+
 // Assets
 const OVERLAY = require("../../../assets/overlay-login.png")
 const LOGO = require("../../../assets/logo-higres.png")
@@ -64,7 +69,7 @@ interface State {
   keyboardShowed: boolean
 }
 
-export default class Register extends React.Component<Props, State> {
+class Register extends React.Component<Props, State> {
   // Config for the header bar
   static navigationOptions = ({
     // Navigation variable to be able to call navigation-related functions in the header
@@ -373,3 +378,14 @@ const styles = StyleSheet.create({
     marginTop: 5
   }
 })
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      actions: bindActionCreators(registerActions, dispatch)
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Register)
+
+
