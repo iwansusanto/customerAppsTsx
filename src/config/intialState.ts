@@ -3,7 +3,7 @@ export default  {
       users: {},
     },
     register: {
-      users: {}
+      users1: {}
     }
   };
   

@@ -78,10 +78,12 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({ login }) => {
+const mapStateToProps = ({ login, register }) => {
   const { users } = login;
+  const {users1} = register
+  console.log('state users1', users1)
   return {
-    users
+    users, users1
   }       
 }
 

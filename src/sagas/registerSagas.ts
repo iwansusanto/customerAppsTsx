@@ -7,9 +7,10 @@ import { keys } from '../config/keys'
 
 export async function* registerUsers(action) {
   try {
+    console.log('coba 1', action)
     await setData(keys.user, JSON.stringify(action.payload))
   } catch (error) {
-    console.log('Error changeUsers : ', error)
+    console.log('Error Register : ', error)
   }
 }
 

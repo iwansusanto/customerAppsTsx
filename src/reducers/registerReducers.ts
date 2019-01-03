@@ -4,10 +4,10 @@ import { setData, getData } from '../utils/storage'
 import { keys } from '../config/keys'
 
 const registerReducer =  (state = appState.register, action) => {
+    console.log('reducer register', action, types, state)
     switch (action.type){
-        case types.CHANGE_USER:
+        case types.REGISTER_SUCCESS:
             let users = action.payload
-            console.log('reducer register', action)
             return  { 
                 ...state, 
                 users }
