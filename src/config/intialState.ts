@@ -3,7 +3,13 @@ export default  {
       users: {},
     },
     register: {
-      users1: {}
+      userRegister: {}
+    },
+    home : {
+      homeBannerId: '',
+      loading: false,
+      error: '',
+      data: {},
     }
   };
   

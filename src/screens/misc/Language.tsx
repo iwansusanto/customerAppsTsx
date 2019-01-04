@@ -19,7 +19,7 @@ interface radioItems {
   width: number
   height: number
   color: string
-  imagePath: string
+  imagePath: any
   selected: boolean
   lang: string
 }
@@ -211,7 +211,7 @@ class Language extends React.Component<Props, languageState> {
                                   width: item.width,
                                   height: item.height
                                 }}
-                                sizeMode={"contain"}
+                                resizeMode={"contain"}
                               />
                             </View>
                             <View style={{ width: "65%", alignSelf: "center" }}>

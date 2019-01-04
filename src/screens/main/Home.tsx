@@ -23,6 +23,11 @@ import SearchBar from "../../components/SearchBar"
 import strings from "../../components/language/index"
 import Lang from '../../components/Lang'
 
+// Actions
+import { bindActionCreators } from 'redux'
+import * as loginActions from '../../actions/loginActions'
+import { connect } from 'react-redux'
+
 
 // Configs
 import metrics from "../../config/metrics"
@@ -52,7 +57,7 @@ interface State {
   address: string
 }
 
-class Home extends React.Component<Props, State> {
+class Home extends React.Component<any, State> {
 
   private mapRef = createRef<MapView>()
 
@@ -116,13 +121,16 @@ class Home extends React.Component<Props, State> {
   }
 
   render() {
+    console.log('name', this.props)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
         <StatusBar barStyle={"light-content"} />
         <Image source={LOGO} style={{ marginTop: 50 }} />
         <View style={styles.customerDetail}>
-          <Lang styleLang={styles.greeting} language='homeHi'>{this.props.user.customer.name}!</Lang>
+          <Lang styleLang={styles.greeting} language='homeHi'>
+          {this.props.users.customer.name} !
+          </Lang>
           <View>
             <View style={styles.pointContainer}>
               <View style={styles.iconPointContainer}>
@@ -130,7 +138,9 @@ class Home extends React.Component<Props, State> {
                 <Text style={styles.lblIcon}>BRONZE</Text>
               </View>
               <View>
-                <Text style={styles.point}>{this.props.user.customer.total_point}</Text>
+                <Text style={styles.point}>
+                {this.props.users.customer.total_point}
+                </Text>
                 <Lang styleLang={styles.lblPoint} language='homePoints'></Lang>
               </View>
             </View>
@@ -154,7 +164,7 @@ class Home extends React.Component<Props, State> {
         </View>
         <Lang styleLang={styles.searchCaption} language='homeSearch'></Lang>
         <SearchBar onFocus={() => this.props.navigation.navigate("MainSearch")} />
-        <FlatList
+        {/* <FlatList
           contentContainerStyle={styles.categories}
           data={this.props.category.categories}
           keyExtractor={item => item.id.toString()}
@@ -173,7 +183,7 @@ class Home extends React.Component<Props, State> {
             )
           }}
           horizontal
-        />
+        /> */}
       </View>
     )
   }
@@ -283,4 +293,19 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withCartContext(withUserContext(withCategoryContext(Home)))
+const mapStateToProps = ({ login, register }) => {
+  console.log('coba regis', register)
+  const { users } = login;
+  return {
+    users
+  }       
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return  {
+    user: bindActionCreators(loginActions, dispatch)
+  }
+}
+
+// export default withCartContext(withUserContext(withCategoryContext(Home)))
+export default connect( mapStateToProps, mapDispatchToProps)(Home)

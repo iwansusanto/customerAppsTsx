@@ -43,14 +43,14 @@ class SplashScreen extends Component<Props, any> {
       if (data !== null) {
         this.props.user.changeUser(data)
         console.log('hello', strings.inboxTab)
-        this.props.navigation.navigate('Register')
-        // await this.props.navigation.replace("Home", {
-        //   inbox: strings.inboxTab,
-        //   account: strings.accountTab,
-        //   help: strings.helpTab,
-        //   order: strings.ordersTab,
-        //   home: strings.homeTab
-        // })
+        // this.props.navigation.navigate('Login')
+        await this.props.navigation.replace("Home", {
+          inbox: strings.inboxTab,
+          account: strings.accountTab,
+          help: strings.helpTab,
+          order: strings.ordersTab,
+          home: strings.homeTab
+        })
       } else {
         await this.props.navigation.replace("Welcome")
       }
@@ -80,10 +80,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ login, register }) => {
   const { users } = login;
-  const {users1} = register
-  console.log('state users1', users1)
+  // const {users1} = register
+  // console.log('state users1', users1)
   return {
-    users, users1
+    users
   }       
 }
 

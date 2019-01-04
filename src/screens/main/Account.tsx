@@ -23,12 +23,18 @@ const ICON_POINT = require("../../../assets/point.png")
 const ICON_ARROW = require("../../../assets/ic_arrow.png")
 const PICTURE = require("../../../assets/dummy_profile.png")
 
+// Actions
+import { bindActionCreators } from 'redux'
+import * as loginActions from '../../actions/loginActions'
+import { connect } from 'react-redux'
+
+
 interface Props {
   navigation: NavigationScreenProp<any, any>
   user: UserContext
 }
 
-class Account extends React.Component<Props, any> {
+class Account extends React.Component<any, any> {
 
   _onSetLanguage = async() => {
     const languageStore = await AsyncStorage.getItem("language")
@@ -54,9 +60,9 @@ class Account extends React.Component<Props, any> {
               <Image source={PICTURE} />
               */}
               <View style={styles.detail}>
-                <Text style={styles.name}>{this.props.user.customer.name}</Text>
-                <Text style={styles.info}>{this.props.user.customer.email}</Text>
-                <Text style={styles.info}>{this.props.user.customer.phone}</Text>
+                <Text style={styles.name}>{this.props.users.customer.name}</Text>
+                <Text style={styles.info}>{this.props.users.customer.email}</Text>
+                <Text style={styles.info}>{this.props.users.customer.phone}</Text>
               </View>
               {/*
               <TouchableOpacity
@@ -128,7 +134,7 @@ class Account extends React.Component<Props, any> {
             <Button
               title={strings.accountLogout}
               onPress={() => {
-                this.props.user.changeUser(null)
+                this.props.users.changeUser(null)
                 this.props.navigation.replace("Welcome")
               }}
               color={metrics.DANGER_COLOR}
@@ -282,4 +288,20 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withUserContext(Account)
+// export default withUserContext(Account)
+const mapStateToProps = ({ login, register }) => {
+  console.log('coba regis', register)
+  const { users } = login;
+  return {
+    users
+  }       
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return  {
+    user: bindActionCreators(loginActions, dispatch)
+  }
+}
+
+export default connect( mapStateToProps, mapDispatchToProps)(Account)
+
