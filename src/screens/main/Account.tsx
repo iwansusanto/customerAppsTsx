@@ -31,10 +31,13 @@ import { connect } from 'react-redux'
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
-  user: UserContext
+  users: any
+  user: {
+    changeUser: Function
+  }
 }
 
-class Account extends React.Component<any, any> {
+class Account extends React.Component<Props, any> {
 
   _onSetLanguage = async() => {
     const languageStore = await AsyncStorage.getItem("language")
@@ -134,7 +137,7 @@ class Account extends React.Component<any, any> {
             <Button
               title={strings.accountLogout}
               onPress={() => {
-                this.props.users.changeUser(null)
+                this.props.user.changeUser(null)
                 this.props.navigation.replace("Welcome")
               }}
               color={metrics.DANGER_COLOR}
