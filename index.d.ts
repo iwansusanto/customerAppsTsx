@@ -344,6 +344,7 @@ interface AddressCreateResponse {
 interface ShippingResponse {
   distance: string
   delivery_price: string
+  estimation_time: string
 }
 
 interface OrderedProduct {

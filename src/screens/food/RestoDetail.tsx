@@ -11,7 +11,8 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from "react-native"
 
 import metrics from "../../config/metrics"
@@ -23,6 +24,10 @@ import Text from "../../components/CustomText"
 import CartItem from "../../components/CartItem"
 import CustomButton from "../../components/CustomButton"
 import withCartContext from "../../components/consumers/withCartContext"
+import Lang from "../../components/Lang"
+import strings from "../../components/language"
+
+
 
 const IC_MENU = require("../../../assets/ic_menu.png")
 
@@ -86,6 +91,7 @@ class RestoDetail extends Component<Props, State> {
     setParams({ title: this.props.search.resto.merchant.name })
 
     this.props.cart.getCart()
+    this._onSetLanguage()
   }
 
   public render() {
@@ -146,6 +152,13 @@ class RestoDetail extends Component<Props, State> {
     await this.props.cart.getCart()
   }
 
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
   renderBottomSheetContent = () => (
     <View
       style={{
@@ -192,11 +205,10 @@ class RestoDetail extends Component<Props, State> {
           <Image source={ICON_CART} />
         </TouchableOpacity>
         <View style={{ marginLeft: 20, justifyContent: "center", flex: 1 }}>
-          <Text style={{ fontSize: 16, fontWeight: "bold", color: "#4A90E2" }}>
-            Estimate price
-          </Text>
+          <Lang styleLang={{ fontSize: 16, fontWeight: "bold", color: "#4A90E2" }} language='restoDetailEstimatePrice'>
+          </Lang>
           <Text style={{ fontSize: 14, marginTop: 5 }}>
-            {`${this.props.cart.cart.product_data.length} Items`}
+            {`${this.props.cart.cart.product_data.length} ${strings.restoDetailItems}`}
           </Text>
         </View>
         <View style={{ flexDirection: "row" }}>

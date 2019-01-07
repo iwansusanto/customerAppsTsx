@@ -11,6 +11,8 @@ import {
 
 // Custom component used in this component
 import Text from "./CustomText"
+import Lang from '../components/Lang'
+
 
 // Configs
 import metrics from "../config/metrics"
@@ -29,7 +31,7 @@ export default (props: FixedButtonProps) => (
     {...props}
   >
     {props.isLoading && <ActivityIndicator style={styles.loading} />}
-    <Text style={[styles.label, props.labelStyle]}>{props.label}</Text>
+    <Lang styleLang={[styles.label, props.labelStyle]} language={props.label}></Lang>
   </TouchableOpacity>
 )
 

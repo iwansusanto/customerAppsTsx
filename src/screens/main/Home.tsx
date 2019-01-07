@@ -25,7 +25,7 @@ import Lang from '../../components/Lang'
 
 // Actions
 import { bindActionCreators } from 'redux'
-import * as loginActions from '../../actions/loginActions'
+import * as userActions from '../../actions/userActions'
 import { connect } from 'react-redux'
 
 
@@ -293,9 +293,9 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({ login, register }) => {
+const mapStateToProps = ({ user, register }) => {
   console.log('coba regis', register)
-  const { users } = login;
+  const { users } = user;
   return {
     users
   }       
@@ -303,7 +303,7 @@ const mapStateToProps = ({ login, register }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return  {
-    user: bindActionCreators(loginActions, dispatch)
+    user: bindActionCreators(userActions, dispatch)
   }
 }
 

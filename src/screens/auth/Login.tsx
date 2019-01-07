@@ -11,7 +11,10 @@ import {
   Alert,
   AsyncStorage
 } from "react-native"
-import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+import {
+  NavigationStackScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 
 // Custom components used in the screen
 import withUserContext from "../../components/consumers/withUserContext"
@@ -21,14 +24,14 @@ import FixedButton from "../../components/FixedButton"
 
 import UserContext from "../../contexts/UserContext"
 import strings from "../../components/language"
-
+import Lang from "../../components/Lang"
 
 // Configs
 import metrics from "../../config/metrics"
 
 // Actions
 import { bindActionCreators } from 'redux'
-import * as loginActions from '../../actions/loginActions'
+import * as userActions from '../../actions/userActions'
 import { connect } from 'react-redux'
 
 // Assets
@@ -93,18 +96,9 @@ class Login extends React.Component<Props, State> {
 
     // Function binding to this class
     this.handleLoginButtonPressed = this.handleLoginButtonPressed.bind(this)
-    this.handleForgetPasswordPressed = this.handleForgetPasswordPressed.bind(this)
-  }
-
-  _onSetLanguage = async() => {
-    const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
-    return language
-  }
-
-  componentWillMount = () => {
-    this._onSetLanguage()
+    this.handleForgetPasswordPressed = this.handleForgetPasswordPressed.bind(
+      this
+    )
   }
 
   // Login button press handler
@@ -160,16 +154,19 @@ class Login extends React.Component<Props, State> {
                   resizeMode={"contain"}
                 />
                 <View style={styles.welcomeMessageContainer}>
-                  <Text style={[styles.welcomeMessage, { fontSize: 18 }]}>
-                    {strings.loginTitle}
-                  </Text>
-                  <Text style={[styles.welcomeMessage, { fontSize: 16 }]}>
-                    {strings.loginTagline}
-                  </Text>
+                  <Lang
+                    styleLang={[styles.welcomeMessage, { fontSize: 18 }]}
+                    language="loginTitle"
+                  />
+                  <Lang
+                    styleLang={[styles.welcomeMessage, { fontSize: 16 }]}
+                    language="loginTagline"
+                  />
                 </View>
                 <View style={styles.formContainer}>
                   <CustomTextInput
                     icon={ICON_MAIL}
+                    // placeholder="loginEmail"
                     placeholder={strings.loginEmail}
                     keyboardType={"email-address"}
                     autoCapitalize="none"
@@ -177,19 +174,25 @@ class Login extends React.Component<Props, State> {
                   />
                   <CustomTextInput
                     icon={ICON_KEY}
+                    // placeholder="loginPassword"
                     placeholder={strings.loginPassword}
                     secureTextEntry={true}
                     onChangeText={text => this.setState({ password: text })}
                   />
-                  <Text style={styles.forgot} onPress={this.handleForgetPasswordPressed}>
-                    {strings.loginForgotPass}
-                  </Text>
+                  <TouchableOpacity onPress={this.handleForgetPasswordPressed}>
+                    <Lang
+                      styleLang={styles.forgot}
+                      // not done yet
+                      language="loginForgotPass"
+                    />
+                  </TouchableOpacity>
                 </View>
                 <FixedButton
                   isLoading={this.state.isLoading}
-                  label={strings.login}
+                  label="login"
                   backgroundColor={
-                    this.state.email.length > 0 && this.state.password.length > 0
+                    this.state.email.length > 0 &&
+                    this.state.password.length > 0
                       ? metrics.SECONDARY_COLOR
                       : metrics.INACTIVE_COLOR
                   }
@@ -252,7 +255,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      actions: bindActionCreators(loginActions, dispatch)
+      actions: bindActionCreators(userActions, dispatch)
   }
 }
 

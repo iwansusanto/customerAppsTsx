@@ -9,7 +9,8 @@ import {
   GeolocationReturnType,
   Alert,
   DeviceEventEmitter,
-  Linking
+  Linking,
+  AsyncStorage
 } from "react-native"
 import MapView, { Region, Marker, PROVIDER_GOOGLE } from "react-native-maps"
 
@@ -21,6 +22,9 @@ import metrics from "../../config/metrics"
 import CartItemTrack from "../../components/CartItemTrack"
 import CustomButton from "../../components/CustomButton"
 import withOrderContext from "../../components/consumers/withOrderContext"
+import Lang from "../../components/Lang"
+import strings from "../../components/language"
+
 
 const ICON_TIME = require("../../../assets/ic_time.png")
 const ICON_PHONE = require("../../../assets/ic_phone_fill.png")
@@ -36,12 +40,25 @@ interface Props {
 }
 
 class OrderTrack extends React.Component<Props, any> {
-  static navigationOptions: NavigationStackScreenOptions = {
-    title: "Your Order"
-  }
+  static navigationOptions= (): NavigationStackScreenOptions => ({
+    title: strings.trackOrderTitle
+  })
+
 
   private mapRef = createRef<MapView>()
   private interval = -1
+
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    return language
+  }
+
+  componentWillMount() {
+    this._onSetLanguage()
+    this.props.navigation.setParams({})
+  }
+
 
   renderBottomSheetContent = () => {
     const order = this.props.order.orderDetail
@@ -66,15 +83,16 @@ class OrderTrack extends React.Component<Props, any> {
             padding: 20
           }}
         >
-          <Text
-            style={{
+          <Lang
+            styleLang={{
               alignSelf: "flex-start",
               color: "#4A90E2",
               fontWeight: "bold"
             }}
+            language='trackOrderDeliveryNotes'
           >
             Delivery Notes
-          </Text>
+          </Lang>
           <Text style={{ marginTop: 5 }}>{order.comment}</Text>
         </View>
         <FlatList
@@ -109,7 +127,7 @@ class OrderTrack extends React.Component<Props, any> {
             borderColor: "grey"
           }}
         >
-          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Payment Method</Text>
+          <Lang styleLang={{ color: "#4A90E2", fontWeight: "bold" }} language='trackOrderPaymentMethod'></Lang>
           <View style={{ flexDirection: "row" }}>
             <Text style={{ marginRight: 20 }}>{order.payment_method}</Text>
             <Image source={ICON_WALLET} />
@@ -125,7 +143,7 @@ class OrderTrack extends React.Component<Props, any> {
             borderColor: "grey"
           }}
         >
-          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Total</Text>
+          <Lang styleLang={{ color: "#4A90E2", fontWeight: "bold" }} language='trackOrderTotal'></Lang>
           <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>{order.total}</Text>
         </View>
         <View
@@ -138,11 +156,11 @@ class OrderTrack extends React.Component<Props, any> {
             borderColor: "grey"
           }}
         >
-          <Text style={{ color: "#4A90E2", fontWeight: "bold" }}>Transaction Number</Text>
+          <Lang styleLang={{ color: "#4A90E2", fontWeight: "bold" }} language='trackOrderTransNumber'></Lang>
           <Text>{order.id.toString()}</Text>
         </View>
         <CustomButton
-          label={"CANCEL ORDER"}
+          label='trackOrderCancel'
           style={{
             backgroundColor: metrics.DANGER_COLOR,
             width: metrics.DEVICE_WIDTH,
@@ -161,9 +179,8 @@ class OrderTrack extends React.Component<Props, any> {
 
     return (
       <View style={{ flex: 1 }}>
-        <Text style={{ color: "#4A90E2", fontSize: 16, fontWeight: "bold" }}>
-          Your Driver
-        </Text>
+        <Lang styleLang={{ color: "#4A90E2", fontSize: 16, fontWeight: "bold" }} language='trackOrderDriver'>
+        </Lang>
         <View
           style={{
             marginTop: 10,
