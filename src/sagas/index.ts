@@ -1,5 +1,5 @@
 import { all } from 'redux-saga/effects'
-import { watchChangeUsers } from './loginSagas'
+import { watchChangeUsers } from './userSagas'
 import { watchRegisterUsers} from './registerSagas'
  
  function* rootSaga(){

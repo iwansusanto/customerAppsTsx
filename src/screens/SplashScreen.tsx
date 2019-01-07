@@ -8,7 +8,7 @@ import strings from "../components/language"
 
 // Actions
 import { bindActionCreators } from 'redux'
-import * as loginActions from '../actions/loginActions'
+import * as userActions from '../actions/userActions'
 import { connect } from 'react-redux'
 
 const LOGO = require("../../assets/logo-higres.png")
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({ login, register }) => {
-  const { users } = login;
+const mapStateToProps = ({ user, register }) => {
+  const { users } = user;
   // const {users1} = register
   // console.log('state users1', users1)
   return {
@@ -89,7 +89,7 @@ const mapStateToProps = ({ login, register }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return  {
-    user: bindActionCreators(loginActions, dispatch)
+    user: bindActionCreators(userActions, dispatch)
   }
 }
 

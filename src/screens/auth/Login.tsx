@@ -28,7 +28,7 @@ import metrics from "../../config/metrics"
 
 // Actions
 import { bindActionCreators } from 'redux'
-import * as loginActions from '../../actions/loginActions'
+import * as userActions from '../../actions/userActions'
 import { connect } from 'react-redux'
 
 // Assets
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      actions: bindActionCreators(loginActions, dispatch)
+      actions: bindActionCreators(userActions, dispatch)
   }
 }
 
