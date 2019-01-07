@@ -1,6 +1,6 @@
 import { put, call, fork, takeLatest } from "redux-saga/effects";
 import * as types from "../actions/types";
-import fetchBanner from "../utils/services"
+import {fetchBanner} from "../utils/services"
 import { 
     fetchBannerHomepageSuccess,
     fetchBannerHomepageFailed
