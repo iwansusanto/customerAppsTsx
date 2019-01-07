@@ -28,7 +28,7 @@ export default class Lang extends Component <Props,any> {
     const {language} = this.props
     let children = this.props.children || []
     return (
-        <Text style={this.props.styleLang}>{strings[language]} {children.join('')}</Text>
+        <Text style={this.props.styleLang} >{strings[language]} {children.join('')}</Text>
     )
   }
 }

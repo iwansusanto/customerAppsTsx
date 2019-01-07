@@ -16,6 +16,8 @@ import Text from "../../components/CustomText"
 import CustomTextInput from "../../components/CustomTextInput"
 import FixedButton from "../../components/FixedButton"
 import strings from "../../components/language"
+import Lang from "../../components/Lang"
+
 
 
 // Configs
@@ -58,16 +60,6 @@ export default class ChangePassword extends React.Component {
       )
     }
   }
-  _onSetLanguage = async() => {
-    const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
-    return language
-  }
-
-  componentWillMount = () => {
-    this._onSetLanguage()
-  }
 
   render() {
     return (
@@ -75,20 +67,22 @@ export default class ChangePassword extends React.Component {
         <View style={styles.container}>
           <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
           <Image source={LOGO} style={styles.logo as ImageStyle} />
-          <Text style={styles.title}>{strings.forgotPassTitle}</Text>
+          <Lang styleLang={styles.title} language='forgotPassTitle'></Lang>
           <View style={styles.formContainer}>
             <CustomTextInput
               icon={ICON_KEY}
+              // placeholder='forgotPassNew'
               placeholder={strings.forgotPassNew}
               secureTextEntry={true}
             />
             <CustomTextInput
               icon={ICON_KEY}
+              // placeholder='forgotPassVerify'
               placeholder={strings.forgotPassVerify}
               secureTextEntry={true}
             />
           </View>
-          <FixedButton backgroundColor={metrics.SECONDARY_COLOR} label={strings.forgotPassChange} />
+          <FixedButton backgroundColor={metrics.SECONDARY_COLOR} label='forgotPassChange'/>
         </View>
       </TouchableWithoutFeedback>
     )

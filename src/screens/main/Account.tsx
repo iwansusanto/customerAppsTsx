@@ -10,13 +10,16 @@ import {
 } from "react-native"
 
 import Text from "../../components/CustomText"
-import { NavigationTabScreenOptions, NavigationScreenProp } from "react-navigation"
+import {
+  NavigationTabScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import CustomButton from "../../components/CustomButton"
 import withUserContext from "../../components/consumers/withUserContext"
 import strings from "../../components/language"
-
+import Lang from "../../components/Lang"
 
 const ICON_FB = require("../../../assets/ic_facebook.png")
 const ICON_POINT = require("../../../assets/point.png")
@@ -38,8 +41,7 @@ interface Props {
 }
 
 class Account extends React.Component<Props, any> {
-
-  _onSetLanguage = async() => {
+  _onSetLanguage = async () => {
     const languageStore = await AsyncStorage.getItem("language")
     const language = await strings.setLanguage(languageStore)
     console.log("STRING", languageStore, language)
@@ -50,13 +52,13 @@ class Account extends React.Component<Props, any> {
     this._onSetLanguage()
   }
   render() {
-    console.log('language', this.props)
+    console.log("language", this.props)
     return (
-      <View style={styles.container} >
+      <View style={styles.container}>
         <HeaderOverlay />
         <View style={[styles.container, { alignItems: "center" }]}>
-          <Text style={styles.title}>{strings.accountTitle}</Text>
-          <Text style={styles.subtitle}>{strings.accountInfo}</Text>
+          <Lang styleLang={styles.title} language="accountTitle" />
+          <Lang styleLang={styles.subtitle} language="accountInfo" />
           <View style={styles.profileContainer}>
             <View style={styles.detailContainer}>
               {/* 
@@ -76,7 +78,7 @@ class Account extends React.Component<Props, any> {
               </TouchableOpacity>
               */}
             </View>
-              {/*
+            {/*
             <View style={styles.facebookContainer}>
               <Text style={styles.facebookCaption}>
                 Tap to connect with your Facebook account
@@ -90,7 +92,7 @@ class Account extends React.Component<Props, any> {
             </View>
               */}
           </View>
-              {/*
+          {/*
           <View style={styles.profileContainer}>
             <View style={styles.pointsContainer}>
               <Text style={styles.pointsLabel}>Points</Text>
@@ -104,29 +106,36 @@ class Account extends React.Component<Props, any> {
           </View>
               */}
           <View style={styles.menuContainer}>
-              {
-            <TouchableOpacity style={styles.menuItem}
-            onPress={() => this.props.navigation.navigate("Language")}
-            >
-              <Text style={styles.menuLabel}>{strings.accountChangeLanguage}</Text>
-              <Image source={ICON_ARROW} />
-            </TouchableOpacity>
-              }
+            {
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => this.props.navigation.navigate("Language")}
+              >
+                <Lang
+                  styleLang={styles.menuLabel}
+                  language="accountChangeLanguage"
+                />
+                <Image source={ICON_ARROW} />
+              </TouchableOpacity>
+            }
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => this.props.navigation.navigate("Terms")}
             >
-              <Text style={styles.menuLabel}>{strings.accountTos}</Text>
+              <Lang styleLang={styles.menuLabel} language="accountTos" />
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => this.props.navigation.navigate("PrivacyPolicy")}
             >
-              <Text style={styles.menuLabel}>{strings.accountPrivacyPolicy}</Text>
+              <Lang
+                styleLang={styles.menuLabel}
+                language="accountPrivacyPolicy"
+              />
               <Image source={ICON_ARROW} />
             </TouchableOpacity>
-              {/*
+            {/*
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuLabel}>Rate App</Text>
               <Image source={ICON_ARROW} />

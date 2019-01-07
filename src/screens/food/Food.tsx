@@ -11,6 +11,7 @@ import FoodSuggestion from "../../components/FoodSuggestion"
 import withSuggestionContext from "../../components/consumers/withSuggestionContext"
 import withSearchContext from "../../components/consumers/withSearchContext"
 import withPickCategoriesContext from "../../components/consumers/withPickcategoriesContext"
+import Lang from "../../components/Lang"
 
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_HEART = require("../../../assets/ic_heart.png")
@@ -68,15 +69,15 @@ class Food extends React.Component<Props, any> {
       <View style={styles.container}>
         <HeaderOverlay />
         <View style={styles.captionContainer}>
-          <Text style={styles.caption}>Stay where you are,</Text>
-          <Text style={styles.caption}>We bring your favorites</Text>
+          <Lang styleLang={styles.caption} language='foodTagline1'></Lang>
+          <Lang styleLang={styles.caption} language='foodTagline2'></Lang>
         </View>
         <SearchBar
           style={styles.searchBar}
           onFocus={() => this.props.navigation.navigate("MainSearch")}
         />
         <View style={styles.categoryContainer}>
-          <Text style={styles.subtitle}>Pick by categories</Text>
+          <Lang styleLang={styles.subtitle} language='foodPickByCategories'></Lang>
           <View style={styles.categoryListContainer}>
             <FlatList
               data={this.props.pickcategories.pickcategories}
@@ -96,7 +97,7 @@ class Food extends React.Component<Props, any> {
             />
           </View>
         </View>
-        <Text style={styles.suggestionCaption}>Suggestion for you</Text>
+        <Lang styleLang={styles.suggestionCaption} language='foodSuggest'></Lang>
         <FlatList
           data={this.props.suggestion.suggestions}
           keyExtractor={item => item.id.toString()}

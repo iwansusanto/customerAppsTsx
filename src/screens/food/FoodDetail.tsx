@@ -6,7 +6,8 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
-  ImageStyle
+  ImageStyle,
+  AsyncStorage
 } from "react-native"
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
@@ -20,6 +21,10 @@ import AdditionalFoodItem from "../../components/AdditionalFoodItem"
 import FixedButton from "../../components/FixedButton"
 import withCartContext from "../../components/consumers/withCartContext"
 import CustomTextInput from "../../components/CustomTextInput"
+import Lang from "../../components/Lang"
+import strings from "../../components/language"
+
+
 
 const ICON_NOTE = require("../../../assets/ic_add_note.png")
 
@@ -54,7 +59,16 @@ class FoodDetail extends React.Component<Props, State> {
     await this.setState({
       selectedAdditional: new Array(additional.length).fill(false)
     })
+    this._onSetLanguage()
   }
+
+  _onSetLanguage = async() => {
+    const languageStore = await AsyncStorage.getItem("language")
+    const language = await strings.setLanguage(languageStore)
+    console.log("STRING", languageStore, language)
+    return language
+  }
+
 
   render() {
     const {
@@ -79,8 +93,8 @@ class FoodDetail extends React.Component<Props, State> {
               />
               {additional !== null && (
                 <View style={styles.detail}>
-                  <Text style={styles.title}>Add Extra Items</Text>
-                  <Text style={styles.category}>Toppings</Text>
+                  <Lang styleLang={styles.title} language='foodDetailExtraItem'></Lang>
+                  <Lang styleLang={styles.category} language='foodDetailTopping'></Lang>
                   {additional !== null &&
                     additional.topping.map((item: any, index: number) => (
                       <AdditionalFoodItem
@@ -93,7 +107,7 @@ class FoodDetail extends React.Component<Props, State> {
                     ))}
                 </View>
               )}
-              <CustomTextInput icon={ICON_NOTE} placeholder={"Add notes"} />
+              <CustomTextInput icon={ICON_NOTE} placeholder={strings.foodDetailAddNotes} />
             </View>
           </View>
         </KeyboardAwareScrollView>
@@ -101,7 +115,7 @@ class FoodDetail extends React.Component<Props, State> {
           style={styles.addToCartButton}
           onPress={this.addToCart(false)}
         >
-          <Text style={styles.addToCartLabel}>Add to cart</Text>
+          <Lang styleLang={styles.addToCartLabel} language='foodDetailAddCart'></Lang>
           <Text style={styles.addToCartLabel}>{`QR ${Number(price) +
             Number(this.state.additionalPrice)}`}</Text>
         </TouchableOpacity>

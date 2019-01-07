@@ -9,6 +9,7 @@ import {
 import Text from "../../components/CustomText"
 import CustomButton from "../../components/CustomButton"
 import strings from "../../components/language"
+import Lang from "../../components/Lang"
 
 // Configs
 import metrics from "../../config/metrics"
@@ -57,17 +58,6 @@ export default class Welcome extends React.Component<Props, any> {
     this.props.navigation.navigate("Register")
   }
 
-  _onSetLanguage = async() => {
-    const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
-    return language
-  }
-
-  componentWillMount = () => {
-    this._onSetLanguage()
-  }
-
   render() {
     console.log("props welcome", strings.loginGreetings)
     return (
@@ -78,16 +68,16 @@ export default class Welcome extends React.Component<Props, any> {
           style={styles.overlay as ImageStyle}
           resizeMode={"contain"}
         />
-        <Text style={styles.title}>{strings.loginGreetings}</Text>
-        <Text style={styles.caption}>{strings.tagLine}</Text>
+        <Lang styleLang={styles.title} language="loginGreetings" />
+        <Lang styleLang={styles.caption} language="tagLine" />
         <View style={styles.defaultAuthButtonContainer}>
           <CustomButton
-            label={strings.login}
+            label='login'
             style={styles.defaultAuthButton}
             onPress={this.handleLoginButtonPressed}
           />
           <CustomButton
-            label={strings.register}
+            label='register'
             style={styles.defaultAuthButton}
             onPress={this.handleRegisterButtonPressed}
           />
@@ -99,8 +89,8 @@ export default class Welcome extends React.Component<Props, any> {
           icon={ICON_FB}
         /> */}
         <View style={styles.tosContainer}>
-          <Text style={styles.caption}>{strings.byRegister}</Text>
-          <Text style={styles.tos}>{strings.byTos}</Text>
+          <Lang styleLang={styles.caption} language="byRegister" />
+          <Lang styleLang={styles.tos} language="byTos" />
         </View>
       </View>
     )
