@@ -26,6 +26,7 @@ import Lang from '../../components/Lang'
 // Actions
 import { bindActionCreators } from 'redux'
 import * as userActions from '../../actions/userActions'
+import * as getCategoriesActions from '../../actions/getCategoriesActions'
 import { connect } from 'react-redux'
 
 
@@ -113,7 +114,8 @@ class Home extends React.Component<any, State> {
   }
 
   async componentDidMount() {
-    await this.props.category.getCategories()
+    await this.props.category.getCategoriesSuccess()
+    console.log('props category', this.props.category.getCategoriesSuccess())
   }
 
   componentWillUnmount() {
@@ -121,7 +123,7 @@ class Home extends React.Component<any, State> {
   }
 
   render() {
-    console.log('name', this.props)
+    // console.log('name', this.props.category)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -293,17 +295,21 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({ user, register }) => {
-  console.log('coba regis', register)
+const mapStateToProps = ({ user, register, home }) => {
+  console.log('coba home', home)
   const { users } = user;
+  // const {data} = home
   return {
-    users
+    users,
+    // data
   }       
 }
 
 const mapDispatchToProps = (dispatch) => {
   return  {
-    user: bindActionCreators(userActions, dispatch)
+    user: bindActionCreators(userActions, dispatch),
+    category: bindActionCreators(getCategoriesActions, dispatch)
+
   }
 }
 

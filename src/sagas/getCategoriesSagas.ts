@@ -1,20 +1,21 @@
 import { put, call, fork, takeLatest } from "redux-saga/effects";
 import * as types from "../actions/types";
-import getCategories from "../utils/services"
+import getCategories from "../utils/services/getCategories"
 import { 
     getCategoriesSuccess,
     getCategoriesFailed
 } from "../actions/getCategoriesActions";
 
-export function* fetchBannerHomepage(action){
+export function* getCategory(action){
     try { 
-        const data = yield call(getCategories, action.params);
-        yield put(getCategoriesSuccess(data.data.data));
+        const data = yield call(getCategories, action.payload);
+        yield put(getCategoriesSuccess(data.data));
       } catch (error) {
+        console.log('data error', error)
         yield put(getCategoriesFailed(error));
       }
 }
 
-export function* watchFetchBannerHomepage() {
-    yield takeLatest(types.GET_CATEGORIES, fetchBannerHomepage);
+export function* watchGetCategory() {
+    yield takeLatest(types.GET_CATEGORIES, getCategory);
   }

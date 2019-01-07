@@ -2,6 +2,7 @@ import * as types from '../actions/types'
 import appState from '../config/intialState'
 
 const getCategories = (state = appState.home, action) => {
+    console.log('get cat', action)
     switch (action.type){
         case types.CLICK_HOME_BANNER_CATEGORY:
             return { 
@@ -13,21 +14,21 @@ const getCategories = (state = appState.home, action) => {
                 ...state,
                 loading: true,
                 error: '',
-                data: {}
+                payload: {}
             } 
         case types.GET_CATEGORIES_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 error: '',
-                data: action.data
+                payload: action.data
             }
         case types.GET_CATEGORIES_FAILED:
             return {
                 ...state,
                 loading: false,
                 error: action.error,
-                data: {}
+                payload: {}
             }    
         default: 
             return state;
