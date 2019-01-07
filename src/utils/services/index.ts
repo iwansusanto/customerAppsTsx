@@ -1,7 +1,7 @@
-import fetchBanner from './homeApis'
+import getCategories from './getCategories'
 
 const apiFetch = {
-    fetchBanner
+    getCategories
 }
 
 export default apiFetch

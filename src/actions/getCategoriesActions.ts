@@ -2,9 +2,9 @@ import {
     CLICK_HOME_BANNER_CATEGORY,
     CLICK_HOME_BANNER_CATEGORY_SUCCESS,
     CLICK_HOME_BANNER_CATEGORY_FAILED,
-    FETCH_BANNER_HOMEPAGE,
-    FETCH_BANNER_HOMEPAGE_SUCCESS,
-    FETCH_BANNER_HOMEPAGE_FAILED
+    GET_CATEGORIES,
+    GET_CATEGORIES_SUCCESS,
+    GET_CATEGORIES_FAILED
 } from './types'
 
 export const clickBannerAction = (params, onSuccess, onError) => ({
@@ -24,19 +24,19 @@ export const clickBannerFailed = (error) => ({
     payload : error
 })
 
-export const fetchBannerHomepage = (params, onSuccess, onError) => ({
-    type: FETCH_BANNER_HOMEPAGE,
+export const getCategories = (params, onSuccess, onError) => ({
+    type: GET_CATEGORIES,
     payload : params,
     onSuccess,
     onError
 })
 
-export const fetchBannerHomepageSuccess = (data) => ({
-    type: FETCH_BANNER_HOMEPAGE_SUCCESS,
+export const getCategoriesSuccess = (data) => ({
+    type: GET_CATEGORIES_SUCCESS,
     payload : data
 })
 
-export const fetchBannerHomepageFailed = (error) => ({
-    type: FETCH_BANNER_HOMEPAGE_FAILED,
+export const getCategoriesFailed = (error) => ({
+    type: GET_CATEGORIES_FAILED,
     payload : error
 })

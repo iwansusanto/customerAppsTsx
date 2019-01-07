@@ -1,28 +1,28 @@
 import * as types from '../actions/types'
 import appState from '../config/intialState'
 
-const homeReducers = (state = appState.home, action) => {
+const getCategories = (state = appState.home, action) => {
     switch (action.type){
         case types.CLICK_HOME_BANNER_CATEGORY:
             return { 
                 ...state, 
                 ...{homeBannerId: action.data}
             }
-        case types.FETCH_BANNER_HOMEPAGE:
+        case types.GET_CATEGORIES:
             return {
                 ...state,
                 loading: true,
                 error: '',
                 data: {}
             } 
-        case types.FETCH_BANNER_HOMEPAGE_SUCCESS:
+        case types.GET_CATEGORIES_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 error: '',
                 data: action.data
             }
-        case types.FETCH_BANNER_HOMEPAGE_FAILED:
+        case types.GET_CATEGORIES_FAILED:
             return {
                 ...state,
                 loading: false,
@@ -34,4 +34,4 @@ const homeReducers = (state = appState.home, action) => {
     }
 }
 
-export default homeReducers;
+export default getCategories;
