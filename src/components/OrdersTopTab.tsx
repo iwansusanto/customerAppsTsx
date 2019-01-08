@@ -17,13 +17,10 @@ interface State {
 }
 
 export default class OrdersTobTab extends React.Component<Props, State> {
-  state = {
-    navigation: this.props.navigation
-  }
 
   render() {
-    const { navigation } = this.state
-
+    const { navigation } = this.props
+    
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -32,12 +29,10 @@ export default class OrdersTobTab extends React.Component<Props, State> {
           <FlatList
             data={navigation.state.routes}
             horizontal
-            extraData={this.state}
+            extraData={this.props}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }: { item: any, index: number }) => {
-              console.log('Item : ', item)
-              console.log('Navigation : ', navigation)
-              console.log('Index : ', index)
+              
               return (
                 <TouchableOpacity
                   style={styles.labelContainer}
