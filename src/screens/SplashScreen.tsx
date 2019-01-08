@@ -38,11 +38,8 @@ class SplashScreen extends Component<Props, any> {
 
   async componentDidMount() {
     const dataJSONString = await getData(keys.user)
-    // const dataLanguage = await getData(keys.language)
     console.log('splash screen : ', dataJSONString)
-    if (dataJSONString !== null 
-        // && dataLanguage !== null
-        ) {
+    if (dataJSONString !== null) {
       const data = JSON.parse(dataJSONString)
 
       if (data !== null) {
