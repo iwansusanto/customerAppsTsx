@@ -49,7 +49,6 @@ export default class Orders extends React.Component<any, State> {
             language="ordersEmpty"
           />
         )}
-        
         <FlatList
           data={this.state.data}
           renderItem={({ item }: { item: any }) => {

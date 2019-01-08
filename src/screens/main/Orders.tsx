@@ -4,11 +4,11 @@ import { createTabNavigator } from "react-navigation"
 import OrdersTopTab from "../../components/OrdersTopTab"
 
 import OrdersHistory from "./OrdersHistory"
-import OrdersOnging from "./OrdersOnging"
+import OrdersOngoing from "./OrdersOngoing"
 
 export default createTabNavigator(
   {
-    Onging: { screen: OrdersOnging },
+    Ongoing: { screen: OrdersOngoing },
     History: { screen: OrdersHistory }
   },
   {

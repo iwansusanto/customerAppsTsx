@@ -21,14 +21,19 @@ interface State {
 export default class Orders extends React.Component<any, State> {
   state = {
     isDataLoading: true,
-    data: []
+    data: [
+      {'id': 1, 'name': 'Home', 'ordered_at': '2019-01-07 07:03:57', 'status_text': 'ONGOING'},
+      {'id': 2, 'name': 'Hotel', 'ordered_at': '2018-12-07 08:03:57', 'status_text': 'SCHEDULED'},
+      {'id': 3, 'name': 'Villa', 'ordered_at': '2018-11-07 14:03:57', 'status_text': 'SCHEDULED'}
+    ]
   }
 
   async componentDidMount() {
-    this.setState({ isDataLoading: true })
-    const { data } = await api.client.get<any>("/orders")
-    console.log(data)
-    this.setState({ data: data, isDataLoading: false })
+    // this.setState({ isDataLoading: true })
+    // const { data } = await api.client.get<any>("/orders")
+    // console.log(data)
+    // this.setState({ data: data, isDataLoading: false })
+    this.setState({ isDataLoading: false })
   }
   _onSetLanguage = async () => {
     const languageStore = await getData(keys.language)
@@ -49,6 +54,7 @@ export default class Orders extends React.Component<any, State> {
             language="ordersEmpty"
           />
         )}
+        
         <FlatList
           data={this.state.data}
           renderItem={({ item }: { item: any }) => {

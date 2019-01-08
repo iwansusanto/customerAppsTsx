@@ -28,7 +28,7 @@ export default (props: Props) => (
     <View style={styles.detailContainer}>
       <Text style={styles.title}>{props.name}</Text>
       <Text style={styles.status}>{props.statusText}</Text>
-      <Text style={styles.date}>{moment(props.date).format("DD MMMM YYYY hh:mm")}</Text>
+      <Text style={styles.date}>{moment(props.date).format("DD MMM, hh:mm a")}</Text>
     </View>
     <View style={styles.iconContainer}>
       <TouchableOpacity>
