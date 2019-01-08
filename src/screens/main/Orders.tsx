@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image, FlatList, AsyncStorage } from "react-native"
+import { View, StyleSheet, Image, FlatList } from "react-native"
 import moment from "moment"
 
 import Text from "../../components/CustomText"
@@ -10,6 +10,8 @@ import HeaderOverlay from "../../components/HeaderOverlay"
 import api from "../../utils/api"
 import strings from "../../components/language"
 import Lang from "../../components/Lang"
+import { keys } from '../../config/keys'
+import { getData } from '../../utils/storage'
 
 interface State {
   isDataLoading: boolean
@@ -29,7 +31,7 @@ export default class Orders extends React.Component<any, State> {
     this.setState({ data: data, isDataLoading: false })
   }
   _onSetLanguage = async () => {
-    const languageStore = await AsyncStorage.getItem("language")
+    const languageStore = await getData(keys.language)
     return await strings.setLanguage(languageStore)
   }
 
