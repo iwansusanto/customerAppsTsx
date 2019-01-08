@@ -1,10 +1,11 @@
 import { all } from 'redux-saga/effects'
-import { watchChangeUsers } from './userSagas'
+import { watchChangeUsers, watchLoginUsers } from './userSagas'
 import { watchRegisterUsers} from './registerSagas'
  
  function* rootSaga(){
      yield all([
         watchChangeUsers(),
+        watchLoginUsers(),
         watchRegisterUsers()
      ])
  }

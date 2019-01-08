@@ -23,7 +23,7 @@ interface CustomTextInputProps extends TextInputProps {
 
 export default (props: CustomTextInputProps) => {
   const { style, ...otherProps } = props
-  console.log('coba props', props)
+  // console.log('coba props', props)
   return (
     <View style={[styles.container, style]}>
       <View style={styles.imageContainer}>

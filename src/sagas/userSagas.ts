@@ -1,6 +1,6 @@
 import { put, call, fork, takeLatest, takeEvery } from "redux-saga/effects"
 import * as types from "../actions/types"
-import { changeUser } from "../actions/userActions";
+import * as postRequest from "../utils/services/postRequest"
 import api from "../utils/api";
 import { setData } from '../utils/storage'
 import { keys } from '../config/keys'
@@ -15,5 +15,22 @@ export async function* changeUsers(action) {
 }
 
 export function* watchChangeUsers() {
-  yield takeLatest(types.CHANGE_USER, changeUsers);
+  yield takeLatest(types.CHANGE_USER, changeUsers)
+}
+
+export function* loginUsers(action) {
+  try {
+    const { data } = yield call(postRequest.login, action.payload)
+    if(data.success) {
+      action.onSuccess(data)
+    } else {
+      action.onFailed(data)
+    }
+  } catch(error) {
+    console.log('Error changeUsers : ', error)
+  }
+}
+
+export function* watchLoginUsers() {
+  yield takeLatest(types.LOGIN, loginUsers)
 }
