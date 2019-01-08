@@ -41,10 +41,8 @@ class SplashScreen extends Component<Props, any> {
     console.log('splash screen : ', dataJSONString)
     if (dataJSONString !== null) {
       const data = JSON.parse(dataJSONString)
-
       if (data !== null) {
         this.props.user.changeUser(data)
-        console.log('hello', strings.inboxTab)
         // this.props.navigation.navigate('Login')
         await this.props.navigation.replace("Home", {
           inbox: strings.inboxTab,
