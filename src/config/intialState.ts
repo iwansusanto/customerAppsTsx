@@ -5,6 +5,10 @@ export default  {
     register: {
       userRegister: {}
     },
+    forgotPassword: {
+      email : '',
+      loading: false
+    },
     home : {
       homeBannerId: '',
       loading: false,

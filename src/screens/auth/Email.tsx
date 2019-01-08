@@ -26,6 +26,12 @@ const OVERLAY = require("../../../assets/overlay-login.png")
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_MAIL = require("../../../assets/ic_mail.png")
 
+
+// Actions
+import { bindActionCreators } from 'redux'
+import * as userActions from '../../actions/userActions'
+import { connect } from 'react-redux'
+
 interface Props {
   navigation: NavigationScreenProp<any, any>
 }
@@ -34,7 +40,7 @@ interface State {
   email: string
 }
 
-export default class Email extends React.Component<Props, State> {
+class Email extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.handleSendEmailButtonPressed = this.handleSendEmailButtonPressed.bind(
@@ -56,6 +62,8 @@ export default class Email extends React.Component<Props, State> {
       const { data } = await api.client.post("/reset_password", {
         email: this.state.email
       })
+      console.log('data email', data)
+      // return data
     } catch (err) {
       Alert.alert("Error", err.message)
     }
@@ -85,6 +93,7 @@ export default class Email extends React.Component<Props, State> {
                   keyboardType={"email-address"}
                   style={styles.form}
                   onChangeText={this.handleEmailInputChange}
+                  autoCapitalize='none'
                 />
                 <FixedButton
                   backgroundColor={
@@ -92,8 +101,8 @@ export default class Email extends React.Component<Props, State> {
                       ? metrics.SECONDARY_COLOR
                       : metrics.INACTIVE_COLOR
                   }
-                  // label='resetPassSend'
-                  label={strings.resetPassSend}
+                  label='resetPassSend'
+                  // label={strings.resetPassSend}
                   onPress={this.handleSendEmailButtonPressed}
                 />
               </View>
@@ -145,3 +154,21 @@ const styles = StyleSheet.create({
     marginTop: 50
   }
 })
+
+const mapStateToProps = ({ user }) => {
+  // console.log('coba home', getCategories)
+  const { users } = user;
+  return {
+    users,
+  }       
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return  {
+    user: bindActionCreators(userActions, dispatch),
+
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Email)
