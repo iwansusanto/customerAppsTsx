@@ -123,7 +123,7 @@ class Home extends React.Component<any, State> {
   }
 
   render() {
-    // console.log('name', this.props.category)
+    // console.log('name', this.props)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -295,10 +295,10 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({ user, register, home }) => {
-  console.log('coba home', home)
+const mapStateToProps = ({ user, register }) => {
+  // console.log('coba home', getCategories)
   const { users } = user;
-  // const {data} = home
+  // const {data} = getCategories
   return {
     users,
     // data

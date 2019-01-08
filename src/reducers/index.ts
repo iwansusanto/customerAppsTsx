@@ -6,7 +6,7 @@ import getCategories from './getCategoriesReducers'
 const allReducers = combineReducers({
     user,
     register,
-    getCategories
+    // getCategories
 });
 
 export default allReducers;

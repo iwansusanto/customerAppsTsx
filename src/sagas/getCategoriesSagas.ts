@@ -9,7 +9,8 @@ import {
 export function* getCategory(action){
     try { 
         const data = yield call(getCategories, action.payload);
-        yield put(getCategoriesSuccess(data.data));
+        // yield put(getCategoriesSuccess(data.data));
+        console.log('coba coba aja', data)
       } catch (error) {
         console.log('data error', error)
         yield put(getCategoriesFailed(error));
