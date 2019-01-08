@@ -6,8 +6,8 @@ import { watchGetCategory } from './getCategoriesSagas'
  function* rootSaga(){
      yield all([
         watchChangeUsers(),
-        watchRegisterUsers(),
-        watchGetCategory()
+        watchGetCategory(),
+        watchRegisterUsers()
      ])
  }
 

@@ -45,6 +45,11 @@ const OVERLAY = require("../../../assets/overlay-login.png")
 // Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
+  user: {
+    login: Function
+    changeUser: Function
+  }
+  users: any
 }
 
 interface State {
@@ -102,39 +107,38 @@ class Login extends React.Component<Props, State> {
   }
 
   // Login button press handler
-  handleLoginButtonPressed = (login: Function) => async () => {
+  handleLoginButtonPressed = () => async () => {
     if (this.state.isLoading) return
-
-    this.setState({ isLoading: true })
-
     const { email, password } = this.state
 
-    const result = await login({
+    await this.setState({ isLoading: true })
+    
+    await this.props.user.login({
       email,
       password
-    })
-
-    this.setState({ isLoading: false })
-
-    if (result) {
-      // this.props.navigation.navigate("OTP", {
-      //   email,
-      //   password
-      // })
-      this.props.navigation.replace("Home", {
-        inbox: strings.inboxTab,
-        account: strings.accountTab,
-        help: strings.helpTab,
-        order: strings.ordersTab,
-        home: strings.homeTab
-      })
-    } else {
-      // TODO: show login failed
-      Alert.alert("Failed", "Login failed, please try again")
-    }
+    }, this._onSuccessLogin, this._onFailedLogin)
   }
 
-  // Forget password press handlre
+  _onSuccessLogin = async (data) => {
+    await this.setState({ isLoading: !this.state.isLoading })
+    await this.props.user.changeUser(data)
+    await this.props.navigation.replace("Home", {
+      inbox: strings.inboxTab,
+      account: strings.accountTab,
+      help: strings.helpTab,
+      order: strings.ordersTab,
+      home: strings.homeTab
+    })
+    // console.log('_onSuccessLogin : ', data)
+  }
+
+  _onFailedLogin = async (error) => {
+    await this.setState({ isLoading: !this.state.isLoading })
+    Alert.alert("Failed : ", error.message)
+    // console.log('_onFailedLogin : ', error)
+  }
+
+  // Forget password press handle
   handleForgetPasswordPressed(): void {
     // Navigate to change password screen
     this.props.navigation.navigate("Email")
@@ -142,9 +146,7 @@ class Login extends React.Component<Props, State> {
 
   render() {
     return (
-      <UserContext.Consumer>
-        {context => (
-          <KeyboardAvoidingView behavior={"padding"} style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior={"padding"} style={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View style={styles.container}>
                 <Image source={LOGO} style={styles.logo as ImageStyle} />
@@ -196,13 +198,11 @@ class Login extends React.Component<Props, State> {
                       ? metrics.SECONDARY_COLOR
                       : metrics.INACTIVE_COLOR
                   }
-                  onPress={this.handleLoginButtonPressed(context.login)}
+                  onPress={this.handleLoginButtonPressed()}
                 />
               </View>
             </TouchableWithoutFeedback>
           </KeyboardAvoidingView>
-        )}
-      </UserContext.Consumer>
     )
   }
 }
@@ -252,11 +252,20 @@ const styles = StyleSheet.create({
   }
 })
 
+const mapStateToProps = ({ user }) => {
+  const { users, loading } = user;
+  // const {users1} = register
+  // console.log('state users1', users1)
+  return {
+    users,
+    loading
+  }       
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      actions: bindActionCreators(userActions, dispatch)
+    user: bindActionCreators(userActions, dispatch)
   }
 }
 
-export default connect(null, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

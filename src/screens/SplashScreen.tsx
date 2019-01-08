@@ -5,6 +5,8 @@ import { NavigationScreenProp } from "react-navigation"
 import metrics from "../config/metrics"
 import withUserContext from "../components/consumers/withUserContext"
 import strings from "../components/language"
+import { keys } from '../config/keys'
+import { setData, getData } from '../utils/storage'
 
 // Actions
 import { bindActionCreators } from 'redux'
@@ -26,7 +28,7 @@ class SplashScreen extends Component<Props, any> {
   }
   
   _onSetLanguage = async() => {
-    const languageStore = await AsyncStorage.getItem("language")
+    const languageStore = await getData(keys.language)
     return await strings.setLanguage(languageStore)
   }
 
@@ -35,9 +37,9 @@ class SplashScreen extends Component<Props, any> {
   }
 
   async componentDidMount() {
-    const dataJSONString = await AsyncStorage.getItem("user")
-    const dataLanguage = await AsyncStorage.getItem('language')
-    if (dataJSONString !== null && dataLanguage !== null) {
+    const dataJSONString = await getData(keys.user)
+    console.log('splash screen : ', dataJSONString)
+    if (dataJSONString !== null) {
       const data = JSON.parse(dataJSONString)
 
       if (data !== null) {
