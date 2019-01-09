@@ -5,7 +5,7 @@ import moment from "moment"
 import Text from "../../components/CustomText"
 import { NavigationTabScreenOptions } from "react-navigation"
 import metrics from "../../config/metrics"
-import OrderItem from "../../components/OrderItem"
+import OrderOngoingItem from "../../components/OrderOngoingItem"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import api from "../../utils/api"
 import strings from "../../components/language"
@@ -59,7 +59,7 @@ export default class Orders extends React.Component<any, State> {
           data={this.state.data}
           renderItem={({ item }: { item: any }) => {
             return (
-              <OrderItem
+              <OrderOngoingItem
                 name={item.name}
                 date={item.ordered_at}
                 statusText={item.status_text}

@@ -15,7 +15,7 @@ import Text from "../components/CustomText"
 const PICTURE = require("../../assets/dummy_order.png")
 const ICON_PHONE = require("../../assets/ic_phone_fill.png")
 const ICON_MESSAGE = require("../../assets/ic_message.png")
-const ICON_ARROW = require("../../assets/ic_arrow_blue.png")
+// const ICON_ARROW = require("../../assets/ic_arrow_blue.png")
 
 interface Props extends TouchableOpacityProps {
   name: string
@@ -29,25 +29,18 @@ export default (props: Props) => (
     <View style={styles.detailContainer}>
       <View style={styles.titleCard}>
         <Text style={styles.title}>{props.name}</Text>
-        {props.statusText === 'SCHEDULED' && (
-          <View style={{flex: 1}}>
-            <Image source={ICON_ARROW} style={styles.image as ImageStyle} />  
-          </View>
-        )}
       </View>
       <Text style={styles.status}>{props.statusText}</Text>
       <Text style={styles.date}>{moment(props.date).format("DD MMM, hh:mm a")}</Text>
     </View>
-    {props.statusText !== 'SCHEDULED' && (
-      <View style={styles.iconContainer}>
-        <TouchableOpacity>
-          <Image source={ICON_PHONE} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image source={ICON_MESSAGE} />
-        </TouchableOpacity>
-      </View>
-    )}
+    <View style={styles.iconContainer}>
+      <TouchableOpacity>
+        <Image source={ICON_PHONE} />
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <Image source={ICON_MESSAGE} />
+      </TouchableOpacity>
+    </View>
     
   </TouchableOpacity>
 )
