@@ -39,7 +39,9 @@ class SplashScreen extends Component<Props, any> {
   async componentDidMount() {
     const dataJSONString = await getData(keys.user)
     console.log('splash screen : ', dataJSONString)
-    if (dataJSONString !== null) {
+    // this.props.navigation.replace('Welcome')
+
+    if (dataJSONString !== '') {
       const data = await JSON.parse(dataJSONString)
       console.log('data json', data)
 

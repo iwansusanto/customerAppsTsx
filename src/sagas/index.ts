@@ -1,5 +1,5 @@
 import { all } from 'redux-saga/effects'
-import { watchChangeUsers } from './userSagas'
+import { watchChangeUsers, watchLoginUsers } from './userSagas'
 import { watchRegisterUsers} from './registerSagas'
 import { watchGetCategory } from './getCategoriesSagas'
  
@@ -7,7 +7,8 @@ import { watchGetCategory } from './getCategoriesSagas'
      yield all([
         watchChangeUsers(),
         watchGetCategory(),
-        watchRegisterUsers()
+        watchRegisterUsers(),
+        watchLoginUsers()
      ])
  }
 

@@ -12,7 +12,7 @@ const userReducer =  (state = appState.login, action) => {
                 users: action.payload 
             }
         case types.LOGIN: 
-            
+        console.log('reducer logins : ', action)
             return  { 
                 ...state, 
                 users: {}

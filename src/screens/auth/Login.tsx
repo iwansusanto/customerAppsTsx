@@ -112,7 +112,7 @@ class Login extends React.Component<Props, State> {
     const { email, password } = this.state
 
     await this.setState({ isLoading: true })
-    
+
     await this.props.user.login({
       email,
       password
@@ -129,13 +129,13 @@ class Login extends React.Component<Props, State> {
       order: strings.ordersTab,
       home: strings.homeTab
     })
-    // console.log('_onSuccessLogin : ', data)
+    console.log('_onSuccessLogin : ', data)
   }
 
   _onFailedLogin = async (error) => {
     await this.setState({ isLoading: !this.state.isLoading })
     Alert.alert("Failed : ", error.message)
-    // console.log('_onFailedLogin : ', error)
+    console.log('_onFailedLogin : ', error)
   }
 
   // Forget password press handle

@@ -2,7 +2,6 @@ import * as types from '../actions/types'
 import appState from '../config/intialState'
 
 const getCategories = (state = appState.getCategories, action) => {
-    console.log('ACCC')
     switch (action.type){
         case types.GET_CATEGORIES:
         return {

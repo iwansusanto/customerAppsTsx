@@ -20,7 +20,7 @@ export default class Lang extends Component <Props,any> {
     }
 
     _onSetLanguage = async() => {
-        const languageStore = await AsyncStorage.getItem('language')
+        const languageStore = 'en'
         return await strings.setLanguage(languageStore)
     }
 
