@@ -7,6 +7,7 @@ import {
   Image,
   ImageStyle
 } from "react-native"
+import {Collapse, CollapseHeader, CollapseBody} from "accordion-collapse-react-native"
 import moment from "moment"
 import metrics from "../config/metrics"
 
@@ -24,54 +25,86 @@ interface Props extends TouchableOpacityProps {
   date: string
 }
 
-export default (props: Props) => (
-  <TouchableOpacity style={styles.container} {...props}>
-    <View style={{flex: 1, flexDirection: 'row', padding: 20}}>
-      <Image source={PICTURE} style={styles.image as ImageStyle} />
-      <View style={styles.detailContainer}>
-        <View style={styles.titleCard}>
-          <Text style={styles.title}>{props.name}</Text>
-          {props.statusText === 'SCHEDULED' && (
-            <View style={{flex: 1}}>
-                <Image source={ICON_ARROW} style={styles.image as ImageStyle} />  
+interface State {
+  collapsed: boolean
+}
+
+export default class Orders extends React.Component<Props, State> {  
+  constructor(props){
+    super(props);
+    this.state = {
+      collapsed:false,//do not show the body by default
+    }
+  }
+
+  render() {
+    return (
+      <TouchableOpacity style={styles.container} {...this.props}>
+        <View style={{flex: 1, flexDirection: 'row', padding: 20}}>
+          <Image source={PICTURE} style={styles.image as ImageStyle} />
+          <View style={styles.detailContainer}>
+            <View style={styles.titleCard}>
+              <Text style={styles.title}>{this.props.name}</Text>
+              {this.props.statusText === 'SCHEDULED' && (
+                <TouchableOpacity style={{flex: 1}} onPress={() => this.setState({collapsed:!this.state.collapsed})}>
+                    <Image source={ICON_ARROW} style={styles.image as ImageStyle} />  
+                </TouchableOpacity>
+              )}
+            </View>
+            <Text style={styles.status}>{this.props.statusText}</Text>
+            <Text style={styles.date}>{moment(this.props.date).format("DD MMM, hh:mm a")}</Text>
+          </View>
+          {this.props.statusText !== 'SCHEDULED' && (
+            <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <Image source={ICON_PHONE} />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Image source={ICON_MESSAGE} />
+              </TouchableOpacity>
             </View>
           )}
         </View>
-        <Text style={styles.status}>{props.statusText}</Text>
-        <Text style={styles.date}>{moment(props.date).format("DD MMM, hh:mm a")}</Text>
-      </View>
-      {props.statusText !== 'SCHEDULED' && (
-        <View style={styles.iconContainer}>
-          <TouchableOpacity>
-            <Image source={ICON_PHONE} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image source={ICON_MESSAGE} />
-          </TouchableOpacity>
+        <View style={{flex: 1, paddingHorizontal: 20}}>
+          <Collapse
+            isCollapsed={this.state.collapsed}
+            onToggle={(isCollapsed) => this.setState({ collapsed: isCollapsed })}
+          >
+            <CollapseHeader></CollapseHeader>
+            <CollapseBody>
+              <View style={{flex: 1, flexDirection: 'row'}}>
+                <View style={{flex: 1}}></View>                
+                <View style={{flex: 9, marginLeft: 8}}>
+                  <Text style={styles.deliveryTitle}>Delivery note</Text>
+                  <Text style={styles.deliveryDesc}>
+                    just claps three times once arrived in front of my door. the bell is broken btw.
+                  </Text>
+                </View>
+              </View>
+            </CollapseBody>
+          </Collapse>
         </View>
-      )}
-    </View>
-
-    {props.statusText === 'SCHEDULED' && (
-      <View style={styles.bottomEdgeContainer}>
-        <View style={{flex: 2, alignItems: 'center', justifyContent: 'center'}}>
-          <View style={{width: 10, height: 10, borderRadius: 10, backgroundColor: metrics.DANGER_COLOR}}></View>
-        </View>
-        <View style={{flex: 7}}>
-          <Text style={styles.scheduleDay}>Tomorrow, Jan 15</Text>
-          <Text style={styles.scheduleTime}>10:15 - 10:45</Text>
-        </View>
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <TouchableOpacity onPress={() => alert('Click')}>
-            <Image source={ICON_CANCEL} style={styles.image as ImageStyle} />  
-          </TouchableOpacity>
-        </View>
-      </View>
-    )}  
     
-    
-  </TouchableOpacity>
-)
+        {this.props.statusText === 'SCHEDULED' && (
+          <View style={styles.bottomEdgeContainer}>
+            <View style={{flex: 2, alignItems: 'center', justifyContent: 'center'}}>
+              <View style={{width: 10, height: 10, borderRadius: 10, backgroundColor: metrics.DANGER_COLOR}}></View>
+            </View>
+            <View style={{flex: 7}}>
+              <Text style={styles.scheduleDay}>Tomorrow, Jan 15</Text>
+              <Text style={styles.scheduleTime}>10:15 - 10:45</Text>
+            </View>
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+              <TouchableOpacity onPress={() => alert('Click')}>
+                <Image source={ICON_CANCEL} style={styles.image as ImageStyle} />  
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}  
+      </TouchableOpacity>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -106,6 +139,15 @@ const styles = StyleSheet.create({
   scheduleTime: {
     fontSize: 11,
     color: metrics.INACTIVE_COLOR
+  },
+  deliveryTitle: {
+    fontSize: 12,
+    fontWeight: 'bold'
+  },
+  deliveryDesc: {
+    fontSize: 12,
+    color: metrics.INACTIVE_COLOR,
+    paddingTop: 3,
   },
   titleCard: {
     flex: 1, 
