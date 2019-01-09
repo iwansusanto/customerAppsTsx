@@ -1,34 +1,30 @@
 import * as types from '../actions/types'
 import appState from '../config/intialState'
 
-const getCategories = (state = appState.home, action) => {
-    console.log('get cat', action)
+const getCategories = (state = appState.getCategories, action) => {
+    console.log('ACCC')
     switch (action.type){
-        case types.CLICK_HOME_BANNER_CATEGORY:
-            return { 
-                ...state, 
-                ...{homeBannerId: action.data}
-            }
         case types.GET_CATEGORIES:
-            return {
-                ...state,
-                loading: true,
-                error: '',
-                payload: {}
-            } 
+        return {
+            ...state,
+            loading: true,
+            error: '',
+            banner: []
+        } 
         case types.GET_CATEGORIES_SUCCESS:
+        console.log('get cat', action)
             return {
                 ...state,
                 loading: false,
                 error: '',
-                payload: action.data
+                banner: action.payload.data
             }
         case types.GET_CATEGORIES_FAILED:
             return {
                 ...state,
                 loading: false,
                 error: action.error,
-                payload: {}
+                banner: []
             }    
         default: 
             return state;

@@ -1,6 +1,6 @@
 import { put, call, fork, takeLatest } from "redux-saga/effects";
 import * as types from "../actions/types";
-import getCategories from "../utils/services/getCategories"
+import * as postRequest from "../utils/services/postRequest"
 import { 
     getCategoriesSuccess,
     getCategoriesFailed
@@ -8,9 +8,9 @@ import {
 
 export function* getCategory(action){
     try { 
-        const data = yield call(getCategories, action.payload);
-        // yield put(getCategoriesSuccess(data.data));
-        console.log('coba coba aja', data)
+        const {data} = yield call(postRequest.getCategories);
+        // console.log('ABC', data)
+        yield put(getCategoriesSuccess(data));
       } catch (error) {
         console.log('data error', error)
         yield put(getCategoriesFailed(error));

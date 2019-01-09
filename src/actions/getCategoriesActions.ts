@@ -5,11 +5,8 @@ import {
 } from './types'
 
 
-export const getCategories = (params, onSuccess, onError) => ({
+export const getCategories = () => ({
     type: GET_CATEGORIES,
-    payload : params,
-    onSuccess,
-    onError
 })
 
 export const getCategoriesSuccess = (data) => ({

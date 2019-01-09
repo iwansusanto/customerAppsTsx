@@ -1,12 +1,12 @@
 import * as types from '../actions/types'
 import appState from '../config/intialState'
 
-const getCategories = (state = appState.forgotPassword, action) => {
+const email = (state = appState.forgotPassword, action) => {
     switch (action.type){
         case types.FORGOT_PASSWORD:
             return { 
                 ...state, 
-                ...{homeBannerId: action.data}
+                // ...{homeBannerId: action.data}
             }
         case types.FORGOT_PASSWORD_SUCCESS:
             return {
@@ -27,4 +27,4 @@ const getCategories = (state = appState.forgotPassword, action) => {
     }
 }
 
-export default getCategories;
+export default email;

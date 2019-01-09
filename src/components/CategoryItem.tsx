@@ -18,6 +18,7 @@ const ICON = require("../../assets/ic_burger.png")
 interface Props extends TouchableOpacityProps {
   title: string
   picture: string
+  
 }
 
 const CategoryItem = (props: Props) => (
