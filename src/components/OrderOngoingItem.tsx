@@ -23,6 +23,7 @@ interface Props extends TouchableOpacityProps {
   name: string
   statusText: string
   date: string
+  paymentMethod: string
 }
 
 interface State {
@@ -65,20 +66,28 @@ export default class Orders extends React.Component<Props, State> {
             </View>
           )}
         </View>
-        <View style={{flex: 1, paddingHorizontal: 20}}>
+        <View style={{flex: 1}}>
           <Collapse
             isCollapsed={this.state.collapsed}
             onToggle={(isCollapsed) => this.setState({ collapsed: isCollapsed })}
           >
             <CollapseHeader></CollapseHeader>
             <CollapseBody>
-              <View style={{flex: 1, flexDirection: 'row'}}>
+              <View style={{flex: 1, flexDirection: 'row', paddingHorizontal: 20}}>
                 <View style={{flex: 1}}></View>                
                 <View style={{flex: 9, marginLeft: 8}}>
                   <Text style={styles.deliveryTitle}>Delivery note</Text>
                   <Text style={styles.deliveryDesc}>
                     just claps three times once arrived in front of my door. the bell is broken btw.
                   </Text>
+                </View>
+              </View>
+              <View style={styles.stroke}></View>
+              <View style={{flexDirection: 'row', flex: 1}}>
+                <Text style={styles.paymentTitle}>Payment method</Text>
+                <View style={{justifyContent: "flex-end", flexDirection: 'row'}}>
+                  <Text>{this.props.paymentMethod}</Text>
+                  <Image source={PICTURE} style={styles.image as ImageStyle} />
                 </View>
               </View>
             </CollapseBody>
@@ -148,6 +157,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: metrics.INACTIVE_COLOR,
     paddingTop: 3,
+  },
+  stroke: {
+    borderWidth: 0.5, 
+    borderColor: metrics.SHADOW_COLOR,
+    marginVertical: 6,
+  },
+  paymentTitle: {
+    fontSize: 12,
+    fontWeight: 'bold'
   },
   titleCard: {
     flex: 1, 

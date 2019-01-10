@@ -23,8 +23,46 @@ export default class Orders extends React.Component<any, State> {
     isDataLoading: true,
     data: [
       {'id': 1, 'name': 'Home', 'ordered_at': '2019-01-07 07:03:57', 'status_text': 'ONGOING'},
-      {'id': 2, 'name': 'Hotel', 'ordered_at': '2018-12-07 08:03:57', 'status_text': 'SCHEDULED'},
-      {'id': 3, 'name': 'Villa', 'ordered_at': '2018-11-07 14:03:57', 'status_text': 'SCHEDULED'}
+      {
+        'id': 2, 
+        'name': 'Hotel', 
+        'ordered_at': '2018-12-07 08:03:57', 
+        'status_text': 'SCHEDULED',
+        'payment_method': 'cash',
+        'product_data': [
+          {
+            "id": 967,
+            "product_id": 837,
+            "order_id": 1687,
+            "price": "5",
+            "quantity": 1,
+            "product_data": "",
+            "created_at": "2019-01-07 07:03:57",
+            "updated_at": "2019-01-07 07:03:57",
+            "name": "Cheeseburger",
+            "description": "Cheeseburger"
+        }
+        ]},
+      {
+        'id': 3, 
+        'name': 'Villa', 
+        'ordered_at': '2018-11-07 14:03:57', 
+        'status_text': 'SCHEDULED',
+        'payment_method': 'cash',
+        'product_data': [
+          {
+              "id": 965,
+              "product_id": 411,
+              "order_id": 1685,
+              "price": "20",
+              "quantity": 1,
+              "product_data": "",
+              "created_at": "2019-01-02 06:37:57",
+              "updated_at": "2019-01-02 06:37:57",
+              "name": "Lemon and Lentil Soup",
+              "description": "Lemon and Lentil Soup"
+          }
+      ],}
     ]
   }
 
@@ -63,6 +101,7 @@ export default class Orders extends React.Component<any, State> {
                 name={item.name}
                 date={item.ordered_at}
                 statusText={item.status_text}
+                paymentMethod={item.payment_method}
               />
             )
           }}
