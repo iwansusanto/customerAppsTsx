@@ -24,5 +24,15 @@ export default {
     created_at: "",
     total: "",
     status: false
+  },
+  suggestion : {
+    suggestionsBanner : [],
+    currentId: -1,
+    loading : true,
+    error : ''
+  },
+  pickCategories : {
+    pickCategoriesBanner : []
   }
+
 }

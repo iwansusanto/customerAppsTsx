@@ -47,13 +47,15 @@ const styles = StyleSheet.create({
       height: 2
     },
     shadowRadius: 5,
-    shadowOpacity: 1
+    shadowOpacity: 1,
+    overflow: 'hidden'
   },
 
   image: {
     width: metrics.DEVICE_WIDTH * 0.5,
     height: metrics.DEVICE_WIDTH * 0.4,
-    borderRadius: 15
+    borderTopLeftRadius : 15,
+    borderTopRightRadius: 15
   },
 
   title: {

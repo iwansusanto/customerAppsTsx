@@ -13,17 +13,50 @@ import withSearchContext from "../../components/consumers/withSearchContext"
 import withPickCategoriesContext from "../../components/consumers/withPickcategoriesContext"
 import Lang from "../../components/Lang"
 
+// Actions
+import { bindActionCreators } from "redux"
+import * as suggestionActions from "../../actions/suggestionActions"
+import { connect } from "react-redux"
+
+
 const LOGO = require("../../../assets/logo-higres.png")
 const ICON_HEART = require("../../../assets/ic_heart.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
-  suggestion: SuggestionContext
-  search: SearchContext,
+  search: SearchContext
   pickcategories: PickCategoriesContext
+  banner: Category[]
+  suggestion : {
+    getSuggestions : Function
+  }
+  suggestionsBanner : Category[]
+
 }
 
-class Food extends React.Component<Props, any> {
+interface Category {
+  id: number
+  name: string
+  _lft: number
+  _rgt: number
+  parent_id: number
+  suggest_id: string
+  city_id: number
+  merchant_id: number
+  created_at: string
+  updated_at: string
+  has_children: number
+  image_url: string
+}
+
+
+
+
+interface State {
+  parent_id : any
+}
+
+class Food extends React.Component<Props, State> {
   static navigationOptions = ({
     // Navigation variable to be able to call navigation-related functions in the header
     navigation
@@ -44,10 +77,10 @@ class Food extends React.Component<Props, any> {
     }
   }
 
-  componentWillMount() {
-    const suggestId = this.props.navigation.getParam("suggestId")
-    this.props.suggestion.getSuggestions(suggestId)
-    this.props.pickcategories.searchPickCategories(suggestId)
+  async componentWillMount() {
+    const suggestId = await this.props.navigation.getParam("suggestId")
+     await this.props.suggestion.getSuggestions(suggestId)
+    // this.props.pickcategories.searchPickCategories(suggestId)
   }
 
   search = (categoriId: number, type: string) => () => {
@@ -65,6 +98,7 @@ class Food extends React.Component<Props, any> {
   }
 
   render() {
+    console.log('this props food : ', this.props)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -79,7 +113,7 @@ class Food extends React.Component<Props, any> {
         <View style={styles.categoryContainer}>
           <Lang styleLang={styles.subtitle} language='foodPickByCategories'></Lang>
           <View style={styles.categoryListContainer}>
-            <FlatList
+            {/* <FlatList
               data={this.props.pickcategories.pickcategories}
               keyExtractor={item => item.id.toString()}
               numColumns={4}
@@ -94,12 +128,12 @@ class Food extends React.Component<Props, any> {
                 )
               }}
               columnWrapperStyle={styles.categoryListRow}
-            />
+            /> */}
           </View>
         </View>
         <Lang styleLang={styles.suggestionCaption} language='foodSuggest'></Lang>
         <FlatList
-          data={this.props.suggestion.suggestions}
+          data={this.props.suggestionsBanner}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => {
             return (
@@ -190,4 +224,24 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withPickCategoriesContext(withSuggestionContext(withSearchContext(Food)))
+// export default withPickCategoriesContext(withSuggestionContext(withSearchContext(Food)))
+
+const mapStateToProps = ({ getCategories, suggestion }) => {
+  // console.log('suggest banners : ', suggestion)
+  const { banner } = getCategories
+  const { suggestionsBanner } = suggestion
+  return {
+    banner,
+    suggestionsBanner
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    suggestion: bindActionCreators(suggestionActions, dispatch),
+  }
+}
+
+
+export default connect( mapStateToProps,
+  mapDispatchToProps)(Food)

@@ -8,3 +8,8 @@ export const login = (params) => {
 export const getCategories = () => { 
     return api.client.post('/categories');
   }
+
+  export const suggestion = (params) => { 
+      console.log(' Api suggest : ')
+    return api.client.post('/v2/suggestion', {parent_id : params});
+  }
