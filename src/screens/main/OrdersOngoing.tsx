@@ -29,6 +29,7 @@ export default class Orders extends React.Component<any, State> {
         'ordered_at': '2018-12-07 08:03:57', 
         'status_text': 'SCHEDULED',
         'payment_method': 'cash',
+        'display_price': 'QR1.2',
         'product_data': [
           {
             "id": 967,
@@ -49,6 +50,7 @@ export default class Orders extends React.Component<any, State> {
         'ordered_at': '2018-11-07 14:03:57', 
         'status_text': 'SCHEDULED',
         'payment_method': 'cash',
+        'display_price': 'QR5.0',
         'product_data': [
           {
               "id": 965,
@@ -102,6 +104,7 @@ export default class Orders extends React.Component<any, State> {
                 date={item.ordered_at}
                 statusText={item.status_text}
                 paymentMethod={item.payment_method}
+                displayPrice={item.display_price}
               />
             )
           }}

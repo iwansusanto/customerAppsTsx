@@ -18,12 +18,14 @@ const ICON_PHONE = require("../../assets/ic_phone_fill.png")
 const ICON_MESSAGE = require("../../assets/ic_message.png")
 const ICON_ARROW = require("../../assets/ic_arrow_blue.png")
 const ICON_CANCEL = require("../../assets/ic_cancel.png")
+const ICON_WALLET = require("../../assets/ic_wallet.png")
 
 interface Props extends TouchableOpacityProps {
   name: string
   statusText: string
   date: string
   paymentMethod: string
+  displayPrice: string
 }
 
 interface State {
@@ -83,11 +85,17 @@ export default class Orders extends React.Component<Props, State> {
                 </View>
               </View>
               <View style={styles.stroke}></View>
-              <View style={{flexDirection: 'row', flex: 1}}>
+              <View style={{flexDirection: 'row', flex: 1, paddingHorizontal: 20}}>
                 <Text style={styles.paymentTitle}>Payment method</Text>
-                <View style={{justifyContent: "flex-end", flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', flex: 2}}>
                   <Text>{this.props.paymentMethod}</Text>
-                  <Image source={PICTURE} style={styles.image as ImageStyle} />
+                  <Image source={ICON_WALLET} style={styles.imageWallet as ImageStyle} />
+                </View>
+              </View>
+              <View style={{flexDirection: 'row', flex: 1, paddingHorizontal: 20, paddingVertical: 10}}>
+                <Text style={styles.paymentTitle}>Total</Text>
+                <View style={{flexDirection: 'row', flex: 2}}>
+                  <Text style={styles.totalLabel}>{this.props.displayPrice}</Text>
                 </View>
               </View>
             </CollapseBody>
@@ -165,7 +173,11 @@ const styles = StyleSheet.create({
   },
   paymentTitle: {
     fontSize: 12,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    flex: 8
+  },
+  totalLabel: {
+    fontSize: 12
   },
   titleCard: {
     flex: 1, 
@@ -197,7 +209,12 @@ const styles = StyleSheet.create({
   image: {
     alignSelf: "center"
   },
-
+  imageWallet:{
+    alignSelf: "center",
+    marginLeft: 15,
+    width: 11,
+    height: 11
+  },
   iconContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
