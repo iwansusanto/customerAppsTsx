@@ -4,13 +4,15 @@ import user from "./userReducers";
 import getCategories from './getCategoriesReducers'
 import cart from './cartReducers'
 import suggestion from './suggestionReducers'
+import pickCategories from './pickCategoriesReducers'
 
 const allReducers = combineReducers({
     user,
     // register,
     getCategories,
     cart,
-    suggestion
+    suggestion,
+    pickCategories
 });
 
 export default allReducers;

@@ -32,7 +32,9 @@ export default {
     error : ''
   },
   pickCategories : {
-    pickCategoriesBanner : []
+    pickCategoriesBanner : [],
+    loading : true,
+    error : ''
   }
 
 }
