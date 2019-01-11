@@ -5,6 +5,7 @@ import getCategories from './getCategoriesReducers'
 import cart from './cartReducers'
 import suggestion from './suggestionReducers'
 import pickCategories from './pickCategoriesReducers'
+import search from './searchReducers'
 
 const allReducers = combineReducers({
     user,
@@ -12,7 +13,8 @@ const allReducers = combineReducers({
     getCategories,
     cart,
     suggestion,
-    pickCategories
+    pickCategories,
+    search
 });
 
 export default allReducers;

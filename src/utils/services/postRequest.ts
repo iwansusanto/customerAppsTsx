@@ -19,3 +19,15 @@ export const searchPickCategories = params => {
     parent_id: params
   })
 }
+
+export const search = params => {
+  return api.client.post("/search", {
+    params
+  })
+}
+
+export const searchBySuggestion = params => {
+  return api.client.post("/v2/searchfood", {
+    category_id: params
+  })
+}

@@ -27,6 +27,7 @@ import Lang from "../../components/Lang"
 import { bindActionCreators } from "redux"
 import * as suggestionActions from "../../actions/suggestionActions"
 import * as pickCategoriesActions from "../../actions/pickCategoriesActions"
+import * as searchActions from '../../actions/searchActions'
 import { connect } from "react-redux"
 
 const LOGO = require("../../../assets/logo-higres.png")
@@ -260,7 +261,8 @@ const mapStateToProps = ({ getCategories, suggestion, pickCategories }) => {
 const mapDispatchToProps = dispatch => {
   return {
     suggestion: bindActionCreators(suggestionActions, dispatch),
-    pickcategories: bindActionCreators(pickCategoriesActions, dispatch)
+    pickcategories: bindActionCreators(pickCategoriesActions, dispatch),
+    search: bindActionCreators(searchActions, dispatch)
   }
 }
 

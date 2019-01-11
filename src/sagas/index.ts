@@ -4,6 +4,7 @@ import { watchRegisterUsers} from './registerSagas'
 import { watchGetCategory } from './getCategoriesSagas'
 import { watchSuggestion } from './suggestionSagas'
 import { watchPickCategories } from './pickCategoriesSagas'
+import { watchSearch, watchSearchBySuggestion} from './searchSagas'
  
  function* rootSaga(){
      yield all([
@@ -12,7 +13,9 @@ import { watchPickCategories } from './pickCategoriesSagas'
         watchRegisterUsers(),
         watchLoginUsers(),
         watchSuggestion(),
-        watchPickCategories()
+        watchPickCategories(),
+        watchSearch(),
+        watchSearchBySuggestion()
      ])
  }
 

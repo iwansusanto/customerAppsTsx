@@ -25,16 +25,16 @@ export default {
     total: "",
     status: false
   },
-  suggestion : {
-    suggestionsBanner : [],
+  suggestion: {
+    suggestionsBanner: [],
     currentId: -1,
-    loading : true,
-    error : ''
+    loading: true,
+    error: ""
   },
-  pickCategories : {
-    pickCategoriesBanner : [],
-    loading : true,
-    error : ''
-  }
-
+  pickCategories: {
+    pickCategoriesBanner: [],
+    loading: true,
+    error: ""
+  },
+  search: {}
 }
