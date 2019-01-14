@@ -71,7 +71,7 @@ class Orders extends React.Component<Props, State> {
 
         <FlatList
           data={this.props.dataOnGoing}
-          extraData={this.props}
+          // extraData={this.props}
           renderItem={({ item }: { item: any }) => {
             return (
               <OrderOngoingItem
@@ -132,10 +132,9 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = ({ orders }) => {
-  const { dataHistory, dataOnGoing, loading, error } = orders;
+  const { dataOnGoing, loading, error } = orders;
   // console.log('dataOnGoing : ', dataOnGoing)
   return {
-    dataHistory,
     dataOnGoing,
     loading,
     error

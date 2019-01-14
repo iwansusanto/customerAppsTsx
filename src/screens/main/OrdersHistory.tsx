@@ -1,5 +1,5 @@
 import React from "react"
-import { View, StyleSheet, Image, FlatList } from "react-native"
+import { View, StyleSheet, Image, FlatList, ActivityIndicator } from "react-native"
 import moment from "moment"
 
 import Text from "../../components/CustomText"
@@ -13,22 +13,31 @@ import Lang from "../../components/Lang"
 import { keys } from '../../config/keys'
 import { getData } from '../../utils/storage'
 
+// Actions
+import { bindActionCreators } from 'redux'
+import * as ordersActions from '../../actions/ordersActions'
+import { connect } from 'react-redux'
+
 interface State {
   isDataLoading: boolean
   data: Array<any>
 }
 
-export default class Orders extends React.Component<any, State> {
+class OrdersHistory extends React.Component<any, State> {
   state = {
     isDataLoading: true,
     data: []
   }
 
   async componentDidMount() {
-    this.setState({ isDataLoading: true })
-    const { data } = await api.client.get<any>("/orders")
-    console.log(data)
-    this.setState({ data: data, isDataLoading: false })
+    // this.setState({ isDataLoading: true })
+    // const { data } = await api.client.get<any>("/orders")
+    // console.log(data)
+    // this.setState({ data: data, isDataLoading: false })
+    await this.props.orders.fetchOrderHistory()
+    await this.setState({ 
+      isDataLoading: this.props.loading,
+      data: this.props.dataHistory })
   }
   _onSetLanguage = async () => {
     const languageStore = await getData(keys.language)
@@ -43,14 +52,21 @@ export default class Orders extends React.Component<any, State> {
     console.log("data", this.state.data)
     return (
       <View style={styles.container}>
-        {this.state.data.length === 0 && (
+        {this.props.dataHistory.length === 0 && (
           <Lang
             styleLang={styles.subtitle}
             language="ordersEmpty"
           />
         )}
+
+        {this.props.loading && (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color={metrics.PRIMARY_COLOR} />
+          </View>
+        )}
+
         <FlatList
-          data={this.state.data}
+          data={this.props.dataHistory}
           renderItem={({ item }: { item: any }) => {
             return (
               <OrderItem
@@ -62,7 +78,7 @@ export default class Orders extends React.Component<any, State> {
             )
           }}
           style={styles.list}
-          refreshing={this.state.isDataLoading}
+          refreshing={this.props.loading}
           onRefresh={() => this.componentDidMount()}
         />
       </View>
@@ -95,5 +111,29 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     color: "white",
     marginTop: 20
+  },
+  loading: {
+    flex: 1,
+    height: 50, 
+    alignItems: 'center', 
+    justifyContent: 'center'
   }
 })
+
+
+const mapStateToProps = ({ orders }) => {
+  const { dataHistory, loading, error } = orders;
+  return {
+    dataHistory,
+    loading,
+    error
+  }       
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    orders: bindActionCreators(ordersActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrdersHistory)

@@ -6,7 +6,7 @@ const ordersReducer =  (state = appState.orders, action) => {
         case types.FETCH_ORDER_HISTORY:
             return  { 
                 ...state,
-                loading: false,
+                loading: true,
                 error: {},
                 dataHistory: []
             }
