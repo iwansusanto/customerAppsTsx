@@ -62,7 +62,11 @@ export default class Orders extends React.Component<Props, State> {
               <Text style={styles.title}>{this.props.name}</Text>
               {this.props.statusText === 'SCHEDULED' && (
                 <TouchableOpacity style={{flex: 1}} onPress={() => this.setState({collapsed:!this.state.collapsed})}>
-                    <Image source={ICON_ARROW} style={styles.image as ImageStyle} />  
+                    <Image 
+                      source={ICON_ARROW} 
+                      style={[
+                        styles.image as ImageStyle, 
+                        (this.state.collapsed ? styles.arrow_open: styles.arrow_default )]} />  
                 </TouchableOpacity>
               )}
             </View>
@@ -87,7 +91,7 @@ export default class Orders extends React.Component<Props, State> {
           >
             <CollapseHeader></CollapseHeader>
             <CollapseBody>
-              <View style={{flex: 1, flexDirection: 'row', paddingHorizontal: 20}}>
+              <View style={styles.delivery_wrapper}>
                 <View style={{flex: 1}}></View>                
                 <View style={{flex: 9, marginLeft: 8}}>
                   <Text style={styles.deliveryTitle}>Delivery note</Text>
@@ -95,17 +99,17 @@ export default class Orders extends React.Component<Props, State> {
                 </View>
               </View>
               <View style={styles.stroke}></View>
-              <View style={{flex: 1, flexDirection: 'row', paddingHorizontal: 20}}>
+              <View style={styles.product_wrapper}>
                 {this.props.productData && this.props.productData.map((value, index) => {
 
                   return (
-                    <View style={{flex: 1, marginTop: 5, marginBottom: 10}}>
+                    <View style={styles.product_inner}>
                       <View style={{flexDirection: 'row'}}>
                         <View style={{flex: 2}}>
-                          <Text style={{textAlign: 'right', fontSize: 13}}>{`${value.quantity} X`}</Text>
+                          <Text style={styles.product_qty}>{`${value.quantity} X`}</Text>
                         </View>
                         <View style={{flex: 8}}>
-                          <Text style={{fontSize: 12, paddingLeft: 21}}>{value.name}</Text>
+                          <Text style={styles.product_name}>{value.name}</Text>
                         </View>
                       </View>
                       <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -113,7 +117,7 @@ export default class Orders extends React.Component<Props, State> {
                           <Image source={ICON_NOTE} style={styles.iconNote as ImageStyle} />  
                         </View>
                         <View style={{flex: 8}}>
-                          <Text style={{fontSize: 12, paddingLeft: 21}}>{value.description}</Text>
+                          <Text style={styles.product_desc}>{value.description}</Text>
                         </View>
                       </View>
                     </View>
@@ -124,19 +128,19 @@ export default class Orders extends React.Component<Props, State> {
               <View style={{flexDirection: 'row', flex: 1, paddingHorizontal: 20}}>
                 <Text style={styles.paymentTitle}>Payment method</Text>
                 <View style={{flexDirection: 'row', flex: 2}}>
-                  <Text>{this.props.paymentMethod}</Text>
+                  <Text style={{textTransform: 'capitalize'}}>{this.props.paymentMethod}</Text>
                   <Image source={ICON_WALLET} style={styles.imageWallet as ImageStyle} />
                 </View>
               </View>
-              <View style={{flexDirection: 'row', flex: 1, paddingHorizontal: 20, paddingVertical: 10}}>
+              <View style={styles.total_wrapper}>
                 <Text style={styles.paymentTitle}>Total</Text>
                 <View style={{flexDirection: 'row', flex: 2}}>
                   <Text style={styles.totalLabel}>{this.props.displayPrice}</Text>
                 </View>
               </View>
               <View style={styles.stroke}></View>
-              <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 5}}>
-                <Text style={{color: metrics.INACTIVE_COLOR, fontSize: 10}}>Transaction number</Text>
+              <View style={styles.transaction_wrapper}>
+                <Text style={styles.txt_transaction}>Transaction number</Text>
                 <Text style={{paddingLeft: 5, fontSize: 10}}>{this.props.id}</Text>
               </View>
             </CollapseBody>
@@ -146,7 +150,7 @@ export default class Orders extends React.Component<Props, State> {
         {this.props.statusText === 'SCHEDULED' && (
           <View style={styles.bottomEdgeContainer}>
             <View style={{flex: 2, alignItems: 'center', justifyContent: 'center'}}>
-              <View style={{width: 10, height: 10, borderRadius: 10, backgroundColor: metrics.DANGER_COLOR}}></View>
+              <View style={styles.red_ball}></View>
             </View>
             <View style={{flex: 7}}>
               <Text style={styles.scheduleDay}>Tomorrow, Jan 15</Text>
@@ -253,7 +257,7 @@ const styles = StyleSheet.create({
   iconNote: {
     alignSelf: 'flex-end',
     width: 10,
-    height: 10,
+    height: 12,
     marginRight: 10,
   },
   imageWallet:{
@@ -268,5 +272,62 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 2,
     paddingHorizontal: 10
+  },
+  arrow_open: {
+    transform: [{ rotate: '180deg'}]
+  },
+  arrow_default: {
+    transform: [{ rotate: '0deg'}]
+  },
+  txt_transaction: {
+    color: metrics.INACTIVE_COLOR, 
+    fontSize: 10
+  },
+  red_ball: {
+    width: 10, 
+    height: 10, 
+    borderRadius: 10, 
+    backgroundColor: metrics.DANGER_COLOR
+  },
+  transaction_wrapper: {
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    flexDirection: 'row', 
+    marginBottom: 5
+  },
+  total_wrapper: {
+    flexDirection: 'row', 
+    flex: 1, 
+    paddingHorizontal: 20, 
+    paddingVertical: 10
+  },
+  delivery_wrapper: {
+    flex: 1, 
+    flexDirection: 'row', 
+    paddingHorizontal: 20
+  },
+  product_wrapper: {
+    flex: 1, 
+    flexDirection: 'row', 
+    paddingHorizontal: 20
+  },
+  product_inner: {
+    flex: 1, 
+    marginTop: 5, 
+    marginBottom: 10
+  },
+  product_qty: {
+    textAlign: 'right', 
+    fontSize: 13
+  },
+  product_name: {
+    fontSize: 12, 
+    paddingLeft: 21, 
+    fontWeight: 'bold'
+  },
+  product_desc: {
+    fontSize: 12, 
+    paddingLeft: 0, 
+    color: metrics.INACTIVE_COLOR
   }
 })
