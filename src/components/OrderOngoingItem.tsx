@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   TouchableOpacityProps,
   Image,
-  ImageStyle
+  ImageStyle,
+  ActivityIndicator
 } from "react-native"
 import {Collapse, CollapseHeader, CollapseBody} from "accordion-collapse-react-native"
 import moment from "moment"
@@ -38,7 +39,8 @@ interface Props extends TouchableOpacityProps {
       name: string
       quantity: string
     }
-  ]
+  ],
+  // loading: boolean
 }
 
 interface State {
@@ -54,21 +56,22 @@ export default class Orders extends React.Component<Props, State> {
   }
 
   render() {
-    // console.log('DATA Props :', this.props)
+    
     return (
       <TouchableOpacity style={styles.container} {...this.props}>
-        <View style={{flex: 1, flexDirection: 'row', padding: 20}}>
+
+        <View style={{ flex: 1, flexDirection: 'row', padding: 20 }}>
           <Image source={PICTURE} style={styles.image as ImageStyle} />
           <View style={styles.detailContainer}>
             <View style={styles.titleCard}>
               <Text style={styles.title}>{this.props.name}</Text>
               {this.props.statusText === 'SCHEDULED' && (
-                <TouchableOpacity style={{flex: 1}} onPress={() => this.setState({collapsed:!this.state.collapsed})}>
-                    <Image 
-                      source={ICON_ARROW} 
-                      style={[
-                        styles.image as ImageStyle, 
-                        (this.state.collapsed ? styles.arrow_open: styles.arrow_default )]} />  
+                <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ collapsed: !this.state.collapsed })}>
+                  <Image
+                    source={ICON_ARROW}
+                    style={[
+                      styles.image as ImageStyle,
+                      (this.state.collapsed ? styles.arrow_open : styles.arrow_default)]} />
                 </TouchableOpacity>
               )}
             </View>
@@ -82,13 +85,14 @@ export default class Orders extends React.Component<Props, State> {
               >
                 <Image source={ICON_PHONE} />
               </TouchableOpacity>
-              <TouchableOpacity 
+              <TouchableOpacity
                 onPress={() => sendWhatsAppMessage(`https://wa.me/${this.props.phone}?text=Hei%2C%20Can%20I%20help%20you%3F`)}>
                 <Image source={ICON_MESSAGE} />
               </TouchableOpacity>
             </View>
           )}
         </View>
+        
         <View style={{flex: 1}}>
           <Collapse
             isCollapsed={this.state.collapsed}
@@ -334,5 +338,10 @@ const styles = StyleSheet.create({
     fontSize: 12, 
     paddingLeft: 0, 
     color: metrics.INACTIVE_COLOR
+  },
+  loading: {
+    height: 125, 
+    alignItems: 'center', 
+    justifyContent: 'center'
   }
 })

@@ -8,23 +8,23 @@ import {
 } from "../actions/ordersActions"
 import * as getRequest from "../utils/services/getRequest"
 
-export async function* fetchOrderOnGoing(action) {
+export function* fetchOrderOnGoing(action) {
     try {
         const data = yield call(getRequest.orderOnGoing, action.params)
-        yield put(fetchOrderHistorySuccess(data.data))
+        yield put(fetchOrderOngoingSuccess(data.data))
     } catch (error) {
         console.log('Error fetchOrderOnGoing : ', error)
-        yield put(fetchOrderHistoryFailed(error))
+        yield put(fetchOrderOngoingFailed(error))
     }
 }
 
-export async function* fetchOrderHistory(action) {
+export function* fetchOrderHistory(action) {
     try {
         const data = yield call(getRequest.orderHistory, action.params)
-        yield put(fetchOrderOngoingSuccess(data.data))
+        yield put(fetchOrderHistorySuccess(data.data))
     } catch (error) {
         console.log('Error fetchOrderHistory : ', error)
-        yield put(fetchOrderOngoingFailed(error))
+        yield put(fetchOrderHistoryFailed(error))
     }
 }
 

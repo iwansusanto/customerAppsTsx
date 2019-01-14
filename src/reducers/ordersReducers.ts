@@ -6,36 +6,44 @@ const ordersReducer =  (state = appState.orders, action) => {
         case types.FETCH_ORDER_HISTORY:
             return  { 
                 ...state,
-                loading: true
+                loading: false,
+                error: {},
+                dataHistory: []
             }
         case types.FETCH_ORDER_HISTORY_SUCCESS:
             return  { 
                 ...state, 
                 loading: false,
+                error: {},
                 dataHistory: action.payload 
             } 
         case types.FETCH_ORDER_HISTORY_FAILED:
             return  { 
                 ...state, 
                 loading: false,
-                error: action.payload
+                error: action.payload,
+                dataHistory: []
             }         
         case types.FETCH_ORDER_ONGOING: 
             return  { 
                 ...state, 
-                loading: true
+                loading: true,
+                error: {},
+                dataOnGoing: []
             }
         case types.FETCH_ORDER_ONGOING_SUCCESS: 
             return  { 
                 ...state, 
                 loading: false,
+                error: {},
                 dataOnGoing: action.payload 
             }    
         case types.FETCH_ORDER_ONGOING_FAILED: 
             return  { 
                 ...state, 
                 loading: false,
-                error: action.payload 
+                error: action.payload,
+                dataOnGoing: [] 
             }        
         default:
             return state;
