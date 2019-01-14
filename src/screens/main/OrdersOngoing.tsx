@@ -13,12 +13,17 @@ import Lang from "../../components/Lang"
 import { keys } from '../../config/keys'
 import { getData } from '../../utils/storage'
 
+// Actions
+import { bindActionCreators } from 'redux'
+import * as ordersActions from '../../actions/ordersActions'
+import { connect } from 'react-redux'
+
 interface State {
   isDataLoading: boolean
   data: Array<any>
 }
 
-export default class Orders extends React.Component<any, State> {
+class Orders extends React.Component<any, State> {
   state = {
     isDataLoading: true,
     data: [
@@ -89,6 +94,7 @@ export default class Orders extends React.Component<any, State> {
     // const { data } = await api.client.get<any>("/orders")
     // console.log(data)
     // this.setState({ data: data, isDataLoading: false })
+    this.props.orders.fetchOrderOngoing()
     this.setState({ isDataLoading: false })
   }
   _onSetLanguage = async () => {
@@ -165,3 +171,20 @@ const styles = StyleSheet.create({
     marginTop: 20
   }
 })
+
+const mapStateToProps = ({ orders }) => {
+  const { data, loading, error } = orders;
+  return {
+    data,
+    loading,
+    error
+  }       
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    orders: bindActionCreators(ordersActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Orders)
