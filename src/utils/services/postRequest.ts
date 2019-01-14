@@ -20,14 +20,21 @@ export const searchPickCategories = params => {
   })
 }
 
-export const search = params => {
+export const search = (categoryId, type) => {
   return api.client.post("/search", {
-    params
+    category_id: categoryId,
+    type: type
   })
 }
 
 export const searchBySuggestion = params => {
   return api.client.post("/v2/searchfood", {
     category_id: params
+  })
+}
+
+export const searchByName = params => {
+  return api.client.post("/search", {
+    name: params
   })
 }

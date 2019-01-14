@@ -12,6 +12,13 @@ import Lang from '../../components/Lang'
 
 import { any } from "prop-types"
 
+
+// Actions
+import { bindActionCreators } from "redux"
+import * as searchActions from '../../actions/searchActions'
+import { connect } from "react-redux"
+import search from "../../reducers/searchReducers";
+
 const LOGO = require("../../../assets/logo-higres.png")
 const OVERLAY = require("../../../assets/overlay_search.png")
 
@@ -25,6 +32,7 @@ interface Result {
 interface Props {
   navigation: NavigationScreenProp<any, any>
   search: SearchContext
+  result: Result[]
 }
 
 interface State {
@@ -49,23 +57,24 @@ class MainSearch extends React.Component<Props, State> {
     if (this.state.keyword === "") return
 
     await this.props.search.searchByName(this.state.keyword)
-    const results = this.props.search.result
+    const results = await this.props.result
+    console.log('resultssssssssss', results)
 
-    const merchantResult: Result[] = results.merchant_data.map(item => ({
-      id: item.id,
-      type: "merchant",
-      name: item.name
-    }))
+    // const merchantResult: Result[] = results.merchant_data.map(item => ({
+    //   id: item.id,
+    //   type: "merchant",
+    //   name: item.name
+    // }))
 
-    const foodResult: Result[] = results.product_data.map(item => ({
-      id: item.id,
-      type: "product",
-      name: item.name,
-      data: item as Food
-    }))
+    // const foodResult: Result[] = results.product_data.map(item => ({
+    //   id: item.id,
+    //   type: "product",
+    //   name: item.name,
+    //   data: item as Food
+    // }))
 
-    const parsedResults = [...merchantResult, ...foodResult]
-    this.setState({ results: parsedResults })
+    // const parsedResults = [...merchantResult, ...foodResult]
+    // this.setState({ results: parsedResults })
   }
 
   handleChange = async (text: string) => {
@@ -97,7 +106,7 @@ class MainSearch extends React.Component<Props, State> {
   }
 
   render() {
-    console.log(this.state.results.length)
+    // console.log('result : ',this.props.result.product_data)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -112,7 +121,7 @@ class MainSearch extends React.Component<Props, State> {
             style={{ borderWidth: 0 }}
           />
           <FlatList
-            data={this.state.results}
+            data={this.props.result}
             keyExtractor={item => `${item.type}.${item.id}`}
             renderItem={({ item }) => (
               <SearchItem label={item.name} onPress={this.handleClick(item, item.type)} />
@@ -152,4 +161,22 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withSearchContext(MainSearch)
+// export default withSearchContext(MainSearch)
+const mapStateToProps = search => {
+  const {result} = search
+  console.log('search by name state ', result)
+  return {
+    result
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    search: bindActionCreators(searchActions, dispatch)
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainSearch)

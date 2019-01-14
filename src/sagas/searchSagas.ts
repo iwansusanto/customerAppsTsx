@@ -5,13 +5,15 @@ import {
     searchSuccess,
     searchFailed,
     searchBySuggestionSuccess,
-    searchBySuggestionFailed
+    searchBySuggestionFailed,
+    searchByNameSuccess,
+    searchByNameFailed
 } from "../actions/searchActions";
 
 export function* search(action){
     try { 
         const {data} = yield call(postRequest.search, action.payload);
-        console.log('SUGGESTION DATA : ', data)
+        console.log('SEARCH DATA : ', data)
         yield put(searchSuccess(data));
       } catch (error) {
         console.log('data error', error)
@@ -26,7 +28,7 @@ export function* watchSearch() {
   export function* searchBySuggestion(action){
     try { 
         const {data} = yield call(postRequest.searchBySuggestion, action.payload);
-        console.log('SUGGESTION DATA : ', data)
+        console.log('SEARCH BY DATA : ', data)
         yield put(searchBySuggestionSuccess(data));
       } catch (error) {
         console.log('data error', error)
@@ -35,5 +37,20 @@ export function* watchSearch() {
 }
 
 export function* watchSearchBySuggestion() {
-    yield takeLatest(types.SEARCH, searchBySuggestion);
+    yield takeLatest(types.SEARCH_BY_SUGGESTION, searchBySuggestion);
+  }
+
+  export function* searchByName(action){
+    try { 
+        const {data} = yield call(postRequest.searchByName, action.payload);
+        console.log('SEARCH BY NAME : ', data)
+        yield put(searchByNameSuccess(data));
+      } catch (error) {
+        console.log('data error', error)
+        yield put(searchByNameFailed(error));
+      }
+}
+
+export function* watchSearchByName() {
+    yield takeLatest(types.SEARCH_BY_NAME, searchByName);
   }

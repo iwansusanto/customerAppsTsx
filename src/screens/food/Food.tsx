@@ -103,7 +103,7 @@ class Food extends React.Component<Props, State> {
     this.props.pickcategories.searchPickCategories(suggestId)
   }
 
-  search = (categoriId: number, type: string) => () => {
+  search = (categoriId: number, type: string) => async() => {
     this.props.search.search(categoriId, type)
     this.props.navigation.navigate("FoodSearch", {
       header: this.props.navigation.state.params.header
