@@ -19,13 +19,24 @@ const ICON_MESSAGE = require("../../assets/ic_message.png")
 const ICON_ARROW = require("../../assets/ic_arrow_blue.png")
 const ICON_CANCEL = require("../../assets/ic_cancel.png")
 const ICON_WALLET = require("../../assets/ic_wallet.png")
+const ICON_NOTE = require("../../assets/note-ijo.png")
 
 interface Props extends TouchableOpacityProps {
+  id: string
   name: string
   statusText: string
   date: string
   paymentMethod: string
   displayPrice: string
+  comment: string
+  productData: [
+    {
+      id: number
+      description: string
+      name: string
+      quantity: string
+    }
+  ]
 }
 
 interface State {
@@ -41,6 +52,7 @@ export default class Orders extends React.Component<Props, State> {
   }
 
   render() {
+    // console.log('DATA Props :', this.props)
     return (
       <TouchableOpacity style={styles.container} {...this.props}>
         <View style={{flex: 1, flexDirection: 'row', padding: 20}}>
@@ -79,11 +91,35 @@ export default class Orders extends React.Component<Props, State> {
                 <View style={{flex: 1}}></View>                
                 <View style={{flex: 9, marginLeft: 8}}>
                   <Text style={styles.deliveryTitle}>Delivery note</Text>
-                  <Text style={styles.deliveryDesc}>
-                    just claps three times once arrived in front of my door. the bell is broken btw.
-                  </Text>
+                  <Text style={styles.deliveryDesc}>{this.props.comment}</Text>
                 </View>
               </View>
+              <View style={styles.stroke}></View>
+              <View style={{flex: 1, flexDirection: 'row', paddingHorizontal: 20}}>
+                {this.props.productData && this.props.productData.map((value, index) => {
+
+                  return (
+                    <View style={{flex: 1, marginTop: 5, marginBottom: 10}}>
+                      <View style={{flexDirection: 'row'}}>
+                        <View style={{flex: 2}}>
+                          <Text style={{textAlign: 'right', fontSize: 13}}>{`${value.quantity} X`}</Text>
+                        </View>
+                        <View style={{flex: 8}}>
+                          <Text style={{fontSize: 12, paddingLeft: 21}}>{value.name}</Text>
+                        </View>
+                      </View>
+                      <View style={{flexDirection: 'row', marginTop: 10}}>
+                        <View style={{flex: 2}}>
+                          <Image source={ICON_NOTE} style={styles.iconNote as ImageStyle} />  
+                        </View>
+                        <View style={{flex: 8}}>
+                          <Text style={{fontSize: 12, paddingLeft: 21}}>{value.description}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  )
+                })}
+              </View>  
               <View style={styles.stroke}></View>
               <View style={{flexDirection: 'row', flex: 1, paddingHorizontal: 20}}>
                 <Text style={styles.paymentTitle}>Payment method</Text>
@@ -97,6 +133,11 @@ export default class Orders extends React.Component<Props, State> {
                 <View style={{flexDirection: 'row', flex: 2}}>
                   <Text style={styles.totalLabel}>{this.props.displayPrice}</Text>
                 </View>
+              </View>
+              <View style={styles.stroke}></View>
+              <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 5}}>
+                <Text style={{color: metrics.INACTIVE_COLOR, fontSize: 10}}>Transaction number</Text>
+                <Text style={{paddingLeft: 5, fontSize: 10}}>{this.props.id}</Text>
               </View>
             </CollapseBody>
           </Collapse>
@@ -208,6 +249,12 @@ const styles = StyleSheet.create({
 
   image: {
     alignSelf: "center"
+  },
+  iconNote: {
+    alignSelf: 'flex-end',
+    width: 10,
+    height: 10,
+    marginRight: 10,
   },
   imageWallet:{
     alignSelf: "center",

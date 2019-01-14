@@ -30,6 +30,7 @@ export default class Orders extends React.Component<any, State> {
         'status_text': 'SCHEDULED',
         'payment_method': 'cash',
         'display_price': 'QR1.2',
+        'comment': 'Much topping strawberry',
         'product_data': [
           {
             "id": 967,
@@ -41,7 +42,7 @@ export default class Orders extends React.Component<any, State> {
             "created_at": "2019-01-07 07:03:57",
             "updated_at": "2019-01-07 07:03:57",
             "name": "Cheeseburger",
-            "description": "Cheeseburger"
+            "description": "Cheeseburger Desc"
         }
         ]},
       {
@@ -51,6 +52,7 @@ export default class Orders extends React.Component<any, State> {
         'status_text': 'SCHEDULED',
         'payment_method': 'cash',
         'display_price': 'QR5.0',
+        'comment': 'Call me before deliver my order',
         'product_data': [
           {
               "id": 965,
@@ -62,7 +64,7 @@ export default class Orders extends React.Component<any, State> {
               "created_at": "2019-01-02 06:37:57",
               "updated_at": "2019-01-02 06:37:57",
               "name": "Lemon and Lentil Soup",
-              "description": "Lemon and Lentil Soup"
+              "description": "Lemon and Lentil Soup Desc"
           }
       ],}
     ]
@@ -98,13 +100,17 @@ export default class Orders extends React.Component<any, State> {
         <FlatList
           data={this.state.data}
           renderItem={({ item }: { item: any }) => {
+            // console.log('item.product_data : ', item.product_data)
             return (
               <OrderOngoingItem
+                id={item.id}
                 name={item.name}
                 date={item.ordered_at}
                 statusText={item.status_text}
                 paymentMethod={item.payment_method}
                 displayPrice={item.display_price}
+                comment={item.comment}
+                productData={item.product_data}
               />
             )
           }}
