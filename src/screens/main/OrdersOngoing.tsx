@@ -25,7 +25,8 @@ export default class Orders extends React.Component<any, State> {
       {'id': 1, 'name': 'Home', 'ordered_at': '2019-01-07 07:03:57', 'status_text': 'ONGOING'},
       {
         'id': 2, 
-        'name': 'Hotel', 
+        'name': 'Hotel',
+        'phone': '6287888111778', 
         'ordered_at': '2018-12-07 08:03:57', 
         'status_text': 'SCHEDULED',
         'payment_method': 'cash',
@@ -43,11 +44,24 @@ export default class Orders extends React.Component<any, State> {
             "updated_at": "2019-01-07 07:03:57",
             "name": "Cheeseburger",
             "description": "Cheeseburger Desc"
-        }
+        },
+        {
+          "id": 1067,
+          "product_id": 8370,
+          "order_id": 16871,
+          "price": "5",
+          "quantity": 10,
+          "product_data": "",
+          "created_at": "2019-01-07 07:03:57",
+          "updated_at": "2019-01-07 07:03:57",
+          "name": "Fried Rice",
+          "description": "No salad please"
+      }
         ]},
       {
         'id': 3, 
         'name': 'Villa', 
+        'phone': '6287888111778',
         'ordered_at': '2018-11-07 14:03:57', 
         'status_text': 'SCHEDULED',
         'payment_method': 'cash',
@@ -111,6 +125,7 @@ export default class Orders extends React.Component<any, State> {
                 displayPrice={item.display_price}
                 comment={item.comment}
                 productData={item.product_data}
+                phone={item.phone}
               />
             )
           }}

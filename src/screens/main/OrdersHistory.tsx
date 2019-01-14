@@ -57,6 +57,7 @@ export default class Orders extends React.Component<any, State> {
                 name={item.name}
                 date={item.ordered_at}
                 statusText={item.status_text}
+                phone={item.phone}
               />
             )
           }}

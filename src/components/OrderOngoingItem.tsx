@@ -12,6 +12,7 @@ import moment from "moment"
 import metrics from "../config/metrics"
 
 import Text from "../components/CustomText"
+import { sendWhatsAppMessage, callPhone } from '../utils/phone' 
 
 const PICTURE = require("../../assets/dummy_order.png")
 const ICON_PHONE = require("../../assets/ic_phone_fill.png")
@@ -29,6 +30,7 @@ interface Props extends TouchableOpacityProps {
   paymentMethod: string
   displayPrice: string
   comment: string
+  phone: string
   productData: [
     {
       id: number
@@ -75,10 +77,13 @@ export default class Orders extends React.Component<Props, State> {
           </View>
           {this.props.statusText !== 'SCHEDULED' && (
             <View style={styles.iconContainer}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => callPhone(this.props.phone)}
+              >
                 <Image source={ICON_PHONE} />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity 
+                onPress={() => sendWhatsAppMessage(`https://wa.me/${this.props.phone}?text=Hei%2C%20Can%20I%20help%20you%3F`)}>
                 <Image source={ICON_MESSAGE} />
               </TouchableOpacity>
             </View>
@@ -103,7 +108,9 @@ export default class Orders extends React.Component<Props, State> {
                 {this.props.productData && this.props.productData.map((value, index) => {
 
                   return (
-                    <View style={styles.product_inner}>
+                    <View 
+                      key={index.toString()}
+                      style={styles.product_inner}>
                       <View style={{flexDirection: 'row'}}>
                         <View style={{flex: 2}}>
                           <Text style={styles.product_qty}>{`${value.quantity} X`}</Text>
@@ -173,8 +180,6 @@ const styles = StyleSheet.create({
     width: metrics.DEVICE_WIDTH * 0.9,
     borderRadius: 5,
     backgroundColor: "white",
-    // flexDirection: "row",
-    // padding: 20,
     marginVertical: 5,
     shadowColor: metrics.SHADOW_COLOR,
     shadowOffset: {
@@ -308,7 +313,7 @@ const styles = StyleSheet.create({
   },
   product_wrapper: {
     flex: 1, 
-    flexDirection: 'row', 
+    flexDirection: 'column', 
     paddingHorizontal: 20
   },
   product_inner: {

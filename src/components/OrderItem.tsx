@@ -9,6 +9,7 @@ import {
 } from "react-native"
 import moment from "moment"
 import metrics from "../config/metrics"
+import { sendWhatsAppMessage, callPhone } from '../utils/phone' 
 
 import Text from "../components/CustomText"
 
@@ -21,6 +22,7 @@ interface Props extends TouchableOpacityProps {
   name: string
   statusText: string
   date: string
+  phone: string
 }
 
 export default (props: Props) => (
@@ -34,10 +36,14 @@ export default (props: Props) => (
       <Text style={styles.date}>{moment(props.date).format("DD MMM, hh:mm a")}</Text>
     </View>
     <View style={styles.iconContainer}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => callPhone(props.phone)}
+      >
         <Image source={ICON_PHONE} />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => sendWhatsAppMessage(`https://wa.me/${props.phone}?text=Hei%2C%20Can%20I%20help%20you%3F`)}
+      >
         <Image source={ICON_MESSAGE} />
       </TouchableOpacity>
     </View>
