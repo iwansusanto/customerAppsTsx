@@ -143,8 +143,34 @@ class MainSearch extends React.Component<Props, State> {
     console.log("keyword ", this.state.keyword)
 
     await this.props.search.searchByName(this.state.keyword)
-    console.log("props search : ", this.props)
-    // const results = this.props.result
+  //   console.log("props search : ", this.props)
+  //   const results = this.props.result
+
+  //   const merchantResult: Result[] = results.merchant_data.map(item => ({
+  //     id: item.id,
+  //     type: "merchant",
+  //     name: item.name
+  //   }))
+
+  //   const foodResult: Result[] = results.product_data.map(item => ({
+  //     id: item.id,
+  //     type: "product",
+  //     name: item.name,
+  //     data: item as Food
+  //   }))
+
+  //   const parsedResults = [...merchantResult, ...foodResult]
+  //   this.setState({ results: parsedResults })
+  //   console.log("lololo ", this.state.results)
+  }
+
+  handleChange = async (text: string) => {
+    await this.setState({ keyword: text })
+    console.log("abcde", this.props)
+
+    // if (this.state.keyword === "") return
+    // await this.props.search.searchByName(this.state.keyword)
+    const results = await this.props.result
 
     const merchantResult: Result[] = results.merchant_data.map(item => ({
       id: item.id,
@@ -160,37 +186,11 @@ class MainSearch extends React.Component<Props, State> {
     }))
 
     const parsedResults = [...merchantResult, ...foodResult]
-    this.setState({ results: parsedResults })
-    console.log("lololo ", this.state.results)
-  }
-
-  handleChange = async (text: string) => {
-    await this.setState({ keyword: text })
-    console.log("abcde", this.props)
-
-    // if (this.state.keyword === "") return
-    // await this.props.search.searchByName(this.state.keyword)
-    // const results = await this.props.result
-
-    // const merchantResult: Result[] = results.merchant_data.map(item => ({
-    //   id: item.id,
-    //   type: "merchant",
-    //   name: item.name
-    // }))
-
-    // const foodResult: Result[] = results.product_data.map(item => ({
-    //   id: item.id,
-    //   type: "product",
-    //   name: item.name,
-    //   data: item as Food
-    // }))
-
-    // const parsedResults = [...merchantResult, ...foodResult]
 
     clearTimeout(this.state.timeout)
     this.setState({
-      timeout: setTimeout(this.getResult, 1000)
-      // results: parsedResults
+      timeout: setTimeout(this.getResult, 1000),
+      results: parsedResults
     })
     console.log("stateeeeeeee ", this.state.results)
   }
@@ -219,7 +219,7 @@ class MainSearch extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        {this.state.results.length === 0 &&
+        {this.state.results.length === 0 || this.state.keyword.length === 0 &&
           <Text style={styles.noresult}>No result found</Text>
         }
         <View style={styles.searchContainer}>
@@ -230,7 +230,7 @@ class MainSearch extends React.Component<Props, State> {
             style={{ borderWidth: 0 }}
           />
           <FlatList
-            data={this.state.results}
+            data={this.state.keyword.length !== 0 ? this.state.results : this.state.result}
             keyExtractor={item => `${item.type}.${item.id}`}
             renderItem={({ item }) => (
               <SearchItem
