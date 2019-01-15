@@ -17,8 +17,8 @@ interface Props extends TouchableOpacityProps {
   image: string
   name: string
   price: string
-  // merchant: string
-  // address: string
+  merchant: string
+  address: string
 }
 
 export default (props: Props) => {
@@ -28,8 +28,8 @@ export default (props: Props) => {
       <View style={styles.detailContainer}>
         <Text style={styles.name}>{props.name}</Text>
         <Text style={styles.price}>{`QR. `+props.price}</Text>
-        {/* <Text style={styles.restoName}>{props.merchant}</Text> */}
-        {/* <Text style={styles.restoAddress}>{props.address}</Text> */}
+        <Text style={styles.restoName}>{props.merchant}</Text>
+        <Text style={styles.restoAddress}>{props.address}</Text>
       </View>
     </TouchableOpacity>
   )

@@ -18,9 +18,6 @@ import SearchBar from "../../components/SearchBar"
 import metrics from "../../config/metrics"
 import FoodCategory from "../../components/FoodCategory"
 import FoodSuggestion from "../../components/FoodSuggestion"
-import withSuggestionContext from "../../components/consumers/withSuggestionContext"
-import withSearchContext from "../../components/consumers/withSearchContext"
-import withPickCategoriesContext from "../../components/consumers/withPickcategoriesContext"
 import Lang from "../../components/Lang"
 
 // Actions
@@ -34,42 +31,45 @@ const LOGO = require("../../../assets/logo-higres.png")
 const ICON_HEART = require("../../../assets/ic_heart.png")
 
 interface Props {
-  navigation: NavigationScreenProp<any, any>
-  search: SearchContext
-  pickcategories: {
-    searchPickCategories: Function
+  navigation            : NavigationScreenProp<any, any>
+  search                : {
+    search                : Function
+    searchBySuggestion    : Function
   }
-  banner: Category[]
-  suggestion: {
-    getSuggestions: Function
+  pickcategories        : {
+    searchPickCategories  : Function
   }
-  suggestionsBanner: Category[]
-  pickCategoriesBanner: PickBanner[]
+  banner                : Category[]
+  suggestion            : {
+    getSuggestions        : Function
+  }
+  suggestionsBanner     : Category[]
+  pickCategoriesBanner  : PickBanner[]
 }
 
 interface PickBanner {
-  id: number
-  category_id: number
-  label: string
-  name: string
-  image_url: string
-  root_category: number
-  status: number
+  id            : number
+  category_id   : number
+  label         : string
+  name          : string
+  image_url     : string
+  root_category : number
+  status        : number
 }
 
 interface Category {
-  id: number
-  name: string
-  _lft: number
-  _rgt: number
-  parent_id: number
-  suggest_id: string
-  city_id: number
-  merchant_id: number
-  created_at: string
-  updated_at: string
+  id          : number
+  name        : string
+  _lft        : number
+  _rgt        : number
+  parent_id   : number
+  suggest_id  : string
+  city_id     : number
+  merchant_id : number
+  created_at  : string
+  updated_at  : string
   has_children: number
-  image_url: string
+  image_url   : string
 }
 
 interface State {
@@ -250,7 +250,7 @@ const mapStateToProps = ({ getCategories, suggestion, pickCategories }) => {
   const { banner } = getCategories
   const { suggestionsBanner } = suggestion
   const { pickCategoriesBanner } = pickCategories
-  console.log("pick banners : ", )
+  // console.log("pick banners : ", )
   return {
     banner,
     suggestionsBanner,
@@ -266,7 +266,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Food)
+export default connect(mapStateToProps, mapDispatchToProps)(Food)
