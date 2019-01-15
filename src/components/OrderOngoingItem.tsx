@@ -28,6 +28,7 @@ interface Props extends TouchableOpacityProps {
   name: string
   statusText: string
   date: string
+  dateCreated: string
   paymentMethod: string
   displayPrice: string
   comment: string
@@ -56,7 +57,7 @@ export default class Orders extends React.Component<Props, State> {
   }
 
   render() {
-    
+    const timeDeliverEnd = moment(this.props.date).add(30, 'm').format("hh:mm");
     return (
       <TouchableOpacity style={styles.container} {...this.props}>
 
@@ -76,7 +77,7 @@ export default class Orders extends React.Component<Props, State> {
               )}
             </View>
             <Text style={styles.status}>{this.props.statusText}</Text>
-            <Text style={styles.date}>{moment(this.props.date).format("DD MMM, hh:mm a")}</Text>
+            <Text style={styles.date}>{moment(this.props.dateCreated).format("DD MMM, hh:mm a")}</Text>
           </View>
           {this.props.statusText !== 'SCHEDULED' && (
             <View style={styles.iconContainer}>
@@ -164,8 +165,8 @@ export default class Orders extends React.Component<Props, State> {
               <View style={styles.red_ball}></View>
             </View>
             <View style={{flex: 7}}>
-              <Text style={styles.scheduleDay}>Tomorrow, Jan 15</Text>
-              <Text style={styles.scheduleTime}>10:15 - 10:45</Text>
+              <Text style={styles.scheduleDay}>{`Tomorrow, ${moment(this.props.date).format("DD MMM")}`}</Text>
+              <Text style={styles.scheduleTime}>{`${moment(this.props.date).format("hh:mm")} - ${timeDeliverEnd}`}</Text>
             </View>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
               <TouchableOpacity onPress={() => alert('Click')}>

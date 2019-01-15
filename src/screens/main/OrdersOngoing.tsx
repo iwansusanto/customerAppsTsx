@@ -78,6 +78,7 @@ class Orders extends React.Component<Props, State> {
                 id={item.id}
                 name={item.name}
                 date={item.ordered_at}
+                dateCreated={item.created_at}
                 statusText={item.status_text}
                 paymentMethod={item.payment_method}
                 displayPrice={item.display_price}
