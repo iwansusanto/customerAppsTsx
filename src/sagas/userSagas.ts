@@ -19,8 +19,10 @@ export function* watchChangeUsers() {
 }
 
 export function* loginUsers(action) {
+  console.log('DATA LOGIN : ', 'LOGIN')
   try {
     const { data } = yield call(postRequest.login, action.payload)
+    console.log('DATA LOGIN : ', data)
     if(data.success) {
       action.onSuccess(data)
     } else {

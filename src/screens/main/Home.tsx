@@ -11,9 +11,13 @@ import {
   FlatList,
   ImageStyle,
   DeviceEventEmitter,
-  AsyncStorage
+  AsyncStorage,
+  ListRenderItem
 } from "react-native"
-import { NavigationScreenProp, NavigationTabScreenOptions } from "react-navigation"
+import {
+  NavigationScreenProp,
+  NavigationTabScreenOptions
+} from "react-navigation"
 import MapView, { Region, PROVIDER_GOOGLE } from "react-native-maps"
 import Geocoder from "react-native-geocoder"
 
@@ -21,13 +25,14 @@ import Geocoder from "react-native-geocoder"
 import HeaderOverlay from "../../components/HeaderOverlay"
 import SearchBar from "../../components/SearchBar"
 import strings from "../../components/language/index"
-import Lang from '../../components/Lang'
+import Lang from "../../components/Lang"
 
 // Actions
-import { bindActionCreators } from 'redux'
-import * as userActions from '../../actions/userActions'
-import { connect } from 'react-redux'
-
+import { bindActionCreators } from "redux"
+import * as userActions from "../../actions/userActions"
+import * as getCategoriesActions from "../../actions/getCategoriesActions"
+import * as cartActions from "../../actions/cartActions"
+import { connect } from "react-redux"
 
 // Configs
 import metrics from "../../config/metrics"
@@ -47,9 +52,30 @@ const LOGO = require("../../../assets/logo-higres.png")
 // Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
-  user: UserContext
-  category: CategoryContext
-  cart: CartContext
+  category: {
+    getCategories: Function
+  }
+  cart: {
+    getCart: Function
+  }
+  id: any
+  banner: Category[]
+  users: any
+}
+
+interface Category {
+  id: number
+  name: string
+  _lft: number
+  _rgt: number
+  parent_id: number
+  suggest_id: string
+  city_id: number
+  merchant_id: number
+  created_at: string
+  updated_at: string
+  has_children: number
+  image_url: string
 }
 
 interface State {
@@ -57,8 +83,7 @@ interface State {
   address: string
 }
 
-class Home extends React.Component<any, State> {
-
+class Home extends React.Component<Props, State> {
   private mapRef = createRef<MapView>()
 
   state = {
@@ -77,39 +102,43 @@ class Home extends React.Component<any, State> {
   }
 
   onMapReady(): void {
-    navigator.geolocation.getCurrentPosition(async (position: GeolocationReturnType) => {
-      // Convert GeolocationReturnType to Region to be usable in Map View
-      let region: Region = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01
+    navigator.geolocation.getCurrentPosition(
+      async (position: GeolocationReturnType) => {
+        // Convert GeolocationReturnType to Region to be usable in Map View
+        let region: Region = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01
+        }
+
+        try {
+          const address = await Geocoder.geocodePosition({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          })
+
+          console.log(address)
+
+          this.setState({ address: address[0].formattedAddress })
+        } catch (err) {
+          console.log(err)
+        }
+
+        const mapView = this.mapRef.current
+        // Move the map to current position
+        if (mapView) {
+          mapView.animateToRegion(region)
+          this.setState({ currentLocation: region })
+        }
       }
-
-      try {
-        const address = await Geocoder.geocodePosition({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        })
-
-        console.log(address)
-
-        this.setState({ address: address[0].formattedAddress })
-      } catch (err) {
-        console.log(err)
-      }
-
-      const mapView = this.mapRef.current
-      // Move the map to current position
-      if (mapView) {
-        mapView.animateToRegion(region)
-        this.setState({ currentLocation: region })
-      }
-    })
+    )
   }
 
   componentWillMount() {
-    DeviceEventEmitter.addListener("shouldCartUpdate", () => this.props.cart.getCart())
+    DeviceEventEmitter.addListener("shouldCartUpdate", () =>
+      this.props.cart.getCart()
+    )
   }
 
   async componentDidMount() {
@@ -117,31 +146,51 @@ class Home extends React.Component<any, State> {
   }
 
   componentWillUnmount() {
-    DeviceEventEmitter.removeListener("shouldCartUpdate", () => this.props.cart.getCart())
+    DeviceEventEmitter.removeListener("shouldCartUpdate", () =>
+      this.props.cart.getCart()
+    )
+  }
+
+  renderFlatList = item => {
+    return (
+      <CategoryItem
+        title={item.name}
+        picture={item.image_url}
+        onPress={() =>
+          this.props.navigation.navigate("Food", {
+            suggestId: item.suggest_id,
+            header: item.name
+          })
+        }
+      />
+    )
   }
 
   render() {
-    console.log('name', this.props)
+    // console.log("Banner : ", this.props.banner)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
         <StatusBar barStyle={"light-content"} />
         <Image source={LOGO} style={{ marginTop: 50 }} />
         <View style={styles.customerDetail}>
-          <Lang styleLang={styles.greeting} language='homeHi'>
-          {this.props.users.customer.name} !
+          <Lang styleLang={styles.greeting} language="homeHi">
+            {this.props.users.customer.name} !
           </Lang>
           <View>
             <View style={styles.pointContainer}>
               <View style={styles.iconPointContainer}>
-                <Image source={ICON_POINT} style={styles.point_icon as ImageStyle} />
+                <Image
+                  source={ICON_POINT}
+                  style={styles.point_icon as ImageStyle}
+                />
                 <Text style={styles.lblIcon}>BRONZE</Text>
               </View>
               <View>
                 <Text style={styles.point}>
-                {this.props.users.customer.total_point}
+                  {this.props.users.customer.total_point}
                 </Text>
-                <Lang styleLang={styles.lblPoint} language='homePoints'></Lang>
+                <Lang styleLang={styles.lblPoint} language="homePoints" />
               </View>
             </View>
           </View>
@@ -162,12 +211,14 @@ class Home extends React.Component<any, State> {
             <Text style={styles.address}>{this.state.address}</Text>
           </View>
         </View>
-        <Lang styleLang={styles.searchCaption} language='homeSearch'></Lang>
-        <SearchBar onFocus={() => this.props.navigation.navigate("MainSearch")} />
-        {/* <FlatList
+        <Lang styleLang={styles.searchCaption} language="homeSearch" />
+        <SearchBar
+          onFocus={() => this.props.navigation.navigate("MainSearch")}
+        />
+        <FlatList
           contentContainerStyle={styles.categories}
-          data={this.props.category.categories}
-          keyExtractor={item => item.id.toString()}
+          data={this.props.banner}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => {
             return (
               <CategoryItem
@@ -183,7 +234,7 @@ class Home extends React.Component<any, State> {
             )
           }}
           horizontal
-        /> */}
+        />
       </View>
     )
   }
@@ -211,8 +262,8 @@ const styles = StyleSheet.create({
   },
 
   iconPointContainer: {
-    justifyContent: 'center', 
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRightWidth: 0.3,
     borderColor: metrics.WHITE_COLOR,
     paddingRight: 10,
@@ -220,13 +271,13 @@ const styles = StyleSheet.create({
   },
 
   lblIcon: {
-    color: metrics.GOLD_COLOR, 
-    fontSize: 8, 
+    color: metrics.GOLD_COLOR,
+    fontSize: 8,
     paddingTop: 5
   },
 
   lblPoint: {
-    fontSize: 12, 
+    fontSize: 12,
     color: metrics.WHITE_COLOR
   },
 
@@ -293,19 +344,24 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({ user, register }) => {
-  console.log('coba regis', register)
-  const { users } = user;
+const mapStateToProps = ({ user, getCategories }) => {
+  console.log('get state', getCategories)
+  const { users } = user
+  const { banner } = getCategories
   return {
-    users
-  }       
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return  {
-    user: bindActionCreators(userActions, dispatch)
+    users,
+    banner
   }
 }
 
-// export default withCartContext(withUserContext(withCategoryContext(Home)))
-export default connect( mapStateToProps, mapDispatchToProps)(Home)
+const mapDispatchToProps = dispatch => {
+  return {
+    category: bindActionCreators(getCategoriesActions, dispatch),
+    cart: bindActionCreators(cartActions, dispatch)
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home)

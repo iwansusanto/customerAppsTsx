@@ -17,20 +17,19 @@ interface Props extends TouchableOpacityProps {
   image: string
   name: string
   price: string
-  merchant: string
-  address: string
+  // merchant: string
+  // address: string
 }
 
 export default (props: Props) => {
-  console.log('hebat', props)
   return (
     <TouchableOpacity style={styles.container} {...props}>
       <Image style={styles.image as ImageStyle} source={{ uri: props.image }} />
       <View style={styles.detailContainer}>
         <Text style={styles.name}>{props.name}</Text>
         <Text style={styles.price}>{`QR. `+props.price}</Text>
-        <Text style={styles.restoName}>{props.merchant}</Text>
-        <Text style={styles.restoAddress}>{props.address}</Text>
+        {/* <Text style={styles.restoName}>{props.merchant}</Text> */}
+        {/* <Text style={styles.restoAddress}>{props.address}</Text> */}
       </View>
     </TouchableOpacity>
   )

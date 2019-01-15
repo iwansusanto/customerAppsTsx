@@ -39,10 +39,15 @@ class SplashScreen extends Component<Props, any> {
   async componentDidMount() {
     const dataJSONString = await getData(keys.user)
     console.log('splash screen : ', dataJSONString)
-    if (dataJSONString !== null) {
-      const data = JSON.parse(dataJSONString)
+    // this.props.navigation.replace('Welcome')
+
+    if (dataJSONString !== '') {
+      const data = await JSON.parse(dataJSONString)
+      console.log('data json', data)
+
       if (data !== null) {
-        this.props.user.changeUser(data)
+        await this.props.user.changeUser(data)
+        console.log('hello', strings.inboxTab)
         // this.props.navigation.navigate('Login')
         await this.props.navigation.replace("Home", {
           inbox: strings.inboxTab,
@@ -52,15 +57,17 @@ class SplashScreen extends Component<Props, any> {
           home: strings.homeTab
         })
       } else {
+        console.log('bb')
         await this.props.navigation.replace("Welcome")
       }
     } else {
+      console.log('aa')
       await this.props.navigation.replace("Welcome")
     }
   }
 
   render() {
-    console.log('tes token')
+    console.log('tes token', this.props)
     return (
       <View style={styles.container}>
         <Image source={LOGO} />
