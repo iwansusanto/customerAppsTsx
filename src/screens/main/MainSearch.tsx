@@ -138,8 +138,11 @@ class MainSearch extends React.Component<Props, State> {
 
   getResult = async () => {
     if (this.state.keyword === "") return
+    console.log('keyword ', this.state.keyword)
 
     await this.props.search.searchByName(this.state.keyword)
+    // console.log('props search : ' ,this.props)
+    // const results = this.props.search.result
 
 
     // const merchantResult: Result[] = results.merchant_data.map(item => ({
@@ -157,13 +160,18 @@ class MainSearch extends React.Component<Props, State> {
 
     // const parsedResults = [...merchantResult, ...foodResult]
     // this.setState({ results: parsedResults })
+    // console.log('lololo ', this.state.results)
   }
+
+  
 
   handleChange = async (text: string) => {
     await this.setState({ keyword: text })
     console.log('abcde', this.props.result)
-    const results = this.props.result
-
+    
+    // if (this.state.keyword === "") return
+    // await this.props.search.searchByName(this.state.keyword)
+    const results = await this.props.result
 
     const merchantResult: Result[] = results.merchant_data.map(item => ({
       id: item.id,
@@ -209,7 +217,7 @@ class MainSearch extends React.Component<Props, State> {
   }
 
   render() {
-    // console.log('result : ',this.props.result.product_data)
+    console.log('result : ',this.state.results.length)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
