@@ -9,35 +9,45 @@ import {
 } from "react-native"
 import moment from "moment"
 import metrics from "../config/metrics"
+import { sendWhatsAppMessage, callPhone } from '../utils/phone' 
 
 import Text from "../components/CustomText"
 
 const PICTURE = require("../../assets/dummy_order.png")
 const ICON_PHONE = require("../../assets/ic_phone_fill.png")
 const ICON_MESSAGE = require("../../assets/ic_message.png")
+// const ICON_ARROW = require("../../assets/ic_arrow_blue.png")
 
 interface Props extends TouchableOpacityProps {
   name: string
   statusText: string
   date: string
+  phone: string
 }
 
 export default (props: Props) => (
   <TouchableOpacity style={styles.container} {...props}>
     <Image source={PICTURE} style={styles.image as ImageStyle} />
     <View style={styles.detailContainer}>
-      <Text style={styles.title}>{props.name}</Text>
+      <View style={styles.titleCard}>
+        <Text style={styles.title}>{props.name}</Text>
+      </View>
       <Text style={styles.status}>{props.statusText}</Text>
-      <Text style={styles.date}>{moment(props.date).format("DD MMMM YYYY hh:mm")}</Text>
+      <Text style={styles.date}>{moment(props.date).format("DD MMM, hh:mm a")}</Text>
     </View>
     <View style={styles.iconContainer}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => callPhone(props.phone)}
+      >
         <Image source={ICON_PHONE} />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => sendWhatsAppMessage(`https://wa.me/${props.phone}?text=Hei%2C%20Can%20I%20help%20you%3F`)}
+      >
         <Image source={ICON_MESSAGE} />
       </TouchableOpacity>
     </View>
+    
   </TouchableOpacity>
 )
 
@@ -57,7 +67,10 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 1
   },
-
+  titleCard: {
+    flex: 1, 
+    flexDirection: 'row'
+  },
   detailContainer: {
     marginLeft: 10,
     justifyContent: "center",
@@ -66,7 +79,8 @@ const styles = StyleSheet.create({
 
   title: {
     fontWeight: "bold",
-    fontSize: 13
+    fontSize: 13,
+    flex: 9
   },
 
   status: {

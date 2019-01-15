@@ -10,6 +10,12 @@ export default  {
       loading: false,
       error: '',
       data: {},
+    },
+    orders: {
+      loading: false,
+      error: {},
+      dataOnGoing: [],
+      dataHistory: []
     }
   };
   

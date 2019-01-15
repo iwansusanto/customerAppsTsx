@@ -22,6 +22,7 @@ export default {
   WHITE_COLOR: "#FFFFFF",
   BLUE_SEA_COLOR: "#007AFF",
   GOLD_COLOR: "#f9a608",
+  BACKGROUND_GRAY: 'rgba(155, 155, 155, 0.12)',
   DEVICE_WIDTH: width,
   DEVICE_HEIGHT: height,
   OS: Platform.OS,
