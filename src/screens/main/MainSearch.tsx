@@ -32,7 +32,8 @@ interface Result {
 interface Props {
   navigation: NavigationScreenProp<any, any>
   search: SearchContext
-  result: Result[]
+  // result: Result[]
+  result: SearchContext
 }
 
 interface State {
@@ -57,24 +58,24 @@ class MainSearch extends React.Component<Props, State> {
     if (this.state.keyword === "") return
 
     await this.props.search.searchByName(this.state.keyword)
-    const results = await this.props.result
-    console.log('resultssssssssss', results)
 
-    // const merchantResult: Result[] = results.merchant_data.map(item => ({
-    //   id: item.id,
-    //   type: "merchant",
-    //   name: item.name
-    // }))
+    const merchantResult: Result[] = this.props.result.merchant_data.map(item => ({
+      id: item.id,
+      type: "merchant",
+      name: item.name
+    }))
 
-    // const foodResult: Result[] = results.product_data.map(item => ({
-    //   id: item.id,
-    //   type: "product",
-    //   name: item.name,
-    //   data: item as Food
-    // }))
+    const foodResult: Result[] = this.props.result.product_data.map(item => ({
+      id: item.id,
+      type: "product",
+      name: item.name,
+      data: item as Food
+    }))
 
-    // const parsedResults = [...merchantResult, ...foodResult]
-    // this.setState({ results: parsedResults })
+    console.log('merchant result', merchantResult)
+
+    const parsedResults = [...merchantResult, ...foodResult]
+    this.setState({ results: parsedResults })
   }
 
   handleChange = async (text: string) => {
@@ -106,7 +107,7 @@ class MainSearch extends React.Component<Props, State> {
   }
 
   render() {
-    // console.log('result : ',this.props.result.product_data)
+    console.log('result : ',this.props.result, this.state.results)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -120,13 +121,13 @@ class MainSearch extends React.Component<Props, State> {
             onChangeText={this.handleChange}
             style={{ borderWidth: 0 }}
           />
-          <FlatList
+          {/* <FlatList
             data={this.props.result}
             keyExtractor={item => `${item.type}.${item.id}`}
             renderItem={({ item }) => (
               <SearchItem label={item.name} onPress={this.handleClick(item, item.type)} />
             )}
-          />
+          /> */}
         </View>
       </View>
     )
@@ -162,9 +163,10 @@ const styles = StyleSheet.create({
 })
 
 // export default withSearchContext(MainSearch)
-const mapStateToProps = search => {
-  const {result} = search
-  console.log('search by name state ', result)
+const mapStateToProps = (search) => {
+  const {search : {result}} = search
+  console.log('search by name state ', search)
+  console.log('coba result : ', result)
   return {
     result
   }
