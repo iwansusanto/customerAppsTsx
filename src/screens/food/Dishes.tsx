@@ -9,7 +9,6 @@ import {
 } from "react-native"
 
 import { NavigationScreenProp } from "react-navigation"
-import withSearchContext from "../../components/consumers/withSearchContext"
 import DishItem from "../../components/DishItem"
 
 // Actions
@@ -95,7 +94,7 @@ interface Product {
 
 class Dishes extends React.Component<Props> {
   render() {
-    console.log("dishes product", this.props.product_data)
+    // console.log("dishes product", this.props.product_data)
     return (
       <View style={styles.container}>
         {this.props.loading ? (
@@ -115,15 +114,15 @@ class Dishes extends React.Component<Props> {
             keyExtractor={item => item.id.toString()}
             contentContainerStyle={styles.list}
             style={styles.listContainer}
-            renderItem={({ item }) => {
-              console.log("item dishes", item.merchant)
+            renderItem={({ item }: { item: any }) => {
+              
               return (
                 <DishItem
                   name={item.name}
                   image={item.images[0]}
                   price={item.price}
-                  // merchant={item.merchant.name}
-                  // address={item.merchant.address}
+                  merchant={item.merchant ? item.merchant.name : '-'}
+                  address={item.merchant ? item.merchant.address : '-'}
                   onPress={() =>
                     this.props.navigation.navigate("RestoDetail", {
                       merchantId: item.merchant_id
@@ -157,20 +156,12 @@ const styles = StyleSheet.create({
 })
 
 // export default withSearchContext(Dishes)
-const mapStateToProps = ({
-  getCategories,
-  suggestion,
-  pickCategories,
-  search
-}) => {
+const mapStateToProps = ({ getCategories, suggestion, pickCategories, search }) => {
   const { banner } = getCategories
   const { suggestionsBanner } = suggestion
   const { pickCategoriesBanner } = pickCategories
-  const {
-    search: { product_data },
-    loading
-  } = search
-  console.log("search : ", search)
+  const { search: { product_data }, loading } = search
+  // console.log("search product_data : ", search)
   return {
     banner,
     suggestionsBanner,
@@ -180,7 +171,4 @@ const mapStateToProps = ({
   }
 }
 
-export default connect(
-  mapStateToProps,
-  null
-)(Dishes)
+export default connect( mapStateToProps, null )(Dishes)
