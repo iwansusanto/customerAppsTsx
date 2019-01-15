@@ -1,6 +1,12 @@
 export default {
   user: {
-    users: {},
+    users: {
+      customer: {
+        name: '',
+        email: '',
+        phone: ''
+      }
+    },
     language: 'en'
   },
   register: {

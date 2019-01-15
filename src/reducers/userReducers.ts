@@ -6,7 +6,7 @@ const userReducer =  (state = appState.user, action) => {
         case types.CHANGE_USER:
             return  { 
                 ...state, 
-                users: action.payload 
+                users: (action.payload !== null ? action.payload : state.users) 
             }
         case types.LOGIN: 
             return  { 

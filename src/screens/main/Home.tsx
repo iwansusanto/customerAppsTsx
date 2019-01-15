@@ -5,18 +5,13 @@ import {
   View,
   Image,
   StatusBar,
-  Button,
   GeolocationReturnType,
-  ScrollView,
   FlatList,
   ImageStyle,
-  DeviceEventEmitter,
-  AsyncStorage,
-  ListRenderItem
+  DeviceEventEmitter
 } from "react-native"
 import {
-  NavigationScreenProp,
-  NavigationTabScreenOptions
+  NavigationScreenProp
 } from "react-navigation"
 import MapView, { Region, PROVIDER_GOOGLE } from "react-native-maps"
 import Geocoder from "react-native-geocoder"
@@ -24,12 +19,10 @@ import Geocoder from "react-native-geocoder"
 // Custom component used in the screen
 import HeaderOverlay from "../../components/HeaderOverlay"
 import SearchBar from "../../components/SearchBar"
-import strings from "../../components/language/index"
 import Lang from "../../components/Lang"
 
 // Actions
 import { bindActionCreators } from "redux"
-import * as userActions from "../../actions/userActions"
 import * as getCategoriesActions from "../../actions/getCategoriesActions"
 import * as cartActions from "../../actions/cartActions"
 import { connect } from "react-redux"
@@ -37,10 +30,6 @@ import { connect } from "react-redux"
 // Configs
 import metrics from "../../config/metrics"
 import CategoryItem from "../../components/CategoryItem"
-
-import withUserContext from "../../components/consumers/withUserContext"
-import withCategoryContext from "../../components/consumers/withCategoryContext"
-import withCartContext from "../../components/consumers/withCartContext"
 
 // Assets
 const ICON_POINT = require("../../../assets/point-bronze.png")
@@ -60,7 +49,12 @@ interface Props {
   }
   id: any
   banner: Category[]
-  users: any
+  users: {
+    customer: {
+      name: string
+      total_point: string
+    }
+  }
 }
 
 interface Category {
@@ -345,7 +339,8 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = ({ user, getCategories }) => {
-  console.log('get state', getCategories)
+  // console.log('get state', getCategories)
+  // console.log('User : ', user)
   const { users } = user
   const { banner } = getCategories
   return {

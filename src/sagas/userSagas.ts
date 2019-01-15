@@ -8,7 +8,9 @@ import { keys } from '../config/keys'
 export async function* changeUsers(action) {
   try {
     await setData(keys.user, JSON.stringify(action.payload))
-    await api.changeToken(action.payload.token)
+    if(action.payload) {
+      await api.changeToken(action.payload.token)
+    }
   } catch (error) {
     console.log('Error changeUsers : ', error)
   }
