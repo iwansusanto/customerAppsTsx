@@ -1,6 +1,9 @@
 import React from "react"
 import { View, StyleSheet, Image, ImageStyle, FlatList } from "react-native"
-import { NavigationStackScreenOptions, NavigationScreenProp } from "react-navigation"
+import {
+  NavigationStackScreenOptions,
+  NavigationScreenProp
+} from "react-navigation"
 
 import Text from "../../components/CustomText"
 import HeaderOverlay from "../../components/HeaderOverlay"
@@ -8,16 +11,15 @@ import metrics from "../../config/metrics"
 import SearchBar from "../../components/SearchBar"
 import SearchItem from "../../components/SearchItem"
 import withSearchContext from "../../components/consumers/withSearchContext"
-import Lang from '../../components/Lang'
+import Lang from "../../components/Lang"
 
 import { any } from "prop-types"
 
-
 // Actions
 import { bindActionCreators } from "redux"
-import * as searchActions from '../../actions/searchActions'
+import * as searchActions from "../../actions/searchActions"
 import { connect } from "react-redux"
-import search from "../../reducers/searchReducers";
+import search from "../../reducers/searchReducers"
 
 const LOGO = require("../../../assets/logo-higres.png")
 const OVERLAY = require("../../../assets/overlay_search.png")
@@ -32,7 +34,88 @@ interface Result {
 interface Props {
   navigation: NavigationScreenProp<any, any>
   search: SearchContext
-  result: Result[]
+  result: SearchResponse[]
+}
+
+interface SearchResponse {
+  id: number
+  type: string
+  success: boolean
+  product_found: number
+  merchant_found: number
+  product_data: Product[]
+  merchant_data: Merchant[]
+}
+
+interface Merchant {
+  id: number
+  name: string
+  lat: number
+  lng: number
+  image: string
+  sort: number
+  is_merchant_open: number
+  category_id: number
+  city_id: number
+  close: string
+  open: string
+  created_at: string
+  updated_at: string
+  menu_id: number
+  address: string
+  phone: string
+  image_url: string
+}
+
+interface Product {
+  id: number
+  name: string
+  description: string
+  price: string
+  price_old: string
+  category_id: number
+  menu_id: number
+  tax_group_id: number
+  type: string
+  created_at: string
+  updated_at: string
+  images: string[]
+  tax_value: number
+  city_id: number
+  additional: [
+    {
+      id: number
+      label: string
+      name: string
+      data: string
+    }
+  ]
+  merchant: Merchant
+  merchant_id: number
+  formatted_price: string
+  formatted_old_price: string
+  product_images: [
+    {
+      id: number
+      image: string
+      product_id: number
+      created_at: string
+      updated_at: string
+    }
+  ]
+  tax_group: string
+  category: Category
+  product_additional: [
+    {
+      id: number
+      product_id: number
+      label: string
+      name: string
+      price: string
+      created_at: string
+      updated_at: string
+    }
+  ]
 }
 
 interface State {
@@ -57,8 +140,7 @@ class MainSearch extends React.Component<Props, State> {
     if (this.state.keyword === "") return
 
     await this.props.search.searchByName(this.state.keyword)
-    const results = await this.props.result
-    console.log('resultssssssssss', results)
+
 
     // const merchantResult: Result[] = results.merchant_data.map(item => ({
     //   id: item.id,
@@ -79,11 +161,32 @@ class MainSearch extends React.Component<Props, State> {
 
   handleChange = async (text: string) => {
     await this.setState({ keyword: text })
+    console.log('abcde', this.props.result)
+    const results = this.props.result
+
+
+    const merchantResult: Result[] = results.merchant_data.map(item => ({
+      id: item.id,
+      type: "merchant",
+      name: item.name
+    }))
+
+    const foodResult: Result[] = results.product_data.map(item => ({
+      id: item.id,
+      type: "product",
+      name: item.name,
+      data: item as Food
+    }))
+
+    const parsedResults = [...merchantResult, ...foodResult]
+
 
     clearTimeout(this.state.timeout)
     this.setState({
-      timeout: setTimeout(this.getResult, 1000)
+      timeout: setTimeout(this.getResult, 1000),
+      results: parsedResults
     })
+    console.log('stateeeeeeee ', this.state.results)
   }
 
   handleClick = (result: Result, type: string) => () => {
@@ -121,7 +224,7 @@ class MainSearch extends React.Component<Props, State> {
             style={{ borderWidth: 0 }}
           />
           <FlatList
-            data={this.props.result}
+            data={this.state.results}
             keyExtractor={item => `${item.type}.${item.id}`}
             renderItem={({ item }) => (
               <SearchItem label={item.name} onPress={this.handleClick(item, item.type)} />
@@ -163,8 +266,10 @@ const styles = StyleSheet.create({
 
 // export default withSearchContext(MainSearch)
 const mapStateToProps = search => {
-  const {result} = search
-  console.log('search by name state ', result)
+  const {
+    search: { result }
+  } = search
+  console.log("search by name state ", result)
   return {
     result
   }
