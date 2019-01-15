@@ -1,6 +1,7 @@
 export default {
-  login: {
-    users: {}
+  user: {
+    users: {},
+    language: 'en'
   },
   register: {
     userRegister: {}

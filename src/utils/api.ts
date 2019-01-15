@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios"
-import { lang } from "moment";
-import { AsyncStorage } from "react-native";
+import { getData } from '../utils/storage'
+import { keys } from '../config/keys'
 
 class API {
   client: AxiosInstance
@@ -13,7 +13,7 @@ class API {
 
     client.interceptors.request.use(async function(config) {
       if(config.method === 'post' || config.method === 'get') {
-        const lang = await AsyncStorage.getItem('language')
+        const lang = await getData(keys.language)
         // client.defaults.headers.common['lang'] = lang
         // config.data = {...config.data, lang}
         config.headers = {...config.headers, lang}

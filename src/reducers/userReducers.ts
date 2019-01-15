@@ -1,22 +1,23 @@
 import * as types from '../actions/types'
 import appState from '../config/intialState'
-import { setData, getData } from '../utils/storage'
-import { keys } from '../config/keys'
 
-const userReducer =  (state = appState.login, action) => {
+const userReducer =  (state = appState.user, action) => {
     switch (action.type){
         case types.CHANGE_USER:
-            console.log('reducer login', action)
             return  { 
                 ...state, 
                 users: action.payload 
             }
         case types.LOGIN: 
-        console.log('reducer logins : ', action)
             return  { 
                 ...state, 
                 users: {}
             }
+        case types.CHANGE_LANGUAGE:
+            return {
+                ...state,
+                language: action.payload
+            }    
         default:
             return state;
     }
