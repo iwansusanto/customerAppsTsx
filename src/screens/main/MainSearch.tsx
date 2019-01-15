@@ -122,6 +122,7 @@ interface State {
   keyword: string
   timeout: number
   results: Result[]
+  result: Result[]
 }
 
 class MainSearch extends React.Component<Props, State> {
@@ -133,45 +134,17 @@ class MainSearch extends React.Component<Props, State> {
   state = {
     keyword: "",
     timeout: -1,
-    results: [] as Result[]
+    results: [] as Result[],
+    result: [] as Result[]
   }
 
   getResult = async () => {
     if (this.state.keyword === "") return
-    console.log('keyword ', this.state.keyword)
+    console.log("keyword ", this.state.keyword)
 
     await this.props.search.searchByName(this.state.keyword)
-    // console.log('props search : ' ,this.props)
-    // const results = this.props.search.result
-
-
-    // const merchantResult: Result[] = results.merchant_data.map(item => ({
-    //   id: item.id,
-    //   type: "merchant",
-    //   name: item.name
-    // }))
-
-    // const foodResult: Result[] = results.product_data.map(item => ({
-    //   id: item.id,
-    //   type: "product",
-    //   name: item.name,
-    //   data: item as Food
-    // }))
-
-    // const parsedResults = [...merchantResult, ...foodResult]
-    // this.setState({ results: parsedResults })
-    // console.log('lololo ', this.state.results)
-  }
-
-  
-
-  handleChange = async (text: string) => {
-    await this.setState({ keyword: text })
-    console.log('abcde', this.props.result)
-    
-    // if (this.state.keyword === "") return
-    // await this.props.search.searchByName(this.state.keyword)
-    const results = await this.props.result
+    console.log("props search : ", this.props)
+    // const results = this.props.result
 
     const merchantResult: Result[] = results.merchant_data.map(item => ({
       id: item.id,
@@ -187,14 +160,39 @@ class MainSearch extends React.Component<Props, State> {
     }))
 
     const parsedResults = [...merchantResult, ...foodResult]
+    this.setState({ results: parsedResults })
+    console.log("lololo ", this.state.results)
+  }
 
+  handleChange = async (text: string) => {
+    await this.setState({ keyword: text })
+    console.log("abcde", this.props)
+
+    // if (this.state.keyword === "") return
+    // await this.props.search.searchByName(this.state.keyword)
+    // const results = await this.props.result
+
+    // const merchantResult: Result[] = results.merchant_data.map(item => ({
+    //   id: item.id,
+    //   type: "merchant",
+    //   name: item.name
+    // }))
+
+    // const foodResult: Result[] = results.product_data.map(item => ({
+    //   id: item.id,
+    //   type: "product",
+    //   name: item.name,
+    //   data: item as Food
+    // }))
+
+    // const parsedResults = [...merchantResult, ...foodResult]
 
     clearTimeout(this.state.timeout)
     this.setState({
-      timeout: setTimeout(this.getResult, 1000),
-      results: parsedResults
+      timeout: setTimeout(this.getResult, 1000)
+      // results: parsedResults
     })
-    console.log('stateeeeeeee ', this.state.results)
+    console.log("stateeeeeeee ", this.state.results)
   }
 
   handleClick = (result: Result, type: string) => () => {
@@ -217,13 +215,13 @@ class MainSearch extends React.Component<Props, State> {
   }
 
   render() {
-    console.log('result : ',this.state.results.length)
+    console.log("result : ", this.state.results.length, this.state.keyword)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
-        {this.state.results.length === 0 && (
+        {this.state.results.length === 0 &&
           <Text style={styles.noresult}>No result found</Text>
-        )}
+        }
         <View style={styles.searchContainer}>
           <Image source={OVERLAY} style={styles.overlay as ImageStyle} />
           <SearchBar
@@ -235,7 +233,10 @@ class MainSearch extends React.Component<Props, State> {
             data={this.state.results}
             keyExtractor={item => `${item.type}.${item.id}`}
             renderItem={({ item }) => (
-              <SearchItem label={item.name} onPress={this.handleClick(item, item.type)} />
+              <SearchItem
+                label={item.name}
+                onPress={this.handleClick(item, item.type)}
+              />
             )}
           />
         </View>
