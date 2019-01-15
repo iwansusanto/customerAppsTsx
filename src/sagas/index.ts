@@ -1,5 +1,5 @@
 import { all } from 'redux-saga/effects'
-import { watchChangeUsers, watchLoginUsers } from './userSagas'
+import { watchChangeUsers, watchLoginUsers, watchChangeLanguage } from './userSagas'
 import { watchRegisterUsers} from './registerSagas'
 import { watchFetchOrderOngoing, watchFetchOrderHistory } from './ordersSagas'
 import { watchGetCategory } from './getCategoriesSagas'
@@ -19,7 +19,8 @@ import { watchSearch, watchSearchBySuggestion, watchSearchByName} from './search
         watchSearchBySuggestion(),
         watchSearchByName(),
         watchFetchOrderOngoing(),
-        watchFetchOrderHistory()
+        watchFetchOrderHistory(),
+        watchChangeLanguage()
      ])
  }
 
