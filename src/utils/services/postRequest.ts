@@ -48,3 +48,7 @@ export const searchRestoDetail = params => {
 export const register = params => {
   return api.client.post("/register", params)
 }
+
+export const addCart = (params,change : boolean) => {
+  return api.client.post(`/cart${change ? '?change=1' : ''}`, {params})
+}
