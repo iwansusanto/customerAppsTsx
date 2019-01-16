@@ -13,11 +13,9 @@ import {
   DELETE_CART_FAILED
 } from "./types"
 
-export const addCart = (params, onSuccess, onError) => ({
+export const addCart = (params) => ({
   type: ADD_CART,
   payload: params,
-  onSuccess,
-  onError
 })
 
 export const addCartSuccess = data => ({
@@ -30,11 +28,9 @@ export const addCartFailed = error => ({
   payload: error
 })
 
-export const getCart = (params, onSuccess, onError) => ({
+export const getCart = () => ({
     type: GET_CART,
-    payload: params,
-    onSuccess,
-    onError
+    
   })
   
   export const getCartSuccess = data => ({
@@ -47,11 +43,9 @@ export const getCart = (params, onSuccess, onError) => ({
     payload: error
   })
 
-  export const deleteCart = (params, onSuccess, onError) => ({
+  export const deleteCart = (params) => ({
     type: DELETE_CART,
     payload: params,
-    onSuccess,
-    onError
   })
   
   export const deleteCartSuccess = data => ({
@@ -64,11 +58,9 @@ export const getCart = (params, onSuccess, onError) => ({
     payload: error
   })
 
-  export const updateCart = (params, onSuccess, onError) => ({
+  export const updateCart = (params) => ({
     type: UPDATE_CART,
     payload: params,
-    onSuccess,
-    onError
   })
   
   export const updateCartSuccess = data => ({

@@ -9,57 +9,86 @@ const cartReducer = (state = appState.cart, action) => {
         ...state,
         loading: true,
         error: "",
-        cart: []
+        addCart: []
       }
     case types.ADD_CART_SUCCESS:
       return {
         ...state,
         loading: false,
         error: "",
-        cart: action.payload
+        addCart: action.payload
       }
     case types.ADD_CART_FAILED:
       return {
         ...state,
         loading: false,
         error: action.error,
-        cart: []
+        addCart: []
       }
     case types.GET_CART:
+    console.log('get cart reducer', action)
       return {
-        ...state
+        ...state,
+        loading: true,
+        error: "",
+        getCart: []
       }
     case types.GET_CART_SUCCESS:
+    console.log('get cart success', action)
       return {
-        ...state
+        ...state,
+        loading: false,
+        error: "",
+        getCart: action.payload
       }
     case types.GET_CART_FAILED:
       return {
-        ...state
+        ...state,
+        loading: false,
+        error: action.error,
+        getCart: []
       }
     case types.UPDATE_CART:
       return {
-        ...state
+        ...state,
+        loading: true,
+        error: "",
+        updateCart: []
       }
     case types.UPDATE_CART_SUCCESS:
       return {
-        ...state
+        ...state,
+        loading: true,
+        error: "",
+        updateCart: action.payload
       }
     case types.UPDATE_CART_FAILED:
       return {
-        ...state
+        ...state,
+        loading: true,
+        error: "",
+        updateCart: action.error
       }
     case types.DELETE_CART:
       return {
-        ...state
+        ...state,
+        loading: true,
+        error: "",
+        deleteCart: []
       }
     case types.DELETE_CART_SUCCESS:
       return {
-        ...state
+        ...state,
+        loading: true,
+        error: "",
+        deleteCart: action.payload
       }
     case types.DELETE_CART_FAILED:
       return {
-        ...state
+        ...state,
+        loading: true,
+        error: action.error,
+        deleteCart: []
       }
     default:
       return state

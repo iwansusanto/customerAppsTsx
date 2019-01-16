@@ -19,7 +19,6 @@ import { any } from "prop-types"
 import { bindActionCreators } from "redux"
 import * as searchActions from "../../actions/searchActions"
 import { connect } from "react-redux"
-import search from "../../reducers/searchReducers"
 
 const LOGO = require("../../../assets/logo-higres.png")
 const OVERLAY = require("../../../assets/overlay_search.png")
@@ -34,7 +33,7 @@ interface Result {
 interface Props {
   navigation: NavigationScreenProp<any, any>
   search: SearchContext
-  result: SearchResponse[]
+  result: SearchResponse
 }
 
 interface SearchResponse {

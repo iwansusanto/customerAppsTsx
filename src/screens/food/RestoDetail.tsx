@@ -31,7 +31,10 @@ import strings from "../../components/language"
 // Actions
 import { bindActionCreators } from "redux"
 import * as searchActions from '../../actions/searchActions'
+import * as cartActions from '../../actions/cartActions'
 import { connect } from "react-redux"
+
+
 import Resto from "./Resto";
 
 
@@ -40,8 +43,12 @@ const IC_MENU = require("../../../assets/ic_menu.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
-  search: SearchContext
-  cart: CartContext
+  search: {
+    searchRestoDetail : Function
+  }
+  cart: {
+    getCart : Function
+  }
   resto: SearchRestoResponse
 }
 
@@ -68,43 +75,78 @@ class RestoDetail extends Component<Props, State> {
     isLoading: true,
   }
 
-  public async componentWillMount() {
-    const merchantId = this.props.navigation.getParam("merchantId")
+    // const menus: any = await {}
+    // const test = await this.props.resto.menu_data.map(
+    //   item =>
+    //   (menus[item.name] = () => (
+    //     <RestoFood navigation={this.props.navigation} data={item.data} />
+    //   ))
+    // )
+    // console.log('menu menu ', menus)
+    // console.log('tess', test)
+    // addressnew = this.props.resto.merchant.address
+    // var String_1 = this.props.resto.merchant.open
+    // var String_2 = this.props.resto.merchant.close
+    // opens = String_1.concat(" - ", String_2)
+    // // opens = "09 AM - 09 PM";
+
+    // // console.log("alamat ini harusnya muncul")
+    // // console.log(this.props.search.resto.merchant)
+    // console.log(addressnew)
+    // console.log('open : ',opens)
+
+    // // comment for fixing purpose
+    // if (Object.keys(menus).length === 0) {
+    //   menus["Menu Unvailable"] = () => (
+    //     <RestoFood navigation={this.props.navigation} data={[]} />
+    //   )
+    // }
+    // await this.setState({ menus, isLoading: false })
+
+    // const { setParams } = this.props.navigation
+    // setParams({ title: this.props.resto.merchant.name })
+    
+
+
+  async componentDidMount() {
+    const merchantId = await this.props.navigation.getParam("merchantId")
     await this.props.search.searchRestoDetail(merchantId)
-    const menus: any = {}
-    this.props.resto.menu_data.map(
-      item =>
-        (menus[item.name] = () => (
-          <RestoFood navigation={this.props.navigation} data={item.data} />
-        ))
-    )
+    
+    
+    await this.props.cart.getCart()
+  }
+
+  public async componentWillMount() {
+    console.log('this props', this.props.resto)
+    // const merchantId = await this.props.navigation.getParam("merchantId")
+    // await this.props.search.searchRestoDetail(merchantId)
+    const menus = {}
+    await this.props.resto.menu_data.map(item => (menus[item.name] = () => (
+      <RestoFood navigation={this.props.navigation} data={item.data} />
+    )))
+
     addressnew = this.props.resto.merchant.address
     var String_1 = this.props.resto.merchant.open
     var String_2 = this.props.resto.merchant.close
     opens = String_1.concat(" - ", String_2)
-    // opens = "09 AM - 09 PM";
 
-    // console.log("alamat ini harusnya muncul")
-    // console.log(this.props.search.resto.merchant)
-    // console.log(addressnew)
-    // console.log(opens)
-
-    // comment for fixing purpose
     if (Object.keys(menus).length === 0) {
-      menus["Menu Unvailable"] = () => (
-        <RestoFood navigation={this.props.navigation} data={[]} />
-      )
-    }
+        menus["Menu Unvailable"] = () => (
+          <RestoFood navigation={this.props.navigation} data={[]} />
+        )}
+      
+
     await this.setState({ menus, isLoading: false })
 
     const { setParams } = this.props.navigation
     setParams({ title: this.props.resto.merchant.name })
 
-    // this.props.cart.getCart()
+    // console.log('test lagi', test)
     this._onSetLanguage()
   }
 
   public render() {
+    console.log('resto prop', this.props.resto)
     const Tabs = createTabNavigator(this.state.menus, {
       tabBarComponent: ({ navigation }) => (
         <TopTab
@@ -259,9 +301,11 @@ const styles = StyleSheet.create({
 
 // export default withCartContext(withSearchContext(RestoDetail))
 
-const mapStateToProps = ( search ) => {
+const mapStateToProps = ( search, cart ) => {
   const { search : {resto} } = search
   console.log("resto : ", resto)
+  console.log("cart : ", cart)
+
   return {
     resto
   }
@@ -269,7 +313,8 @@ const mapStateToProps = ( search ) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    search: bindActionCreators(searchActions, dispatch)
+    search: bindActionCreators(searchActions, dispatch),
+    cart: bindActionCreators(cartActions,dispatch)
   }
 }
 
