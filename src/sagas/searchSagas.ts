@@ -7,7 +7,9 @@ import {
     searchBySuggestionSuccess,
     searchBySuggestionFailed,
     searchByNameSuccess,
-    searchByNameFailed
+    searchByNameFailed,
+    searchRestoDetailSuccess,
+    searchRestoDetailFailed
 } from "../actions/searchActions";
 
 export function* search(action){
@@ -54,3 +56,18 @@ export function* watchSearchBySuggestion() {
 export function* watchSearchByName() {
     yield takeLatest(types.SEARCH_BY_NAME, searchByName);
   }
+
+  export function* searchRestoDetail(action){
+    try { 
+        const {data} = yield call(postRequest.searchRestoDetail, action.payload);
+        console.log('SEARCH RESTO DETAIL : ', data)
+        yield put(searchRestoDetailSuccess(data));
+      } catch (error) {
+        console.log('data error', error)
+        yield put(searchRestoDetailFailed(error));
+      }
+}
+
+export function* watchSearchRestoDetail() {
+    yield takeLatest(types.SEARCH_RESTO_DETAIL, searchRestoDetail);
+  }  
