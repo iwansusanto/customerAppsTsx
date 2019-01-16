@@ -6,7 +6,7 @@ const userReducer =  (state = appState.user, action) => {
         case types.CHANGE_USER:
             return  { 
                 ...state, 
-                users: action.payload 
+                users: (action.payload !== null ? action.payload : state.users) 
             }
         case types.LOGIN: 
             return  { 
@@ -17,7 +17,17 @@ const userReducer =  (state = appState.user, action) => {
             return {
                 ...state,
                 language: action.payload
-            }    
+            }
+        // case types.REGISTER: 
+        //     return  { 
+        //         ...state, 
+        //         register: state.register
+        //     }
+        // case types.OTP: 
+        //     return  { 
+        //         ...state, 
+        //         otp: state.otp
+        //     }                
         default:
             return state;
     }

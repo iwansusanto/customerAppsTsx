@@ -78,12 +78,14 @@ class Orders extends React.Component<Props, State> {
                 id={item.id}
                 name={item.name}
                 date={item.ordered_at}
+                dateCreated={item.created_at}
                 statusText={item.status_text}
                 paymentMethod={item.payment_method}
                 displayPrice={item.display_price}
                 comment={item.comment}
                 productData={item.product_data}
                 phone={item.phone}
+                statusDisplay={item.status_label}
                 // loading={this.props.loading}
               />
             )

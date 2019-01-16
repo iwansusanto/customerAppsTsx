@@ -5,19 +5,15 @@ import {
   Image,
   TouchableOpacity,
   Button,
-  ScrollView,
-  AsyncStorage
+  Text
 } from "react-native"
 
-import Text from "../../components/CustomText"
+// import Text from "../../components/CustomText"
 import {
-  NavigationTabScreenOptions,
   NavigationScreenProp
 } from "react-navigation"
 import metrics from "../../config/metrics"
 import HeaderOverlay from "../../components/HeaderOverlay"
-import CustomButton from "../../components/CustomButton"
-import withUserContext from "../../components/consumers/withUserContext"
 import strings from "../../components/language"
 import Lang from "../../components/Lang"
 
@@ -31,28 +27,23 @@ import { bindActionCreators } from 'redux'
 import * as userActions from '../../actions/userActions'
 import { connect } from 'react-redux'
 
-
 interface Props {
   navigation: NavigationScreenProp<any, any>
-  users: any
+  users: {
+    customer: {
+      name: string
+      email: string
+      phone: string
+    }
+  }
   user: {
     changeUser: Function
   }
 }
 
 class Account extends React.Component<Props, any> {
-  _onSetLanguage = async () => {
-    const languageStore = await AsyncStorage.getItem("language")
-    const language = await strings.setLanguage(languageStore)
-    console.log("STRING", languageStore, language)
-    return language
-  }
-
-  componentWillMount = () => {
-    this._onSetLanguage()
-  }
+  
   render() {
-    console.log("language", this.props)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -145,8 +136,8 @@ class Account extends React.Component<Props, any> {
           <View style={styles.logoutButtonContainer}>
             <Button
               title={strings.accountLogout}
-              onPress={() => {
-                this.props.user.changeUser(null)
+              onPress={async() => {
+                await this.props.user.changeUser(null)
                 this.props.navigation.replace("Welcome")
               }}
               color={metrics.DANGER_COLOR}
@@ -301,8 +292,7 @@ const styles = StyleSheet.create({
 })
 
 // export default withUserContext(Account)
-const mapStateToProps = ({ user, register }) => {
-  console.log('coba regis', register)
+const mapStateToProps = ({ user }) => {
   const { users } = user;
   return {
     users

@@ -1,10 +1,15 @@
 export default {
   user: {
-    users: {},
+    users: {
+      customer: {
+        name: '',
+        email: '',
+        phone: ''
+      }
+    },
+    register: {},
+    otp: {},
     language: 'en'
-  },
-  register: {
-    userRegister: {}
   },
   forgotPassword: {
     email: "",

@@ -41,7 +41,7 @@ class SplashScreen extends Component<Props, any> {
     console.log('splash screen : ', dataJSONString)
     // this.props.navigation.replace('Welcome')
 
-    if (dataJSONString !== '') {
+    if (dataJSONString) {
       const data = await JSON.parse(dataJSONString)
       console.log('data json', data)
 

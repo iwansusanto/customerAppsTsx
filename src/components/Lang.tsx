@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Text, View, AsyncStorage } from 'react-native'
 import strings from './language/index'
+import { getData } from '../utils/storage'
+import { keys } from '../config/keys'
 
 interface Props {
     language: string
@@ -20,7 +22,7 @@ export default class Lang extends Component <Props,any> {
     }
 
     _onSetLanguage = async() => {
-        const languageStore = 'en'
+        const languageStore = await getData(keys.language)
         return await strings.setLanguage(languageStore)
     }
 

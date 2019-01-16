@@ -8,33 +8,26 @@ import {
   Keyboard,
   ImageStyle,
   Alert,
-  KeyboardAvoidingView,
-  ScrollView,
   Animated,
-  Dimensions,
-  AsyncStorage
+  Dimensions
 } from "react-native"
 import {
   NavigationStackScreenOptions,
   NavigationScreenProp
 } from "react-navigation"
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import strings from "../../components/language"
 import Lang from "../../components/Lang"
 
 // Custom component used in the screen
-import Text from "../../components/CustomText"
 import CustomTextInput from "../../components/CustomTextInput"
 import FixedButton from "../../components/FixedButton"
-
-import UserContext from "../../contexts/UserContext"
 
 // Configs
 import metrics from "../../config/metrics"
 
 // Actions
 import { bindActionCreators } from 'redux'
-import * as registerActions from '../../actions/registerActions'
+import * as userActions from '../../actions/userActions'
 import { connect } from 'react-redux'
 
 // Assets
@@ -49,12 +42,12 @@ const ICON_BACK = require("../../../assets/ic_back.png")
 
 const window = Dimensions.get("window")
 
-const IMAGE_HEIGHT = window.width / 2
-const IMAGE_HEIGHT_SMALL = window.width / 7
-
 // Props typing
 interface Props {
   navigation: NavigationScreenProp<any, any>
+  user: {
+    register: Function
+  }
 }
 
 interface State {
@@ -119,10 +112,7 @@ class Register extends React.Component<Props, State> {
     super(props)
 
     // Function binding to this class
-    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(
-      this
-    )
-    // this.keyboardHeight = this.state.animation
+    this.handleRegisterButtonPressed = this.handleRegisterButtonPressed.bind(this)
   }
 
   keyboardHeight = () => {
@@ -141,8 +131,6 @@ class Register extends React.Component<Props, State> {
   // keyboardHeigh: () => void
 
   keyboardWillShow = (event: any) => {
-    // console.log('height', event);
-    // debugger;
     this.setState({ keyboardShowed: !this.state.keyboardShowed })
     if (event.startCoordinates.screenY < event.endCoordinates.height * 3) {
       Animated.parallel([
@@ -173,30 +161,42 @@ class Register extends React.Component<Props, State> {
   }
 
   // Register button press handler
-  handleRegisterButtonPressed = (register: Function) => async () => {
+  handleRegisterButtonPressed = () => async () => {
     if (this.state.isLoading) return
 
-    this.setState({ isLoading: true })
+    await this.setState({ isLoading: true })
     let { email, password, phone, name } = this.state
     phone = `${this.state.countryPhoneCode}${this.state.phone}`
-    const result = await register({
+
+    // validate email address
+    if(email.length > 0 && !this._validateEmail(email)) {
+      await this.setState({ isLoading: false })
+      return Alert.alert("Error", 'Email not valid')
+    }
+
+    this.props.user.register({
       email,
       password,
       name,
       phone
-    })
+    }, this._onSuccessRegister, this._onErrorRegister)
+  }
 
+  _onSuccessRegister = (data) => {
     this.setState({ isLoading: false })
+    let { email, password } = this.state
 
-    if (result) {
+    if(data.success) {
       this.props.navigation.navigate("OTP", {
-        email,
-        password
+            email,
+            password
       })
-    } else {
-      // TODO: show register failed
-      Alert.alert("Failed", "Your email is already registered")
     }
+  }
+
+  _onErrorRegister = (error) => {  
+    this.setState({ isLoading: false })
+    Alert.alert("Failed", error.message)
   }
 
   setCountry = (countryCode: string, countryPhoneCode: string) => {
@@ -212,13 +212,15 @@ class Register extends React.Component<Props, State> {
     this.scroll.props.scrollToPosition(0, 100, true)
   }
 
+  _validateEmail = (text) => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    return reg.test(text)
+  }
+
   render() {
-    console.log("muncul registrasi")
     const { email, password, phone, name } = this.state
     return (
-      <UserContext.Consumer>
-        {context => (
-          <Animated.View
+      <Animated.View
             style={[styles.container, { paddingBottom: this.state.animation }]}
           >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -273,23 +275,22 @@ class Register extends React.Component<Props, State> {
                       <CustomTextInput
                         style={{ width: metrics.DEVICE_WIDTH * 0.6 }}
                         icon={ICON_PHONE}
-                        // placeholder='registerPhone'
                         placeholder={strings.registerPhone}
                         keyboardType={"number-pad"}
-                        onChangeText={text => this.setState({ phone: text })}
+                        onChangeText={text => this.setState({ phone: text.replace(/[^0-9]/g, '') })}
+                        value={this.state.phone}
                       />
                     </View>
                     <CustomTextInput
                       icon={ICON_MAIL}
-                      // placeholder='registerEmail'
                       placeholder={strings.registerEmail}
                       keyboardType={"email-address"}
                       autoCapitalize="none"
                       onChangeText={text => this.setState({ email: text })}
+                      value={this.state.email}
                     />
                     <CustomTextInput
                       icon={ICON_KEY}
-                      // placeholder='registerPassword'
                       placeholder={strings.registerPassword}
                       secureTextEntry={true}
                       onChangeText={text => this.setState({ password: text })}
@@ -309,14 +310,12 @@ class Register extends React.Component<Props, State> {
                         ? metrics.SECONDARY_COLOR
                         : metrics.INACTIVE_COLOR
                     }
-                    onPress={this.handleRegisterButtonPressed(context.register)}
+                    onPress={this.handleRegisterButtonPressed()}
                   />
                 </Animated.View>
               </View>
             </TouchableWithoutFeedback>
           </Animated.View>
-        )}
-      </UserContext.Consumer>
     )
   }
 }
@@ -377,7 +376,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      actions: bindActionCreators(registerActions, dispatch)
+      user: bindActionCreators(userActions, dispatch)
   }
 }
 

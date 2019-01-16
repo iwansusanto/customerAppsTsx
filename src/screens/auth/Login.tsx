@@ -8,8 +8,7 @@ import {
   Keyboard,
   ImageStyle,
   KeyboardAvoidingView,
-  Alert,
-  AsyncStorage
+  Alert
 } from "react-native"
 import {
   NavigationStackScreenOptions,
@@ -17,12 +16,8 @@ import {
 } from "react-navigation"
 
 // Custom components used in the screen
-import withUserContext from "../../components/consumers/withUserContext"
-import Text from "../../components/CustomText"
 import CustomTextInput from "../../components/CustomTextInput"
 import FixedButton from "../../components/FixedButton"
-
-import UserContext from "../../contexts/UserContext"
 import strings from "../../components/language"
 import Lang from "../../components/Lang"
 
@@ -101,9 +96,7 @@ class Login extends React.Component<Props, State> {
 
     // Function binding to this class
     this.handleLoginButtonPressed = this.handleLoginButtonPressed.bind(this)
-    this.handleForgetPasswordPressed = this.handleForgetPasswordPressed.bind(
-      this
-    )
+    this.handleForgetPasswordPressed = this.handleForgetPasswordPressed.bind(this)
   }
 
   // Login button press handler
@@ -129,13 +122,11 @@ class Login extends React.Component<Props, State> {
       order: strings.ordersTab,
       home: strings.homeTab
     })
-    console.log('_onSuccessLogin : ', data)
   }
 
   _onFailedLogin = async (error) => {
     await this.setState({ isLoading: !this.state.isLoading })
     Alert.alert("Failed : ", error.message)
-    console.log('_onFailedLogin : ', error)
   }
 
   // Forget password press handle
@@ -254,8 +245,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ user }) => {
   const { users, loading } = user;
-  // const {users1} = register
-  // console.log('state users1', users1)
   return {
     users,
     loading

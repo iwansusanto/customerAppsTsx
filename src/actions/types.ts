@@ -2,8 +2,7 @@ export const LOGIN = 'LOGIN'
 export const CHANGE_USER = 'CHANGE_USER'
 
 export const REGISTER = 'REGISTER'
-export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
-export const REGISTER_FAILED = 'REGISTER_FAILED'
+export const OTP = 'OTP'
 
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD'
 export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS'

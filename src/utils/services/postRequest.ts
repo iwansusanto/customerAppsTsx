@@ -1,7 +1,7 @@
 import api from "../api"
 
 export const login = params => {
-  console.log("Api login : ")
+  // console.log("Api login : ")
   return api.client.post("/login", params)
 }
 
@@ -45,4 +45,6 @@ export const searchRestoDetail = params => {
   })
 }
 
-
+export const register = params => {
+  return api.client.post("/register", params)
+}

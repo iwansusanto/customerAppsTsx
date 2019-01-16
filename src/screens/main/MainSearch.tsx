@@ -10,10 +10,6 @@ import HeaderOverlay from "../../components/HeaderOverlay"
 import metrics from "../../config/metrics"
 import SearchBar from "../../components/SearchBar"
 import SearchItem from "../../components/SearchItem"
-import withSearchContext from "../../components/consumers/withSearchContext"
-import Lang from "../../components/Lang"
-
-import { any } from "prop-types"
 
 // Actions
 import { bindActionCreators } from "redux"
@@ -32,7 +28,9 @@ interface Result {
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
-  search: SearchContext
+  search: {
+    searchByName: Function
+  }
   result: SearchResponse
 }
 
@@ -139,36 +137,13 @@ class MainSearch extends React.Component<Props, State> {
 
   getResult = async () => {
     if (this.state.keyword === "") return
-    console.log("keyword ", this.state.keyword)
-
+    // console.log("keyword ", this.state.keyword)
     await this.props.search.searchByName(this.state.keyword)
-  //   console.log("props search : ", this.props)
-  //   const results = this.props.result
-
-  //   const merchantResult: Result[] = results.merchant_data.map(item => ({
-  //     id: item.id,
-  //     type: "merchant",
-  //     name: item.name
-  //   }))
-
-  //   const foodResult: Result[] = results.product_data.map(item => ({
-  //     id: item.id,
-  //     type: "product",
-  //     name: item.name,
-  //     data: item as Food
-  //   }))
-
-  //   const parsedResults = [...merchantResult, ...foodResult]
-  //   this.setState({ results: parsedResults })
-  //   console.log("lololo ", this.state.results)
   }
 
   handleChange = async (text: string) => {
     await this.setState({ keyword: text })
-    console.log("abcde", this.props)
 
-    // if (this.state.keyword === "") return
-    // await this.props.search.searchByName(this.state.keyword)
     const results = await this.props.result
 
     const merchantResult: Result[] = results.merchant_data.map(item => ({
@@ -191,7 +166,6 @@ class MainSearch extends React.Component<Props, State> {
       timeout: setTimeout(this.getResult, 1000),
       results: parsedResults
     })
-    console.log("stateeeeeeee ", this.state.results)
   }
 
   handleClick = (result: Result, type: string) => () => {
@@ -201,7 +175,7 @@ class MainSearch extends React.Component<Props, State> {
       })
     } else {
       const food = result.data as Food
-      console.log(food)
+      // console.log(food)
       this.props.navigation.navigate("FoodDetail", {
         id: result.id,
         title: result.name,
@@ -214,7 +188,7 @@ class MainSearch extends React.Component<Props, State> {
   }
 
   render() {
-    console.log("result : ", this.state.results.length, this.state.keyword)
+    // console.log("result : ", this.state.results.length, this.state.keyword)
     return (
       <View style={styles.container}>
         <HeaderOverlay />
@@ -272,12 +246,11 @@ const styles = StyleSheet.create({
   }
 })
 
-// export default withSearchContext(MainSearch)
 const mapStateToProps = search => {
   const {
     search: { result }
   } = search
-  console.log("search by name state ", result)
+  // console.log("search by name state ", result)
   return {
     result
   }
