@@ -1,4 +1,4 @@
-package com.mshwarapp;
+package com.mshwar;
 
 import android.app.Application;
 
