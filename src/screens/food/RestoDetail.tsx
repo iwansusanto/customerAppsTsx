@@ -36,6 +36,8 @@ import { connect } from "react-redux"
 
 
 import Resto from "./Resto";
+import { deleteCart } from "../../sagas/cartSagas";
+import { updateCart } from "../../utils/services/patchRequest";
 
 
 
@@ -48,6 +50,8 @@ interface Props {
   }
   cart: {
     getCart : Function
+    deleteCart : Function
+    updateCart : Function
   }
   resto: SearchRestoResponse
 }
@@ -180,7 +184,7 @@ class RestoDetail extends Component<Props, State> {
             startHeight={100}
             topEnd={metrics.DEVICE_HEIGHT * 0.3}
           />
-        )} */}
+        )} */}  
         <View style={{ flex: 1, zIndex: -1 }}>
           <HeaderOverlay />
           <Tabs />
@@ -194,15 +198,15 @@ class RestoDetail extends Component<Props, State> {
     setParams({ title })
   }
 
-  // deleteCartItem = (id: number) => async () => {
-  //   await this.props.cart.deleteCart(id)
-  //   await this.props.cart.getCart()
-  // }
+  deleteCartItem = (id: number) => async () => {
+    await this.props.cart.deleteCart(id)
+    await this.props.cart.getCart()
+  }
 
-  // updateCartItem = (id: number, quantity: number) => async () => {
-  //   await this.props.cart.updateCart(quantity, id)
-  //   await this.props.cart.getCart()
-  // }
+  updateCartItem = (id: number, quantity: number) => async () => {
+    await this.props.cart.updateCart(quantity, id)
+    await this.props.cart.getCart()
+  }
 
   _onSetLanguage = async() => {
     const languageStore = await AsyncStorage.getItem("language")
