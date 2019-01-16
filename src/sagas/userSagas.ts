@@ -21,17 +21,15 @@ export function* watchChangeUsers() {
 }
 
 export function* loginUsers(action) {
-  console.log('DATA LOGIN : ', 'LOGIN')
   try {
     const { data } = yield call(postRequest.login, action.payload)
-    console.log('DATA LOGIN : ', data)
     if(data.success) {
       action.onSuccess(data)
     } else {
       action.onFailed(data)
     }
   } catch(error) {
-    console.log('Error changeUsers : ', error)
+    console.log('Error loginUsers : ', error)
   }
 }
 
@@ -52,4 +50,40 @@ export async function* changeLanguage(action) {
 
 export function* watchChangeLanguage() {
   yield takeLatest(types.CHANGE_LANGUAGE, changeLanguage)
+}
+
+export function* registerUsers(action) {
+  try {
+    const { data } = yield call(postRequest.register, action.payload)
+    if(data.success) {
+      action.onSuccess(data)
+    } else {
+      action.onFailed(data)
+    }
+  } catch(error) {
+    action.onFailed(error)
+    console.log('Error Register Users : ', error)
+  }
+}
+
+export function* watchRegisterUsers() {
+  yield takeLatest(types.REGISTER, registerUsers)
+}
+
+export function* otpUsers(action) {
+  try {
+    const { data } = yield call(postRequest.login, action.payload)
+    if(data.success) {
+      action.onSuccess(data)
+    } else {
+      action.onFailed(data)
+    }
+  } catch(error) {
+    action.onFailed(error)
+    console.log('Error Otp Users : ', error)
+  }
+}
+
+export function* watchOtpUsers() {
+  yield takeLatest(types.OTP, otpUsers)
 }

@@ -27,6 +27,7 @@ interface Props extends TouchableOpacityProps {
   id: string
   name: string
   statusText: string
+  statusDisplay: string
   date: string
   dateCreated: string
   paymentMethod: string
@@ -76,7 +77,7 @@ export default class Orders extends React.Component<Props, State> {
                 </TouchableOpacity>
               )}
             </View>
-            <Text style={styles.status}>{this.props.statusText}</Text>
+            <Text style={styles.status}>{this.props.statusDisplay}</Text>
             <Text style={styles.date}>{moment(this.props.dateCreated).format("DD MMM, hh:mm a")}</Text>
           </View>
           {this.props.statusText !== 'SCHEDULED' && (

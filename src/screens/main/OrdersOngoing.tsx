@@ -85,6 +85,7 @@ class Orders extends React.Component<Props, State> {
                 comment={item.comment}
                 productData={item.product_data}
                 phone={item.phone}
+                statusDisplay={item.status_label}
                 // loading={this.props.loading}
               />
             )

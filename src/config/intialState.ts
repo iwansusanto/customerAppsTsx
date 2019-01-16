@@ -7,10 +7,9 @@ export default {
         phone: ''
       }
     },
+    register: {},
+    otp: {},
     language: 'en'
-  },
-  register: {
-    userRegister: {}
   },
   forgotPassword: {
     email: "",
