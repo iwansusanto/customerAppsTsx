@@ -38,3 +38,9 @@ export const searchByName = params => {
     name: params
   })
 }
+
+export const searchRestoDetail = params => {
+  return api.client.post("/v2/searchmerchant", {
+    merchant_id : params
+  })
+}

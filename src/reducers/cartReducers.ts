@@ -6,15 +6,24 @@ const cartReducer = (state = appState.cart, action) => {
   switch (action.type) {
     case types.ADD_CART:
       return {
-        ...state
+        ...state,
+        loading: true,
+        error: "",
+        cart: []
       }
     case types.ADD_CART_SUCCESS:
       return {
-        ...state
+        ...state,
+        loading: false,
+        error: "",
+        cart: action.payload
       }
     case types.ADD_CART_FAILED:
       return {
-        ...state
+        ...state,
+        loading: false,
+        error: action.error,
+        cart: []
       }
     case types.GET_CART:
       return {

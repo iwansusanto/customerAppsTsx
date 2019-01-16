@@ -7,7 +7,10 @@ import {
     SEARCH_BY_SUGGESTION_FAILED,
     SEARCH_BY_NAME,
     SEARCH_BY_NAME_SUCCESS,
-    SEARCH_BY_NAME_FAILED
+    SEARCH_BY_NAME_FAILED,
+    SEARCH_RESTO_DETAIL,
+    SEARCH_RESTO_DETAIL_SUCCESS,
+    SEARCH_RESTO_DETAIL_FAILED
 } from './types'
 
 
@@ -53,5 +56,21 @@ export const searchByNameSuccess = (data) => ({
 
 export const searchByNameFailed = (error) => ({
     type: SEARCH_BY_NAME_FAILED,
+    payload : error
+})
+
+
+export const searchRestoDetail = (params) => ({
+    type: SEARCH_RESTO_DETAIL,
+    payload : params
+})
+
+export const searchRestoDetailSuccess = (data) => ({
+    type: SEARCH_RESTO_DETAIL_SUCCESS,
+    payload : data
+})
+
+export const searchRestoDetailFailed = (error) => ({
+    type: SEARCH_RESTO_DETAIL_FAILED,
     payload : error
 })

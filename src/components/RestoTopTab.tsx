@@ -62,7 +62,7 @@ export default class RestoTopTab extends React.Component<Props, State> {
             </Text>
           </View>
         )}
-        {/* <Text style={styles.tags}>rice • bread • fastfood</Text> */}
+        <Text style={styles.tags}>rice • bread • fastfood</Text>
         <View style={styles.tabContainer}>
           <FlatList
             data={navigation.state.routes}

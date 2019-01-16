@@ -72,6 +72,29 @@ const search = (state = appState.search, action) => {
         error: action.error,
         result: []
       }
+      case types.SEARCH_RESTO_DETAIL:
+    console.log('search by resto detail', action)
+      return {
+        ...state,
+        loading: true,
+        error: "",
+        resto: []
+      }
+    case types.SEARCH_RESTO_DETAIL_SUCCESS:
+      console.log("get search by resto detail", action)
+      return {
+        ...state,
+        loading: false,
+        error: "",
+        resto: action.payload
+      }
+    case types.SEARCH_RESTO_DETAIL_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+        resto: []
+      }
     default:
       return state
   }
