@@ -4,21 +4,21 @@ import { setData, getData } from "../utils/storage"
 
 const cartReducer = (state = appState.cart, action) => {
   switch (action.type) {
-    case types.ADD_CART:
+    case types.ADD_TO_CART:
       return {
         ...state,
         loading: true,
         error: "",
         addCart: []
       }
-    case types.ADD_CART_SUCCESS:
+    case types.ADD_TO_CART_SUCCESS:
       return {
         ...state,
         loading: false,
         error: "",
         addCart: action.payload
       }
-    case types.ADD_CART_FAILED:
+    case types.ADD_TO_CART_FAILED:
       return {
         ...state,
         loading: false,
@@ -31,22 +31,22 @@ const cartReducer = (state = appState.cart, action) => {
         ...state,
         loading: true,
         error: "",
-        getCart: []
+        getAll: []
       }
     case types.GET_CART_SUCCESS:
-    console.log('get cart success', action)
+    console.log('get cart success', action.payload)
       return {
         ...state,
         loading: false,
         error: "",
-        getCart: action.payload
+        getAll: action.payload
       }
     case types.GET_CART_FAILED:
       return {
         ...state,
         loading: false,
         error: action.error,
-        getCart: []
+        getAll: []
       }
     case types.UPDATE_CART:
       return {

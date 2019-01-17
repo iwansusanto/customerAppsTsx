@@ -5,7 +5,7 @@ import { watchGetCategory } from './getCategoriesSagas'
 import { watchSuggestion } from './suggestionSagas'
 import { watchPickCategories } from './pickCategoriesSagas'
 import { watchSearch, watchSearchBySuggestion, watchSearchByName, watchSearchRestoDetail} from './searchSagas'
-import { watchGetCart, watchDeleteCart, watchUpdateeCart } from './cartSagas'
+import { watchGetCart, watchDeleteCart, watchUpdateCart, watchAddToCart } from './cartSagas'
  
  function* rootSaga(){
      yield all([
@@ -25,7 +25,8 @@ import { watchGetCart, watchDeleteCart, watchUpdateeCart } from './cartSagas'
         watchGetCart(),
         watchOtpUsers(),
         watchDeleteCart(),
-        watchUpdateeCart()
+        watchUpdateCart(),
+        watchAddToCart()
      ])
  }
 

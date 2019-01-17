@@ -4,6 +4,7 @@ import appState from '../config/intialState'
 const getCategories = (state = appState.getCategories, action) => {
     switch (action.type){
         case types.GET_CATEGORIES:
+        console.log('try get cat : ',action)
         return {
             ...state,
             loading: true,

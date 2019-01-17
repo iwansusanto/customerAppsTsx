@@ -24,13 +24,20 @@ import CustomTextInput from "../../components/CustomTextInput"
 import Lang from "../../components/Lang"
 import strings from "../../components/language"
 
-
+// Actions
+import { bindActionCreators } from "redux"
+import * as cartActions from "../../actions/cartActions"
+import { connect } from "react-redux"
+import { getCart } from "../../sagas/cartSagas"
 
 const ICON_NOTE = require("../../../assets/ic_add_note.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
-  cart: CartContext
+  cart: {
+    addToCart: Function
+    getCart: Function
+  }
 }
 
 interface State {
@@ -62,13 +69,12 @@ class FoodDetail extends React.Component<Props, State> {
     this._onSetLanguage()
   }
 
-  _onSetLanguage = async() => {
+  _onSetLanguage = async () => {
     const languageStore = await AsyncStorage.getItem("language")
     const language = await strings.setLanguage(languageStore)
     console.log("STRING", languageStore, language)
     return language
   }
-
 
   render() {
     const {
@@ -93,8 +99,14 @@ class FoodDetail extends React.Component<Props, State> {
               />
               {additional !== null && (
                 <View style={styles.detail}>
-                  <Lang styleLang={styles.title} language='foodDetailExtraItem'></Lang>
-                  <Lang styleLang={styles.category} language='foodDetailTopping'></Lang>
+                  <Lang
+                    styleLang={styles.title}
+                    language="foodDetailExtraItem"
+                  />
+                  <Lang
+                    styleLang={styles.category}
+                    language="foodDetailTopping"
+                  />
                   {additional !== null &&
                     additional.topping.map((item: any, index: number) => (
                       <AdditionalFoodItem
@@ -107,7 +119,10 @@ class FoodDetail extends React.Component<Props, State> {
                     ))}
                 </View>
               )}
-              <CustomTextInput icon={ICON_NOTE} placeholder={strings.foodDetailAddNotes} />
+              <CustomTextInput
+                icon={ICON_NOTE}
+                placeholder={strings.foodDetailAddNotes}
+              />
             </View>
           </View>
         </KeyboardAwareScrollView>
@@ -115,7 +130,10 @@ class FoodDetail extends React.Component<Props, State> {
           style={styles.addToCartButton}
           onPress={this.addToCart(false)}
         >
-          <Lang styleLang={styles.addToCartLabel} language='foodDetailAddCart'></Lang>
+          <Lang
+            styleLang={styles.addToCartLabel}
+            language="foodDetailAddCart"
+          />
           <Text style={styles.addToCartLabel}>{`QR ${Number(price) +
             Number(this.state.additionalPrice)}`}</Text>
         </TouchableOpacity>
@@ -141,8 +159,8 @@ class FoodDetail extends React.Component<Props, State> {
   }
 
   addToCart = (change: boolean) => async () => {
-    console.log("addToCartCall", change)
     const { id, additional, merchantId } = this.props.navigation.state.params
+    console.log("addToCartCall", id)
     const { selectedAdditional } = this.state
 
     const additionalIds: number[] = []
@@ -155,10 +173,7 @@ class FoodDetail extends React.Component<Props, State> {
     const additionalValues = additionalIds.length > 0 ? additionalIds : null
 
     const res = await this.props.cart.addToCart(
-      1,
-      id,
-      additionalValues,
-      "",
+      {quantity: 1, id,additionalValues,notes:  "" },
       change
     )
     console.log("res", res)
@@ -244,4 +259,20 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withCartContext(FoodDetail)
+// export default withCartContext(FoodDetail)
+
+const mapStateToProps = () => {
+  // console.log("pick banners : ", )
+  return {}
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    cart: bindActionCreators(cartActions, dispatch)
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(FoodDetail)

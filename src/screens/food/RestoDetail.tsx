@@ -52,6 +52,9 @@ interface Props {
     getCart : Function
     deleteCart : Function
     updateCart : Function
+    getAll: {
+      id: string
+    }
   }
   resto: SearchRestoResponse
 }
@@ -72,6 +75,7 @@ const ICON_ARROW = require("../../../assets/ic_arrow.png")
 const ICON_CART = require("../../../assets/ic_cart.png")
 
 class RestoDetail extends Component<Props, State> {
+  
   state = {
     menus: {
       "Fetching Menu": LoadingMenu
@@ -121,7 +125,10 @@ class RestoDetail extends Component<Props, State> {
   }
 
   public async componentWillMount() {
-    console.log('this props', this.props.resto)
+    console.log('this props getAll : ', this.props.cart.getAll)
+    // debugger
+    console.log('test lagi')
+    this._onSetLanguage()
     // const merchantId = await this.props.navigation.getParam("merchantId")
     // await this.props.search.searchRestoDetail(merchantId)
     const menus = {}
@@ -145,12 +152,10 @@ class RestoDetail extends Component<Props, State> {
     const { setParams } = this.props.navigation
     setParams({ title: this.props.resto.merchant.name })
 
-    // console.log('test lagi', test)
-    this._onSetLanguage()
   }
 
   public render() {
-    console.log('resto prop', this.props.resto)
+    console.log('resto prop', this.props)
     const Tabs = createTabNavigator(this.state.menus, {
       tabBarComponent: ({ navigation }) => (
         <TopTab
@@ -176,7 +181,7 @@ class RestoDetail extends Component<Props, State> {
     // console.log('cart resto detail',this.props.cart)
     return (
       <View style={{ flex: 1 }}>
-        {/* {this.props.cart.cart.product_data.length > 0 && (
+        {/* {this.props.getCart.product_data.length > 0 && (
           <BottomSheet
             content={this.renderBottomSheetContent}
             bottomUpSlideBtn={styles.bottomSheetSlideUpButton}
@@ -228,7 +233,7 @@ class RestoDetail extends Component<Props, State> {
       }}
     >
       {/* <FlatList
-        data={this.props.cart.cart.product_data}
+        data={this.props.getCart.product_data}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <CartItem
@@ -264,7 +269,7 @@ class RestoDetail extends Component<Props, State> {
           <Lang styleLang={{ fontSize: 16, fontWeight: "bold", color: "#4A90E2" }} language='restoDetailEstimatePrice'>
           </Lang>
           {/* <Text style={{ fontSize: 14, marginTop: 5 }}>
-            {`${this.props.cart.cart.product_data.length} ${strings.restoDetailItems}`}
+            {`${this.props.getCart.product_data.length} ${strings.restoDetailItems}`}
           </Text> */}
         </View>
         <View style={{ flexDirection: "row" }}>
@@ -276,7 +281,7 @@ class RestoDetail extends Component<Props, State> {
               paddingTop: 17
             }}
           >
-            {/* {this.props.cart.cart.total} */}
+            {/* {this.props.getCart.total} */}
           </Text>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("OrderReview")}
@@ -305,13 +310,15 @@ const styles = StyleSheet.create({
 
 // export default withCartContext(withSearchContext(RestoDetail))
 
-const mapStateToProps = ( search, cart ) => {
+const mapStateToProps = (search, cart ) => {
   const { search : {resto} } = search
-  console.log("resto : ", resto)
+  // const cart  = cart
+  console.log("resto : ", search)
   console.log("cart : ", cart)
 
   return {
-    resto
+    resto,
+    // getCart
   }
 }
 

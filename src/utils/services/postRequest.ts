@@ -41,7 +41,7 @@ export const searchByName = params => {
 
 export const searchRestoDetail = params => {
   return api.client.post("/v2/searchmerchant", {
-    merchant_id : params
+    merchant_id: params
   })
 }
 
@@ -50,5 +50,6 @@ export const register = params => {
 }
 
 export const addCart = (params,change : boolean) => {
-  return api.client.post(`/cart${change ? '?change=1' : ''}`, {params})
+  return api.client.post(`/cart${change ? '?change=1' : ''}`, params)
 }
+

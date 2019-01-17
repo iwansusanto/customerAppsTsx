@@ -105,7 +105,7 @@ const mapStateToProps = ({
   const { suggestionsBanner } = suggestion
   const { pickCategoriesBanner } = pickCategories
   const {
-    search: { merchant_data },
+    searchBySuggestion: { merchant_data },
     loading
   } = search
   console.log("search : ", search)

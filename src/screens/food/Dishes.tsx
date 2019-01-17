@@ -160,8 +160,8 @@ const mapStateToProps = ({ getCategories, suggestion, pickCategories, search }) 
   const { banner } = getCategories
   const { suggestionsBanner } = suggestion
   const { pickCategoriesBanner } = pickCategories
-  const { search: { product_data }, loading } = search
-  // console.log("search product_data : ", search)
+  const { searchBySuggestion: { product_data }, loading } = search
+  console.log("search product_data : ", search)
   return {
     banner,
     suggestionsBanner,

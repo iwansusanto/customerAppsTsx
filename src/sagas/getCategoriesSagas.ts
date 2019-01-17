@@ -9,10 +9,10 @@ import {
 export function* getCategory(action){
     try { 
         const {data} = yield call(postRequest.getCategories);
-        // console.log('ABC', data)
+        console.log('ABC', data)
         yield put(getCategoriesSuccess(data));
       } catch (error) {
-        console.log('data error', error)
+        console.log('data error get cat', error)
         yield put(getCategoriesFailed(error));
       }
 }
