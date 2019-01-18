@@ -28,9 +28,8 @@ export const addToCartFailed = error => ({
   payload: error
 })
 
-export const getCart = params => ({
-  type: GET_CART,
-  payload: params
+export const getCart = () => ({
+  type: GET_CART
 })
 
 export const getCartSuccess = data => ({

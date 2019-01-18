@@ -27,35 +27,29 @@ import withCartContext from "../../components/consumers/withCartContext"
 import Lang from "../../components/Lang"
 import strings from "../../components/language"
 
-
 // Actions
 import { bindActionCreators } from "redux"
-import * as searchActions from '../../actions/searchActions'
-import * as cartActions from '../../actions/cartActions'
+import * as searchActions from "../../actions/searchActions"
+import * as cartActions from "../../actions/cartActions"
 import { connect } from "react-redux"
 
-
-import Resto from "./Resto";
-import { deleteCart } from "../../sagas/cartSagas";
-import { updateCart } from "../../utils/services/patchRequest";
-
-
+import Resto from "./Resto"
+import { deleteCart } from "../../sagas/cartSagas"
+import { updateCart } from "../../utils/services/patchRequest"
 
 const IC_MENU = require("../../../assets/ic_menu.png")
 
 interface Props {
   navigation: NavigationScreenProp<any, any>
   search: {
-    searchRestoDetail : Function
+    searchRestoDetail: Function
   }
   cart: {
-    getCart : Function
-    deleteCart : Function
-    updateCart : Function
-    getAll: {
-      id: string
-    }
+    getCart: Function
+    deleteCart: Function
+    updateCart: Function
   }
+  getAll: CartResponse
   resto: SearchRestoResponse
 }
 
@@ -75,66 +69,65 @@ const ICON_ARROW = require("../../../assets/ic_arrow.png")
 const ICON_CART = require("../../../assets/ic_cart.png")
 
 class RestoDetail extends Component<Props, State> {
-  
   state = {
     menus: {
       "Fetching Menu": LoadingMenu
     },
-    isLoading: true,
+    isLoading: true
   }
 
-    // const menus: any = await {}
-    // const test = await this.props.resto.menu_data.map(
-    //   item =>
-    //   (menus[item.name] = () => (
-    //     <RestoFood navigation={this.props.navigation} data={item.data} />
-    //   ))
-    // )
-    // console.log('menu menu ', menus)
-    // console.log('tess', test)
-    // addressnew = this.props.resto.merchant.address
-    // var String_1 = this.props.resto.merchant.open
-    // var String_2 = this.props.resto.merchant.close
-    // opens = String_1.concat(" - ", String_2)
-    // // opens = "09 AM - 09 PM";
+  // const menus: any = await {}
+  // const test = await this.props.resto.menu_data.map(
+  //   item =>
+  //   (menus[item.name] = () => (
+  //     <RestoFood navigation={this.props.navigation} data={item.data} />
+  //   ))
+  // )
+  // console.log('menu menu ', menus)
+  // console.log('tess', test)
+  // addressnew = this.props.resto.merchant.address
+  // var String_1 = this.props.resto.merchant.open
+  // var String_2 = this.props.resto.merchant.close
+  // opens = String_1.concat(" - ", String_2)
+  // // opens = "09 AM - 09 PM";
 
-    // // console.log("alamat ini harusnya muncul")
-    // // console.log(this.props.search.resto.merchant)
-    // console.log(addressnew)
-    // console.log('open : ',opens)
+  // // console.log("alamat ini harusnya muncul")
+  // // console.log(this.props.search.resto.merchant)
+  // console.log(addressnew)
+  // console.log('open : ',opens)
 
-    // // comment for fixing purpose
-    // if (Object.keys(menus).length === 0) {
-    //   menus["Menu Unvailable"] = () => (
-    //     <RestoFood navigation={this.props.navigation} data={[]} />
-    //   )
-    // }
-    // await this.setState({ menus, isLoading: false })
+  // // comment for fixing purpose
+  // if (Object.keys(menus).length === 0) {
+  //   menus["Menu Unvailable"] = () => (
+  //     <RestoFood navigation={this.props.navigation} data={[]} />
+  //   )
+  // }
+  // await this.setState({ menus, isLoading: false })
 
-    // const { setParams } = this.props.navigation
-    // setParams({ title: this.props.resto.merchant.name })
-    
-
-
+  // const { setParams } = this.props.navigation
+  // setParams({ title: this.props.resto.merchant.name })
+  
   async componentDidMount() {
     const merchantId = await this.props.navigation.getParam("merchantId")
     await this.props.search.searchRestoDetail(merchantId)
     
-    
-    await this.props.cart.getCart()
   }
-
+  
   public async componentWillMount() {
-    console.log('this props getAll : ', this.props.cart.getAll)
-    // debugger
-    console.log('test lagi')
+    await this.props.cart.getCart()
+    console.log("this props getAll : ", this.props.getAll)
+    console.log("all props : ", this.props)
+    console.log("test lagi")
     this._onSetLanguage()
     // const merchantId = await this.props.navigation.getParam("merchantId")
     // await this.props.search.searchRestoDetail(merchantId)
     const menus = {}
-    await this.props.resto.menu_data.map(item => (menus[item.name] = () => (
-      <RestoFood navigation={this.props.navigation} data={item.data} />
-    )))
+    await this.props.resto.menu_data.map(
+      item =>
+        (menus[item.name] = () => (
+          <RestoFood navigation={this.props.navigation} data={item.data} />
+        ))
+    )
 
     addressnew = this.props.resto.merchant.address
     var String_1 = this.props.resto.merchant.open
@@ -142,28 +135,25 @@ class RestoDetail extends Component<Props, State> {
     opens = String_1.concat(" - ", String_2)
 
     if (Object.keys(menus).length === 0) {
-        menus["Menu Unvailable"] = () => (
-          <RestoFood navigation={this.props.navigation} data={[]} />
-        )}
-      
+      menus["Menu Unvailable"] = () => (
+        <RestoFood navigation={this.props.navigation} data={[]} />
+      )
+    }
 
     await this.setState({ menus, isLoading: false })
 
     const { setParams } = this.props.navigation
     setParams({ title: this.props.resto.merchant.name })
-
   }
 
   public render() {
-    console.log('resto prop', this.props)
+    console.log("resto prop", this.props)
     const Tabs = createTabNavigator(this.state.menus, {
       tabBarComponent: ({ navigation }) => (
         <TopTab
           navigation={navigation}
           address={
-            this.props.resto.merchant
-              ? this.props.resto.merchant.address
-              : ""
+            this.props.resto.merchant ? this.props.resto.merchant.address : ""
           }
           open={opens}
           isOpen={
@@ -181,7 +171,8 @@ class RestoDetail extends Component<Props, State> {
     // console.log('cart resto detail',this.props.cart)
     return (
       <View style={{ flex: 1 }}>
-        {/* {this.props.getCart.product_data.length > 0 && (
+      {/* getAll.product_data.length > 0 */}
+        {this.props.getAll.product_data.length > 0  ? (
           <BottomSheet
             content={this.renderBottomSheetContent}
             bottomUpSlideBtn={styles.bottomSheetSlideUpButton}
@@ -189,7 +180,7 @@ class RestoDetail extends Component<Props, State> {
             startHeight={100}
             topEnd={metrics.DEVICE_HEIGHT * 0.3}
           />
-        )} */}  
+        ) : <View></View>}
         <View style={{ flex: 1, zIndex: -1 }}>
           <HeaderOverlay />
           <Tabs />
@@ -213,7 +204,7 @@ class RestoDetail extends Component<Props, State> {
     await this.props.cart.getCart()
   }
 
-  _onSetLanguage = async() => {
+  _onSetLanguage = async () => {
     const languageStore = await AsyncStorage.getItem("language")
     const language = await strings.setLanguage(languageStore)
     console.log("STRING", languageStore, language)
@@ -232,8 +223,8 @@ class RestoDetail extends Component<Props, State> {
         borderColor: metrics.PRIMARY_COLOR
       }}
     >
-      {/* <FlatList
-        data={this.props.getCart.product_data}
+      <FlatList
+        data={this.props.getAll.product_data}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <CartItem
@@ -246,7 +237,7 @@ class RestoDetail extends Component<Props, State> {
             additional={item.additional}
           />
         )}
-      /> */}
+      />
     </View>
   )
 
@@ -266,10 +257,14 @@ class RestoDetail extends Component<Props, State> {
           <Image source={ICON_CART} />
         </TouchableOpacity>
         <View style={{ marginLeft: 20, justifyContent: "center", flex: 1 }}>
-          <Lang styleLang={{ fontSize: 16, fontWeight: "bold", color: "#4A90E2" }} language='restoDetailEstimatePrice'>
-          </Lang>
+          <Lang
+            styleLang={{ fontSize: 16, fontWeight: "bold", color: "#4A90E2" }}
+            language="restoDetailEstimatePrice"
+          />
           {/* <Text style={{ fontSize: 14, marginTop: 5 }}>
-            {`${this.props.getCart.product_data.length} ${strings.restoDetailItems}`}
+            {`${this.props.getAll.product_data.length} ${
+              strings.restoDetailItems
+            }`}
           </Text> */}
         </View>
         <View style={{ flexDirection: "row" }}>
@@ -281,7 +276,7 @@ class RestoDetail extends Component<Props, State> {
               paddingTop: 17
             }}
           >
-            {/* {this.props.getCart.total} */}
+            {this.props.getAll.total}
           </Text>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("OrderReview")}
@@ -310,24 +305,25 @@ const styles = StyleSheet.create({
 
 // export default withCartContext(withSearchContext(RestoDetail))
 
-const mapStateToProps = (search, cart ) => {
-  const { search : {resto} } = search
-  // const cart  = cart
+const mapStateToProps = ({ search, cart }) => {
+  const { resto } = search
+  const { getAll } = cart
   console.log("resto : ", search)
-  console.log("cart : ", cart)
-
+  console.log("cart : ", getAll)
   return {
     resto,
-    // getCart
+    getAll
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     search: bindActionCreators(searchActions, dispatch),
-    cart: bindActionCreators(cartActions,dispatch)
+    cart: bindActionCreators(cartActions, dispatch)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RestoDetail)
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RestoDetail)

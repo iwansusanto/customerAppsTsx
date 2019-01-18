@@ -63,7 +63,7 @@ export function* watchUpdateCart() {
 export function* addToCart(action) {
   try {
     const { data } = yield call(postRequest.addCart, action.payload)
-    console.log("data add cart", data)
+    console.log("data update cart", data)
     yield put(addToCartSuccess(data))
   } catch (error) {
     console.log("data add cart error", error)
